@@ -1,0 +1,133 @@
+{
+  "@@locale": "ar",
+
+  "loginTitle": "تسجيل الدخول",
+  "@loginTitle": {
+    "description": "Título de la pantalla de inicio de sesión."
+  },
+
+  "loginSubtitle": "تبدأ الرحلة بصفحة واحدة.",
+  "@loginSubtitle": {
+    "description": "Subtítulo que aparece en la pantalla de inicio de sesión."
+  },
+
+  "emailOrPhoneLabel": "البريد الإلكتروني أو الهاتف",
+  "@emailOrPhoneLabel": {
+    "description": "Etiqueta para el campo de correo electrónico o número de teléfono."
+  },
+
+  "passwordLabelLogin": "كلمة المرور (البريد الإلكتروني فقط)",
+  "@passwordLabelLogin": {
+    "description": "Etiqueta para el campo de contraseña en el formulario de inicio de sesión."
+  },
+
+  "loginButton": "تسجيل الدخول",
+  "@loginButton": {
+    "description": "Texto del botón para iniciar sesión."
+  },
+
+  "noAccountText": "ليس لديك حساب؟",
+  "@noAccountText": {
+    "description": "Texto que invita al usuario a registrarse si no tiene cuenta."
+  },
+
+  "registerHere": "سجل هنا",
+  "@registerHere": {
+    "description": "Texto del enlace para registrarse."
+  },
+
+  "pleaseEnterEmailOrPhone": "يرجى إدخال البريد الإلكتروني أو رقم الهاتف.",
+  "@pleaseEnterEmailOrPhone": {
+    "description": "Mensaje de error cuando el campo de correo o teléfono está vacío."
+  },
+
+  "pleaseEnterPassword": "يرجى إدخال كلمة المرور.",
+  "@pleaseEnterPassword": {
+    "description": "Mensaje de error cuando el campo de contraseña está vacío."
+  },
+
+  "unexpectedError": "خطأ غير متوقع",
+  "@unexpectedError": {
+    "description": "Mensaje de error genérico para errores inesperados."
+  },
+
+  "invalidFormat": "تنسيق البريد الإلكتروني أو الهاتف غير صالح",
+  "@invalidFormat": {
+    "description": "Mensaje de error para formato incorrecto de correo o teléfono."
+  },
+
+  "createAccountTitle": "إنشاء حساب",
+  "@createAccountTitle": {
+    "description": "Título de la pantalla de registro."
+  },
+
+  "nameLabel": "الاسم الكامل",
+  "@nameLabel": {
+    "description": "Etiqueta para el campo de nombre completo."
+  },
+
+  "emailLabel": "عنوان البريد الإلكتروني",
+  "@emailLabel": {
+    "description": "Etiqueta para el campo de dirección de correo electrónico."
+  },
+
+  "passwordLabelRegister": "كلمة المرور",
+  "@passwordLabelRegister": {
+    "description": "Etiqueta para el campo de contraseña en el registro."
+  },
+
+  "confirmPasswordLabel": "تأكيد كلمة المرور",
+  "@confirmPasswordLabel": {
+    "description": "Etiqueta para confirmar la contraseña ingresada."
+  },
+
+  "registerButton": "سجل",
+  "@registerButton": {
+    "description": "Texto del botón para registrarse."
+  },
+
+  "welcomeTitle": "مرحبًا!",
+  "@welcomeTitle": {
+    "description": "Mensaje breve de bienvenida en la pantalla principal."
+  },
+
+  "welcomeSubtitle": "أنشئ حسابك للبدء.",
+  "@welcomeSubtitle": {
+    "description": "Instrucción para crear una cuenta en la pantalla de inicio."
+  },
+
+  "welcome_title": "مرحبًا بك في Lector Global",
+  "@welcome_title": {
+    "description": "Título principal de bienvenida en Lector Global."
+  },
+
+  "welcome_message": "اكتشف، تعلم، وانمُ مع القراءة.",
+  "@welcome_message": {
+    "description": "Mensaje motivador en la pantalla de inicio."
+  },
+
+  "developed_by": "تم التطوير بواسطة Jhovani Holguín",
+  "@developed_by": {
+    "description": "Créditos del desarrollador de la aplicación."
+  },
+
+  "version_info": "الإصدار 1.0.0",
+  "@version_info": {
+    "description": "Información sobre la versión actual de la aplicación."
+  },
+
+  "date_info": "مايو 2025",
+  "@date_info": {
+    "description": "Fecha de lanzamiento o última actualización."
+  },
+
+  "start_button": "ابدأ",
+  "@start_button": {
+    "description": "Texto del botón para comenzar a usar la aplicación."
+  },
+
+  "userRegisteredSuccessfully": "تم تسجيل المستخدم بنجاح!",
+  "@userRegisteredSuccessfully": {
+    "description": "Mensaje mostrado cuando el usuario se registra exitosamente."
+  }
+}

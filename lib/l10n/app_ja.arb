@@ -1,0 +1,41 @@
+{
+  "@@locale": "ja",
+  "welcome_title": "Lector Global へようこそ",
+  "welcome_message": "旅は1ページから始まる",
+  "developed_by": "Jhovani Holguín Rojas によって開発されました",
+  "version_info": "バージョン: 1.0.0",
+  "date_info": "日付: 2025年4月23日",
+  "start_button": "開始",
+
+  "dashboardTitle": "メインダッシュボード",
+  "logout": "ログアウト",
+  "welcome": "ようこそ",
+  "startYourReadingJourney": "ここから読書の旅を始めましょう",
+  "lessons": "レッスン",
+  "lessonsComingSoon": "レッスンセクションは近日公開",
+  "myProgress": "私の進捗",
+  "progressComingSoon": "進捗セクションは近日公開",
+
+  "completeAllFields": "すべての項目を入力してください。",
+  "userNotFound": "ユーザーが見つかりません。",
+  "incorrectPassword": "パスワードが間違っています。",
+  "invalidEmail": "無効なメールアドレスです。",
+
+  "loginError": "ログインエラー",
+  "unexpectedError": "予期しないエラー",
+  "invalidFormat": "無効な形式です。有効なメールアドレスまたは電話番号を入力してください。",
+  "pleaseEnterEmailOrPhone": "メールアドレスまたは電話番号を入力してください。",
+  "pleaseEnterPassword": "パスワードを入力してください。",
+
+  "loginTitle": "ログイン",
+  "loginSubtitle": "アカウントでログインしてください",
+  "emailLabel": "メールアドレス",
+  "passwordLabel": "パスワード",
+  "loginButton": "ログイン",
+  "googleSignIn": "Googleでログイン",
+  "facebookSignIn": "Facebookでログイン",
+  "noAccount": "アカウントをお持ちではありませんか？",
+  "registerHere": "ここで登録",
+  "termsAndPrivacy": "利用規約とプライバシーポリシーに同意します",
+  "forgotPassword": "パスワードをお忘れですか？"
+}

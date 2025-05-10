@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------------
+// 📄 Archivo: android/build.gradle.kts
+// 📝 Descripción: Configuración raíz sin errores Kotlin DSL.
+// 📅 Última actualización: 08/05/2025 - 00:05 (Hora de Colombia)
+// -----------------------------------------------------------------------------
+
 allprojects {
     repositories {
         google()
@@ -5,13 +11,15 @@ allprojects {
     }
 }
 
-val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
+// ✅ Reconfigura la carpeta de salida build para todos los subproyectos
+val newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
-    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+    val newSubprojectBuildDir = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

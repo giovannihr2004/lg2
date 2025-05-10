@@ -1,0 +1,41 @@
+{
+  "@@locale": "pt",
+  "welcome_title": "Bem-vindo ao Lector Global",
+  "welcome_message": "A jornada começa com uma página",
+  "developed_by": "Desenvolvido por Jhovani Holguín Rojas",
+  "version_info": "Versão: 1.0.0",
+  "date_info": "Data: 23 de abril de 2025",
+  "start_button": "Começar",
+
+  "dashboardTitle": "Painel principal",
+  "logout": "Sair",
+  "welcome": "Bem-vindo",
+  "startYourReadingJourney": "Comece sua jornada de leitura aqui",
+  "lessons": "Lições",
+  "lessonsComingSoon": "Seção de lições em breve",
+  "myProgress": "Meu progresso",
+  "progressComingSoon": "Seção de progresso em breve",
+
+  "completeAllFields": "Por favor, preencha todos os campos.",
+  "userNotFound": "Usuário não encontrado.",
+  "incorrectPassword": "Senha incorreta.",
+  "invalidEmail": "E-mail inválido.",
+
+  "loginError": "Erro de login",
+  "unexpectedError": "Erro inesperado",
+  "invalidFormat": "Formato inválido. Por favor, insira um e-mail ou telefone válido.",
+  "pleaseEnterEmailOrPhone": "Por favor, insira seu e-mail ou telefone.",
+  "pleaseEnterPassword": "Por favor, insira sua senha.",
+
+  "loginTitle": "Entrar",
+  "loginSubtitle": "Acesse com sua conta",
+  "emailLabel": "E-mail",
+  "passwordLabel": "Senha",
+  "loginButton": "Entrar",
+  "googleSignIn": "Entrar com o Google",
+  "facebookSignIn": "Entrar com o Facebook",
+  "noAccount": "Não tem uma conta?",
+  "registerHere": "Registre-se aqui",
+  "termsAndPrivacy": "Você aceita nossos termos e política de privacidade",
+  "forgotPassword": "Esqueceu sua senha?"
+}

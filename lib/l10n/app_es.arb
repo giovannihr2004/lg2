@@ -1,0 +1,41 @@
+{
+  "@@locale": "es",
+  "welcome_title": "Bienvenido a Lector Global",
+  "welcome_message": "El viaje comienza con una página",
+  "developed_by": "Desarrollado por Jhovani Holguín Rojas",
+  "version_info": "Versión: 1.0.0",
+  "date_info": "Fecha: 23 de abril de 2025",
+  "start_button": "Comenzar",
+
+  "dashboardTitle": "Panel principal",
+  "logout": "Cerrar sesión",
+  "welcome": "Bienvenido",
+  "startYourReadingJourney": "Comienza tu viaje lector aquí",
+  "lessons": "Lecciones",
+  "lessonsComingSoon": "Sección de lecciones próximamente",
+  "myProgress": "Mi progreso",
+  "progressComingSoon": "Sección de progreso próximamente",
+
+  "completeAllFields": "Por favor completa todos los campos.",
+  "userNotFound": "Usuario no encontrado.",
+  "incorrectPassword": "Contraseña incorrecta.",
+  "invalidEmail": "Correo electrónico inválido.",
+  
+  "loginError": "Error de inicio de sesión",
+  "unexpectedError": "Error inesperado",
+  "invalidFormat": "Formato inválido. Ingresa un correo o teléfono válido.",
+  "pleaseEnterEmailOrPhone": "Por favor ingresa tu correo o teléfono.",
+  "pleaseEnterPassword": "Por favor ingresa tu contraseña.",
+  
+  "loginTitle": "Iniciar sesión",
+  "loginSubtitle": "Accede con tu cuenta",
+  "emailLabel": "Correo electrónico",
+  "passwordLabel": "Contraseña",
+  "loginButton": "Ingresar",
+  "googleSignIn": "Ingresar con Google",
+  "facebookSignIn": "Ingresar con Facebook",
+  "noAccount": "¿No tienes cuenta?",
+  "registerHere": "Regístrate aquí",
+  "termsAndPrivacy": "Aceptas nuestros términos y política de privacidad",
+  "forgotPassword": "¿Olvidaste tu contraseña?"
+}

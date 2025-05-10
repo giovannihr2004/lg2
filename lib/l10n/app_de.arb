@@ -1,0 +1,41 @@
+{
+  "@@locale": "de",
+  "welcome_title": "Willkommen bei Lector Global",
+  "welcome_message": "Die Reise beginnt mit einer Seite",
+  "developed_by": "Entwickelt von Jhovani Holguín Rojas",
+  "version_info": "Version: 1.0.0",
+  "date_info": "Datum: 23. April 2025",
+  "start_button": "Starten",
+
+  "dashboardTitle": "Hauptübersicht",
+  "logout": "Abmelden",
+  "welcome": "Willkommen",
+  "startYourReadingJourney": "Beginne hier deine Lesereise",
+  "lessons": "Lektionen",
+  "lessonsComingSoon": "Lektionsbereich bald verfügbar",
+  "myProgress": "Mein Fortschritt",
+  "progressComingSoon": "Fortschrittsbereich bald verfügbar",
+
+  "completeAllFields": "Bitte fülle alle Felder aus.",
+  "userNotFound": "Benutzer nicht gefunden.",
+  "incorrectPassword": "Falsches Passwort.",
+  "invalidEmail": "Ungültige E-Mail.",
+
+  "loginError": "Anmeldefehler",
+  "unexpectedError": "Unerwarteter Fehler",
+  "invalidFormat": "Ungültiges Format. Bitte gib eine gültige E-Mail-Adresse oder Telefonnummer ein.",
+  "pleaseEnterEmailOrPhone": "Bitte gib deine E-Mail oder Telefonnummer ein.",
+  "pleaseEnterPassword": "Bitte gib dein Passwort ein.",
+
+  "loginTitle": "Anmeldung",
+  "loginSubtitle": "Melde dich mit deinem Konto an",
+  "emailLabel": "E-Mail",
+  "passwordLabel": "Passwort",
+  "loginButton": "Einloggen",
+  "googleSignIn": "Mit Google einloggen",
+  "facebookSignIn": "Mit Facebook einloggen",
+  "noAccount": "Noch kein Konto?",
+  "registerHere": "Hier registrieren",
+  "termsAndPrivacy": "Du akzeptierst unsere Bedingungen und Datenschutzrichtlinie",
+  "forgotPassword": "Passwort vergessen?"
+}

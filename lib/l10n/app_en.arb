@@ -1,0 +1,41 @@
+{
+  "@@locale": "en",
+  "welcome_title": "Welcome to Lector Global",
+  "welcome_message": "The journey begins with a page",
+  "developed_by": "Developed by Jhovani Holguín Rojas",
+  "version_info": "Version: 1.0.0",
+  "date_info": "Date: April 23, 2025",
+  "start_button": "Start",
+
+  "dashboardTitle": "Main Dashboard",
+  "logout": "Log out",
+  "welcome": "Welcome",
+  "startYourReadingJourney": "Start your reading journey here",
+  "lessons": "Lessons",
+  "lessonsComingSoon": "Lessons section coming soon",
+  "myProgress": "My progress",
+  "progressComingSoon": "Progress section coming soon",
+
+  "completeAllFields": "Please complete all fields.",
+  "userNotFound": "User not found.",
+  "incorrectPassword": "Incorrect password.",
+  "invalidEmail": "Invalid email.",
+
+  "loginError": "Login error",
+  "unexpectedError": "Unexpected error",
+  "invalidFormat": "Invalid format. Please enter a valid email or phone number.",
+  "pleaseEnterEmailOrPhone": "Please enter your email or phone.",
+  "pleaseEnterPassword": "Please enter your password.",
+
+  "loginTitle": "Login",
+  "loginSubtitle": "Access with your account",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "loginButton": "Sign in",
+  "googleSignIn": "Sign in with Google",
+  "facebookSignIn": "Sign in with Facebook",
+  "noAccount": "Don't have an account?",
+  "registerHere": "Register here",
+  "termsAndPrivacy": "You accept our terms and privacy policy",
+  "forgotPassword": "Forgot your password?"
+}
