@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: welcome_screen.dart
 // 📍 Ubicación: lib/screens/welcome_screen.dart
-// 📝 Descripción: Pantalla de bienvenida con seguimiento de claves de traducción
-// 📅 Última actualización: 09/05/2025 - 22:50 (Hora de Colombia)
+// 📝 Descripción: Pantalla de bienvenida con traducciones y selector de idioma
+// 📅 Última actualización: 13/05/2025 - 18:06 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
 
-    // 🐞 Seguimiento de traducciones clave
+    // Seguimiento de claves de traducción
     debugPrint('✅ welcome_title: ${loc?.welcome_title}');
     debugPrint('✅ welcome_message: ${loc?.welcome_message}');
     debugPrint('✅ developed_by: ${loc?.developed_by}');
@@ -34,10 +34,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       backgroundColor: Colors.deepPurple[50],
       appBar: AppBar(
         title: Text(loc?.welcome_title ?? 'Lector Global'),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Builder(builder: (context) => const LanguageSelector()),
+            padding: EdgeInsets.only(right: 20),
+            child: LanguageSelector(),
           ),
         ],
       ),
@@ -51,7 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 🖼 Logotipo
+                // 🖼 Logo
                 Image.asset(
                   'assets/images/logo1.png',
                   height: 120,
@@ -59,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 const SizedBox(height: 30),
 
-                // 📌 Título traducido
+                // 📌 Título principal
                 Text(
                   loc?.welcome_title ?? 'Bienvenido a Lector Global',
                   style: const TextStyle(
@@ -84,7 +84,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // 📌 Autor y fecha
+                // 📌 Información del desarrollador
                 Column(
                   children: [
                     Text(
@@ -115,7 +115,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 const SizedBox(height: 32),
 
-                // 🟣 Botón "Iniciar"
+                // 🟣 Botón de inicio
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

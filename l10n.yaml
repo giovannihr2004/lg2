@@ -1,11 +1,1 @@
-# -----------------------------------------------------------------------------
-# 📄 Archivo: l10n.yaml
-# 📝 Descripción: Configuración de internacionalización para Lector Global.
-# 📅 Última actualización: 09/05/2025
-# -----------------------------------------------------------------------------
-
-arb-dir: assets/lang # 📁 Carpeta donde están los archivos de idioma
-template-arb-file: en.arb # 🌐 Archivo base de idioma en inglés
-output-localization-file: app_localizations.dart # 🧾 Archivo Dart generado
-output-class: AppLocalizations # 🏷️ Clase generada para usar las traducciones
-untranslated-messages-file: untranslated_messages.txt # 📝 Registro de claves faltantes
+untranslated-messages-file: untranslated_messages.txt

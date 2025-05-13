@@ -6,6 +6,7 @@
   "version_info": "版本: 1.0.0",
   "date_info": "日期: 2025年4月23日",
   "start_button": "开始",
+
   "dashboardTitle": "主面板",
   "logout": "登出",
   "welcome": "欢迎",
@@ -14,12 +15,18 @@
   "lessonsComingSoon": "课程部分即将上线",
   "myProgress": "我的进度",
   "progressComingSoon": "进度部分即将上线",
+
   "completeAllFields": "请填写所有字段。",
   "userNotFound": "找不到用户。",
   "incorrectPassword": "密码错误",
   "invalidEmail": "电子邮件无效。",
+
   "loginError": "登录错误",
   "unexpectedError": "意外错误",
+  "invalidFormat": "格式无效。请输入有效的电子邮件或电话号码。",
+  "pleaseEnterEmailOrPhone": "请输入您的电子邮件或电话号码。",
+  "pleaseEnterPassword": "请输入您的密码。",
+
   "loginTitle": "登录",
   "loginSubtitle": "使用您的帐户登录",
   "emailLabel": "电子邮件",
@@ -30,5 +37,10 @@
   "noAccount": "还没有帐户？",
   "registerHere": "在这里注册",
   "termsAndPrivacy": "您接受我们的条款和隐私政策",
-  "forgotPassword": "忘记密码？"
+  "forgotPassword": "忘记密码？",
+
+  "splash_slogan": "如果你能阅读，你就能理解。\n如果你能理解，你就能改变你的生活。\n如果我们改变生活，我们就能改变世界。",
+
+  "emailOrPhoneLabel": "电子邮件或电话",
+  "passwordLabelLogin": "密码"
 }

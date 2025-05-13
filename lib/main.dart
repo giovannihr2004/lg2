@@ -1,13 +1,15 @@
 // -----------------------------------------------------------------------------
-// 📄 Archivo: main.dart (estructura final con LanguageProvider y Selector)
-// 📅 Última actualización: 10/05/2025 - 01:30 (Hora de Colombia)
+// 📄 Archivo: main.dart
+// 📝 Descripción: Configura el idioma dinámicamente desde el provider
+// 📅 Última actualización: 13/05/2025 - 18:30 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'providers/language_provider.dart';
-import 'widgets/language_selector.dart';
+import 'package:lector_global/providers/language_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'screens/language_selector_screen.dart';
 
 void main() {
   runApp(
@@ -23,48 +25,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LanguageProvider>(
-      builder: (context, languageProvider, _) {
-        return MaterialApp(
-          key: ValueKey(languageProvider.locale.languageCode),
-          debugShowCheckedModeBanner: false,
-          locale: languageProvider.locale,
-          supportedLocales: AppLocalizations.supportedLocales,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          home: const LanguageTestScreen(),
-        );
-      },
-    );
-  }
-}
+    final languageProvider = Provider.of<LanguageProvider>(context);
 
-class LanguageTestScreen extends StatelessWidget {
-  const LanguageTestScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final loc = AppLocalizations.of(context);
-    final langCode = context.watch<LanguageProvider>().locale.languageCode;
-
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const LanguageSelector(),
-            const SizedBox(height: 20),
-            Text(
-              loc?.welcome_title ?? 'Texto sin traducción',
-              style: const TextStyle(fontSize: 24),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Idioma actual: $langCode',
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Lector Global',
+      locale: languageProvider.locale, // ✅ Aplica el idioma directamente
+      supportedLocales: const [
+        Locale('es'), // Español
+        Locale('en'), // Inglés
+        Locale('fr'), // Francés
+        Locale('it'), // Italiano
+        Locale('pt'), // Portugués
+        Locale('de'), // Alemán
+        Locale('ru'), // Ruso
+        Locale('ja'), // Japonés
+        Locale('zh'), // Chino
+        Locale('ar'), // Árabe
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: const LanguageSelectorScreen(),
     );
   }
 }

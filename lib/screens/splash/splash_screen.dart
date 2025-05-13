@@ -1,13 +1,8 @@
 // -----------------------------------------------------------------------------
-// 📄 Archivo: splash_screen.dart
-// 📍 Ubicación: lib/screens/auth/splash_screen.dart
-// 📝 Descripción: Muestra el logo animado y redirige automáticamente al login.
-// 📅 Última actualización: 06/05/2025 - 19:10 (Hora de Colombia)
+// 📄 Archivo: splash_screen.dart (Paso 1: animación suave)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:lector_global/screens/auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,33 +14,20 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
+  late Animation<double> _fadeIn;
 
   @override
   void initState() {
     super.initState();
 
-    // Inicialización del controlador de animación
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    )..forward();
-
-    // Curva de animación para el logo
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutBack,
+      duration: const Duration(milliseconds: 1500),
     );
 
-    // Redirigir automáticamente al login luego de 3 segundos
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      }
-    });
+    _fadeIn = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+
+    _controller.forward();
   }
 
   @override
@@ -54,15 +36,21 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  // Construcción de la interfaz
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[50],
+      backgroundColor: Colors.white,
       body: Center(
-        child: ScaleTransition(
-          scale: _animation,
-          child: Image.asset('assets/images/logo1.png', height: 160),
+        child: FadeTransition(
+          opacity: _fadeIn,
+          child: const Text(
+            'Cargando...',
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
       ),
     );

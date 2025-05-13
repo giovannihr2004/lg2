@@ -20,22 +20,26 @@
   "userNotFound": "Usuario no encontrado.",
   "incorrectPassword": "Contraseña incorrecta.",
   "invalidEmail": "Correo electrónico inválido.",
-  
+
   "loginError": "Error de inicio de sesión",
   "unexpectedError": "Error inesperado",
   "invalidFormat": "Formato inválido. Ingresa un correo o teléfono válido.",
   "pleaseEnterEmailOrPhone": "Por favor ingresa tu correo o teléfono.",
   "pleaseEnterPassword": "Por favor ingresa tu contraseña.",
-  
+
   "loginTitle": "Iniciar sesión",
   "loginSubtitle": "Accede con tu cuenta",
   "emailLabel": "Correo electrónico",
   "passwordLabel": "Contraseña",
+  "emailOrPhoneLabel": "Correo electrónico o teléfono",
+  "passwordLabelLogin": "Contraseña",
   "loginButton": "Ingresar",
   "googleSignIn": "Ingresar con Google",
   "facebookSignIn": "Ingresar con Facebook",
   "noAccount": "¿No tienes cuenta?",
   "registerHere": "Regístrate aquí",
   "termsAndPrivacy": "Aceptas nuestros términos y política de privacidad",
-  "forgotPassword": "¿Olvidaste tu contraseña?"
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+
+  "splash_slogan": "Si puedes leer, puedes comprender.\nY si puedes comprender, puedes cambiar tu vida.\nY si cambiamos vidas, cambiamos el mundo."
 }

@@ -37,5 +37,10 @@
   "noAccount": "Non hai un account?",
   "registerHere": "Registrati qui",
   "termsAndPrivacy": "Accetti i nostri termini e la nostra politica sulla privacy",
-  "forgotPassword": "Password dimenticata?"
+  "forgotPassword": "Password dimenticata?",
+
+  "splash_slogan": "Se puoi leggere, puoi comprendere.\nE se puoi comprendere, puoi cambiare la tua vita.\nE se cambiamo le vite, cambiamo il mondo.",
+
+  "emailOrPhoneLabel": "Email o telefono",
+  "passwordLabelLogin": "Password"
 }

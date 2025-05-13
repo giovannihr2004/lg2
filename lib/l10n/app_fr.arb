@@ -37,5 +37,10 @@
   "noAccount": "Vous n'avez pas de compte ?",
   "registerHere": "Inscrivez-vous ici",
   "termsAndPrivacy": "Vous acceptez nos conditions et notre politique de confidentialité",
-  "forgotPassword": "Mot de passe oublié ?"
+  "forgotPassword": "Mot de passe oublié ?",
+
+  "splash_slogan": "Si vous savez lire, vous pouvez comprendre.\nEt si vous pouvez comprendre, vous pouvez changer votre vie.\nEt si nous changeons des vies, nous changeons le monde.",
+  
+  "emailOrPhoneLabel": "E-mail ou téléphone",
+  "passwordLabelLogin": "Mot de passe"
 }
