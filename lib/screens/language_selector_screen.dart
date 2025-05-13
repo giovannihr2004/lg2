@@ -1,14 +1,14 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: language_selector_screen.dart
 // 📍 Ubicación: lib/screens/language_selector_screen.dart
-// 📝 Descripción: Pantalla inicial para seleccionar el idioma con navegación ligera y efectiva.
-// 📅 Última actualización: 13/05/2025 - 18:38 (Hora de Colombia)
+// 📝 Descripción: Pantalla inicial para seleccionar el idioma con navegación directa.
+// 📅 Última actualización: 13/05/2025 - 20:05 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lector_global/providers/language_provider.dart';
-import 'splash/splash_wrapper_screen.dart'; // Pantalla de transición hacia el logo
+import 'splash/splash_logo_screen.dart'; // ✅ Navegación directa al logo
 
 class LanguageSelectorScreen extends StatelessWidget {
   const LanguageSelectorScreen({super.key});
@@ -29,10 +29,9 @@ class LanguageSelectorScreen extends StatelessWidget {
   void _onLanguageSelected(BuildContext context, String langCode) {
     context.read<LanguageProvider>().changeLanguage(langCode);
 
-    // ✅ Navega sin forzar eliminación de rutas, permitiendo reconstrucción natural
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const SplashWrapperScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const SplashLogoScreen()));
   }
 
   @override
@@ -56,28 +55,30 @@ class LanguageSelectorScreen extends StatelessWidget {
                 spacing: 12,
                 runSpacing: 12,
                 alignment: WrapAlignment.center,
-                children: languageNames.entries.map((entry) {
-                  return ElevatedButton(
-                    onPressed: () => _onLanguageSelected(context, entry.key),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      entry.value,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                children:
+                    languageNames.entries.map((entry) {
+                      return ElevatedButton(
+                        onPressed:
+                            () => _onLanguageSelected(context, entry.key),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          entry.value,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    }).toList(),
               ),
               const SizedBox(height: 40),
               const Text(
