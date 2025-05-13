@@ -2,14 +2,15 @@
 // 📄 Archivo: splash_text_screen.dart
 // 📍 Ubicación: lib/screens/splash/splash_text_screen.dart
 // 📝 Descripción: Pantalla con eslogan animado y transición automática a WelcomeScreen
-// 📅 Última actualización: 13/05/2025 - 18:00 (Hora de Colombia)
+// 📅 Última actualización: 13/05/2025 - 19:58 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 // 1. Importaciones necesarias
 // -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
-import '../welcome_screen.dart'; // ⚠️ Verifica que welcome_screen.dart exista en lib/screens/
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../welcome_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 2. Widget principal: SplashTextScreen
@@ -64,10 +65,12 @@ class _SplashTextScreenState extends State<SplashTextScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Construcción visual: nombre de la app y eslogan institucional
+  // 4. Construcción visual: nombre de la app y eslogan traducido
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: Colors.deepPurple[50],
       body: Center(
@@ -77,8 +80,8 @@ class _SplashTextScreenState extends State<SplashTextScreen>
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'LECTOR GLOBAL',
                   style: TextStyle(
                     fontSize: 32,
@@ -87,13 +90,14 @@ class _SplashTextScreenState extends State<SplashTextScreen>
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
-                  'Si puedes leer, puedes comprender.\n'
-                  'Y si puedes comprender, puedes cambiar tu vida.\n'
-                  'Y si cambiamos vidas, cambiamos el mundo.',
+                  loc?.splash_slogan ??
+                      'Si puedes leer, puedes comprender.\n'
+                      'Y si puedes comprender, puedes cambiar tu vida.\n'
+                      'Y si cambiamos vidas, cambiamos el mundo.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black87,
                     height: 1.5,
