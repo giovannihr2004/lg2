@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
-// 📝 Descripción: Pantalla de login con animaciones, validaciones personalizadas, modo oscuro y errores visuales
-// 📅 Última actualización: 14/05/2025 - 13:45 (Hora de Colombia)
+// 📝 Descripción: Pantalla de login con validaciones, animaciones y enlace legal
+// 📅 Última actualización: 14/05/2025 - 14:58 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -12,51 +12,54 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 
 // -----------------------------------------------------------------------------
-// 2. Widget principal con estado: LoginScreen
+// 2. Clase principal con estado
 // -----------------------------------------------------------------------------
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 // -----------------------------------------------------------------------------
-// 3. Clase de estado para LoginScreen
+// 3. Estado y lógica del login
 // -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-  // 3.1 Controladores y variables
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailOrPhoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   bool _obscureText = true;
   bool _isLoading = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // 3.2 Animaciones para logo y eslogan
   late AnimationController _logoController;
   late AnimationController _sloganController;
 
-  // 3.3 Inicialización
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     super.initState();
+
     _logoController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
+
     _sloganController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
+
     _logoController.forward().whenComplete(() => _sloganController.forward());
   }
 
-  // 3.4 Liberación de recursos
   @override
   void dispose() {
     emailOrPhoneController.dispose();
@@ -66,7 +69,6 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  // 3.5 Validaciones de entrada
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
 
@@ -76,7 +78,6 @@ class _LoginScreenState extends State<LoginScreen>
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
   ).hasMatch(input);
 
-  // 3.6 Mensajes visuales tipo snackbar
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -88,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Lógica de autenticación
+  // 3.1 Lógica de inicio de sesión (correo o teléfono)
   // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
@@ -96,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen>
     final loc = AppLocalizations.of(context)!;
 
     if (!_formKey.currentState!.validate()) return;
+
     setState(() => _isLoading = true);
 
     if (_isEmail(input)) {
@@ -151,15 +153,15 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 5. Construcción visual de la interfaz
+  // 4. Construcción de la interfaz visual
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final inputText = emailOrPhoneController.text.trim();
     final passwordText = passwordController.text.trim();
     final isEmailLogin = _isEmail(inputText);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -186,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen>
             children: [
               const SizedBox(height: 40),
 
-              // 5.1 Logo animado
+              // 4.1 Logo animado
               FadeTransition(
                 opacity: _logoController,
                 child: Center(
@@ -196,23 +198,23 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 12),
 
-              // 5.2 Eslogan animado
+              // 4.2 Eslogan animado
               FadeTransition(
                 opacity: _sloganController,
                 child: Text(
                   loc.loginSlogan,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontStyle: FontStyle.italic,
-                    color: theme.textTheme.bodyMedium?.color,
+                    color: Colors.black87,
                   ),
                 ),
               ),
 
               const SizedBox(height: 24),
 
-              // 5.3 Campo de correo o teléfono con mensaje de error personalizado
+              // 4.3 Campo de email o teléfono
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -222,17 +224,25 @@ class _LoginScreenState extends State<LoginScreen>
                       _isEmail(inputText) || _isPhone(inputText)
                           ? const Icon(Icons.check_circle, color: Colors.green)
                           : null,
-                  errorStyle: const TextStyle(fontSize: 12),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color:
+                          (_isEmail(inputText) || _isPhone(inputText))
+                              ? Colors.green
+                              : Colors.grey,
+                    ),
+                  ),
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return '⚠️ ${loc.pleaseEnterEmailOrPhone}';
+                    return loc.pleaseEnterEmailOrPhone;
                   }
                   if (!_isEmail(value.trim()) && !_isPhone(value.trim())) {
-                    return '⚠️ ${loc.invalidFormat}';
+                    return loc.invalidFormat;
                   }
                   return null;
                 },
@@ -240,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 16),
 
-              // 5.4 Campo de contraseña con mensaje de error personalizado
+              // 4.4 Campo de contraseña
               TextFormField(
                 controller: passwordController,
                 enabled: isEmailLogin,
@@ -262,17 +272,25 @@ class _LoginScreenState extends State<LoginScreen>
                                   () => _obscureText = !_obscureText,
                                 ),
                           ),
-                  errorStyle: const TextStyle(fontSize: 12),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color:
+                          isEmailLogin && _isValidPassword(passwordText)
+                              ? Colors.green
+                              : Colors.grey,
+                    ),
+                  ),
+                  border: const OutlineInputBorder(),
                 ),
                 onChanged: (_) => setState(() {}),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (!isEmailLogin) return null;
                   if (value == null || value.trim().isEmpty) {
-                    return '⚠️ ${loc.pleaseEnterPassword}';
+                    return loc.pleaseEnterPassword;
                   }
                   if (!_isValidPassword(value.trim())) {
-                    return '⚠️ Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
+                    return 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
                   }
                   return null;
                 },
@@ -280,15 +298,12 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 5.5 Botón de ingreso
+              // 4.5 Botón ingresar
               SizedBox(
                 height: 50,
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _login,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    foregroundColor: Colors.white,
-                  ),
                   child:
                       _isLoading
                           ? const SizedBox(
@@ -308,7 +323,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 5.6 Botones autenticación externa (inactivos)
+              // 4.6 Botones externos (desactivados)
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.g_mobiledata),
@@ -323,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 5.7 Enlace de registro
+              // 4.7 Enlaces de navegación
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 child: Text.rich(
@@ -344,14 +359,17 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 8),
 
-              // 5.8 Términos y condiciones con estilo adaptado
-              Text(
-                loc.termsAndPrivacy,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 11,
-                  color: theme.textTheme.bodySmall?.color?.withAlpha(
-                    (255 * 0.6).toInt(),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/terms'),
+                child: Text(
+                  loc.termsAndPrivacy,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: theme.textTheme.bodySmall?.color?.withAlpha(
+                      204,
+                    ), // 204 ≈ 80% opacidad
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

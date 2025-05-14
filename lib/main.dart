@@ -2,7 +2,7 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-// 📅 Última actualización: 14/05/2025 - 14:15 (Hora de Colombia)
+// 📅 Última actualización: 14/05/2025 - 14:51 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -20,6 +20,7 @@ import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/auth/reset_password_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/legal/terms_screen.dart'; // ✅ Añadida
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,17 +29,16 @@ void main() async {
   // 2. Inicialización de Firebase
   // ---------------------------------------------------------------------------
   await Firebase.initializeApp(
-    options:
-        kIsWeb
-            ? const FirebaseOptions(
-              apiKey: "AIzaSyD2ihUQEbdSxsJvuf4t0YP7Sy9XYp-HRKs",
-              authDomain: "lector-global-1c462.firebaseapp.com",
-              projectId: "lector-global-1c462",
-              storageBucket: "lector-global-1c462.firebasestorage.app",
-              messagingSenderId: "562353221228",
-              appId: "1:562353221228:web:580e0b1018505a8e8fb249",
-            )
-            : null,
+    options: kIsWeb
+        ? const FirebaseOptions(
+            apiKey: "AIzaSyD2ihUQEbdSxsJvuf4t0YP7Sy9XYp-HRKs",
+            authDomain: "lector-global-1c462.firebaseapp.com",
+            projectId: "lector-global-1c462",
+            storageBucket: "lector-global-1c462.firebasestorage.app",
+            messagingSenderId: "562353221228",
+            appId: "1:562353221228:web:580e0b1018505a8e8fb249",
+          )
+        : null,
   );
 
   // ---------------------------------------------------------------------------
@@ -117,6 +117,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/resetPassword': (context) => const ResetPasswordScreen(),
         '/dashboard': (context) => const DashboardScreen(),
+        '/terms': (context) => const TermsScreen(), // ✅ Añadida
       },
     );
   }
