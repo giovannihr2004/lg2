@@ -42,5 +42,8 @@
   "splash_slogan": "Se você pode ler, pode compreender.\nE se pode compreender, pode mudar sua vida.\nE se mudamos vidas, mudamos o mundo.",
 
   "emailOrPhoneLabel": "E-mail ou telefone",
-  "passwordLabelLogin": "Senha"
+  "passwordLabelLogin": "Senha",
+  "welcomeBackMessage": "Bem-vindo de volta! Faça login para continuar aprendendo com o Lector Global.",
+
+  "loginSlogan": "Se você pode ler, pode compreender. E se pode compreender, pode mudar sua vida. E se mudamos vidas, mudamos o mundo."
 }

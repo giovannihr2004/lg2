@@ -42,5 +42,8 @@
   "splash_slogan": "If you can read, you can understand.\nAnd if you can understand, you can change your life.\nAnd if we change lives, we change the world.",
 
   "emailOrPhoneLabel": "Email or phone",
-  "passwordLabelLogin": "Password"
+  "passwordLabelLogin": "Password",
+  "welcomeBackMessage": "Welcome back! Log in to keep learning with Lector Global.",
+
+  "loginSlogan": "If you can read, you can understand. And if you can understand, you can change your life. And if we change lives, we change the world."
 }

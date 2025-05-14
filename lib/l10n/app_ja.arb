@@ -40,7 +40,9 @@
   "forgotPassword": "パスワードをお忘れですか？",
 
   "splash_slogan": "読むことができれば、理解できる。\n理解できれば、人生を変えられる。\n人生を変えれば、世界を変えることができる。",
-  
   "emailOrPhoneLabel": "メールアドレスまたは電話番号",
-  "passwordLabelLogin": "パスワード"
+  "passwordLabelLogin": "パスワード",
+  "welcomeBackMessage": "おかえりなさい！Lector Globalでの学習を続けるにはログインしてください。",
+
+  "loginSlogan": "読むことができれば、理解できる。理解できれば、人生を変えられる。人生を変えれば、世界を変えることができる。"
 }

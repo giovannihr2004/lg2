@@ -2,7 +2,7 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login completa con validación, carga visual, temas e internacionalización
-// 📅 Última actualización: 13/05/2025 - 23:20 (Hora de Colombia)
+// 📅 Última actualización: 14/05/2025 - 10:38 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -50,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isValidPassword(String input) => RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
   ).hasMatch(input);
+
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -164,10 +165,26 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
                 child: Image.asset("assets/images/logo1.png", height: 100),
               ),
+
+              const SizedBox(height: 12),
+
+              // -------------------------------------------------------------------------
+              // 4.2 Eslogan oficial de la app
+              // -------------------------------------------------------------------------
+              Text(
+                loc.loginSlogan,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black87,
+                ),
+              ),
+
               const SizedBox(height: 24),
 
               // -------------------------------------------------------------------------
-              // 4.2 Campo de correo o teléfono
+              // 4.3 Campo de correo o teléfono
               // -------------------------------------------------------------------------
               TextFormField(
                 controller: emailOrPhoneController,
@@ -205,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16),
 
               // -------------------------------------------------------------------------
-              // 4.3 Campo de contraseña con validación visual (solo si es correo)
+              // 4.4 Campo de contraseña
               // -------------------------------------------------------------------------
               TextFormField(
                 controller: passwordController,
@@ -254,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
 
               // -------------------------------------------------------------------------
-              // 4.4 Botón "Ingresar" con indicador de carga
+              // 4.5 Botón "Ingresar"
               // -------------------------------------------------------------------------
               SizedBox(
                 height: 50,
@@ -284,7 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
 
               // -------------------------------------------------------------------------
-              // 4.5 Botones de autenticación externa (desactivados)
+              // 4.6 Botones autenticación externa
               // -------------------------------------------------------------------------
               OutlinedButton.icon(
                 onPressed: null,
@@ -301,7 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
 
               // -------------------------------------------------------------------------
-              // 4.6 Enlaces de navegación y términos
+              // 4.7 Enlaces de navegación
               // -------------------------------------------------------------------------
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),

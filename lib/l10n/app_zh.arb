@@ -40,7 +40,9 @@
   "forgotPassword": "忘记密码？",
 
   "splash_slogan": "如果你能阅读，你就能理解。\n如果你能理解，你就能改变你的生活。\n如果我们改变生活，我们就能改变世界。",
-
   "emailOrPhoneLabel": "电子邮件或电话",
-  "passwordLabelLogin": "密码"
+  "passwordLabelLogin": "密码",
+  "welcomeBackMessage": "欢迎回来！请登录以继续使用 Lector Global 学习。",
+
+  "loginSlogan": "如果你能阅读，你就能理解。如果你能理解，你就能改变你的生活。如果我们改变生活，我们就能改变世界。"
 }
