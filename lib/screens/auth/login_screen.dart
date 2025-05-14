@@ -1,12 +1,12 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
-// 📝 Descripción: Pantalla de login completa con animaciones, validación, carga visual, temas e internacionalización
-// 📅 Última actualización: 14/05/2025 - 12:37 (Hora de Colombia)
+// 📝 Descripción: Pantalla de login con animaciones, validación, tema oscuro y secciones comentadas
+// 📅 Última actualización: 14/05/2025 - 13:25 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-// 1. Importaciones
+// 1. Importaciones necesarias
 // -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +16,7 @@ import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 
 // -----------------------------------------------------------------------------
-// 2. Widget principal con estado
+// 2. Widget principal con estado: LoginScreen
 // -----------------------------------------------------------------------------
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,10 +25,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 // -----------------------------------------------------------------------------
-// 3. Estado y lógica
+// 3. Clase de estado para LoginScreen
 // -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
+  // 3.1 Controladores y variables
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailOrPhoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -36,9 +37,11 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // 3.2 Animaciones para logo y eslogan
   late AnimationController _logoController;
   late AnimationController _sloganController;
 
+  // 3.3 Inicialización
   @override
   void initState() {
     super.initState();
@@ -50,10 +53,10 @@ class _LoginScreenState extends State<LoginScreen>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-
     _logoController.forward().whenComplete(() => _sloganController.forward());
   }
 
+  // 3.4 Liberación de recursos
   @override
   void dispose() {
     emailOrPhoneController.dispose();
@@ -63,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
+  // 3.5 Validaciones de entrada
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
 
@@ -72,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen>
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
   ).hasMatch(input);
 
+  // 3.6 Mensajes visuales tipo snackbar
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -83,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.1 Lógica de inicio de sesión (correo o teléfono)
+  // 4. Lógica de autenticación
   // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
@@ -91,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen>
     final loc = AppLocalizations.of(context)!;
 
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _isLoading = true);
 
     if (_isEmail(input)) {
@@ -147,11 +151,12 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Construcción visual de la interfaz
+  // 5. Construcción de la interfaz visual
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final inputText = emailOrPhoneController.text.trim();
     final passwordText = passwordController.text.trim();
     final isEmailLogin = _isEmail(inputText);
@@ -181,6 +186,7 @@ class _LoginScreenState extends State<LoginScreen>
             children: [
               const SizedBox(height: 40),
 
+              // 5.1 Logo animado
               FadeTransition(
                 opacity: _logoController,
                 child: Center(
@@ -190,21 +196,23 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 12),
 
+              // 5.2 Eslogan animado
               FadeTransition(
                 opacity: _sloganController,
                 child: Text(
                   loc.loginSlogan,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontStyle: FontStyle.italic,
-                    color: Colors.black87,
+                    color: theme.textTheme.bodyMedium?.color,
                   ),
                 ),
               ),
 
               const SizedBox(height: 24),
 
+              // 5.3 Campo de correo o teléfono
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -219,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen>
                       color:
                           (_isEmail(inputText) || _isPhone(inputText))
                               ? Colors.green
-                              : Colors.grey,
+                              : theme.dividerColor,
                     ),
                   ),
                   border: const OutlineInputBorder(),
@@ -240,6 +248,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 16),
 
+              // 5.4 Campo de contraseña
               TextFormField(
                 controller: passwordController,
                 enabled: isEmailLogin,
@@ -266,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen>
                       color:
                           isEmailLogin && _isValidPassword(passwordText)
                               ? Colors.green
-                              : Colors.grey,
+                              : theme.dividerColor,
                     ),
                   ),
                   border: const OutlineInputBorder(),
@@ -287,6 +296,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
+              // 5.5 Botón de ingreso
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
@@ -314,6 +324,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
+              // 5.6 Botones autenticación externa
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.g_mobiledata),
@@ -328,6 +339,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
+              // 5.7 Enlace de registro
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 child: Text.rich(
@@ -345,11 +357,19 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
               ),
+
               const SizedBox(height: 8),
+
+              // 5.8 Texto de términos y privacidad adaptativo
               Text(
                 loc.termsAndPrivacy,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 11, color: Colors.black54),
+                style: TextStyle(
+                  fontSize: 11,
+                  color: theme.textTheme.bodySmall?.color?.withAlpha(
+                    (255 * 0.6).toInt(),
+                  ),
+                ),
               ),
             ],
           ),
