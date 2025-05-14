@@ -1,13 +1,10 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
-// 📝 Descripción: Pantalla de login con validaciones visuales (correo/contraseña)
-// 📅 Última actualización: 13/05/2025 - 22:20 (Hora de Colombia)
+// 📝 Descripción: Contraseña deshabilitada si se detecta teléfono (sin warning)
+// 📅 Última actualización: 13/05/2025 - 22:54 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// 1. Importaciones
-// -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,9 +12,6 @@ import 'package:provider/provider.dart';
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 
-// -----------------------------------------------------------------------------
-// 2. Widget principal con estado: LoginScreen
-// -----------------------------------------------------------------------------
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -25,9 +19,6 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-// -----------------------------------------------------------------------------
-// 3. Estado de LoginScreen: variables, validadores, lógica
-// -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailOrPhoneController = TextEditingController();
@@ -36,7 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Limpieza de controladores al salir de la pantalla
   @override
   void dispose() {
     emailOrPhoneController.dispose();
@@ -44,9 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // ---------------------------------------------------------------------------
-  // 3.1 Validadores auxiliares
-  // ---------------------------------------------------------------------------
   bool _isEmail(String input) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
   }
@@ -55,7 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return RegExp(r'^\+?[0-9]{7,15}$').hasMatch(input);
   }
 
-  // Validador seguro de contraseña (mínimo 8, mayús, minús, número, símbolo)
   bool _isValidPassword(String input) {
     return RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
@@ -72,9 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 3.2 Lógica de login
-  // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
     final password = passwordController.text.trim();
@@ -133,14 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // 4. Interfaz visual
-  // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final inputText = emailOrPhoneController.text.trim();
     final passwordText = passwordController.text.trim();
+    final isEmailLogin = _isEmail(inputText);
 
     return Scaffold(
       appBar: AppBar(
@@ -164,20 +145,13 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 40),
-
-              // Logo principal
               Center(
                 child: Image.asset("assets/images/logo1.png", height: 100),
               ),
-
               const SizedBox(height: 24),
 
-              // -----------------------------------------------------------------------
-              // 4.1 Campo de correo o teléfono con validación e ícono ✅
-              // -----------------------------------------------------------------------
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -213,17 +187,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 16),
 
-              // -----------------------------------------------------------------------
-              // 4.2 Campo de contraseña con validación fuerte y visual
-              // -----------------------------------------------------------------------
               TextFormField(
                 controller: passwordController,
+                enabled: isEmailLogin, // ⚠️ Solo editable si es correo
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   labelText: loc.passwordLabelLogin,
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon:
-                      _isValidPassword(passwordText)
+                      isEmailLogin && _isValidPassword(passwordText)
                           ? const Icon(Icons.check_circle, color: Colors.green)
                           : IconButton(
                             icon: Icon(
@@ -239,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color:
-                          _isValidPassword(passwordText)
+                          isEmailLogin && _isValidPassword(passwordText)
                               ? Colors.green
                               : Colors.grey,
                     ),
@@ -249,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (_) => setState(() {}),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
-                  if (!_isEmail(inputText)) return null;
+                  if (!isEmailLogin) return null;
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterPassword;
                   }
@@ -262,7 +234,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 24),
 
-              // Botón de inicio de sesión
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
@@ -282,16 +253,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
               const SizedBox(height: 24),
-
-              // Botones sociales desactivados
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.g_mobiledata),
                 label: Text('${loc.googleSignIn} (Coming soon)'),
               ),
-
               const SizedBox(height: 12),
-
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.facebook),
@@ -299,31 +266,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
               const SizedBox(height: 24),
-
-              // Enlace a registro
-              Center(
-                child: TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/register'),
-                  child: Text.rich(
-                    TextSpan(
-                      text: '${loc.noAccount} ',
-                      children: [
-                        TextSpan(
-                          text: loc.registerHere,
-                          style: const TextStyle(
-                            color: Colors.deepPurple,
-                            fontWeight: FontWeight.bold,
-                          ),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/register'),
+                child: Text.rich(
+                  TextSpan(
+                    text: '${loc.noAccount} ',
+                    children: [
+                      TextSpan(
+                        text: loc.registerHere,
+                        style: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
-
-              // Texto legal
               Text(
                 loc.termsAndPrivacy,
                 textAlign: TextAlign.center,
