@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
-// 📝 Descripción: Pantalla de login con validaciones, animaciones y enlace legal
-// 📅 Última actualización: 14/05/2025 - 14:58 (Hora de Colombia)
+// 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
+// 📅 Última actualización: 14/05/2025 - 15:18 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -338,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.7 Enlaces de navegación
+              // 4.7 Enlace a registro
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 child: Text.rich(
@@ -359,6 +359,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 8),
 
+              // 4.8 Enlace a términos y privacidad
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/terms'),
                 child: Text(
@@ -366,9 +367,22 @@ class _LoginScreenState extends State<LoginScreen>
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 11,
-                    color: theme.textTheme.bodySmall?.color?.withAlpha(
-                      204,
-                    ), // 204 ≈ 80% opacidad
+                    color: theme.textTheme.bodySmall?.color?.withAlpha(204),
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 4),
+
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/privacy'),
+                child: Text(
+                  'Lee nuestra política de privacidad aquí.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: theme.textTheme.bodySmall?.color?.withAlpha(204),
                     decoration: TextDecoration.underline,
                   ),
                 ),
