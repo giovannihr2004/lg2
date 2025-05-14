@@ -2,7 +2,7 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 14/05/2025 - 15:18 (Hora de Colombia)
+// 📅 Última actualización: 14/05/2025 - 22:46 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
+import '../../services/google_sign_in_service.dart';
 
 // -----------------------------------------------------------------------------
 // 2. Clase principal con estado
@@ -27,7 +28,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 // -----------------------------------------------------------------------------
-// 3. Estado y lógica del login
+// 3. Estado interno y lógica
 // -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
@@ -46,17 +47,14 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-
     _logoController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-
     _sloganController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-
     _logoController.forward().whenComplete(() => _sloganController.forward());
   }
 
@@ -69,6 +67,9 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
+  // ---------------------------------------------------------------------------
+  // 3.1 Validadores y helpers
+  // ---------------------------------------------------------------------------
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
 
@@ -89,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.1 Lógica de inicio de sesión (correo o teléfono)
+  // 3.2 Lógica de inicio de sesión con correo o teléfono
   // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
@@ -97,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen>
     final loc = AppLocalizations.of(context)!;
 
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _isLoading = true);
 
     if (_isEmail(input)) {
@@ -153,7 +153,20 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Construcción de la interfaz visual
+  // 3.3 Lógica de inicio con Google
+  // ---------------------------------------------------------------------------
+  Future<void> _signInWithGoogle() async {
+    final credential = await GoogleSignInService.signInWithGoogle();
+    if (credential != null) {
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } else {
+      _showSnackBar("No se pudo iniciar sesión con Google", isError: true);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4. Interfaz de usuario
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -214,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.3 Campo de email o teléfono
+              // 4.3 Campo email/teléfono
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -224,15 +237,6 @@ class _LoginScreenState extends State<LoginScreen>
                       _isEmail(inputText) || _isPhone(inputText)
                           ? const Icon(Icons.check_circle, color: Colors.green)
                           : null,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color:
-                          (_isEmail(inputText) || _isPhone(inputText))
-                              ? Colors.green
-                              : Colors.grey,
-                    ),
-                  ),
-                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -250,11 +254,11 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 16),
 
-              // 4.4 Campo de contraseña
+              // 4.4 Campo contraseña
               TextFormField(
                 controller: passwordController,
-                enabled: isEmailLogin,
                 obscureText: _obscureText,
+                enabled: isEmailLogin,
                 decoration: InputDecoration(
                   labelText: loc.passwordLabelLogin,
                   prefixIcon: const Icon(Icons.lock_outline),
@@ -272,18 +276,9 @@ class _LoginScreenState extends State<LoginScreen>
                                   () => _obscureText = !_obscureText,
                                 ),
                           ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color:
-                          isEmailLogin && _isValidPassword(passwordText)
-                              ? Colors.green
-                              : Colors.grey,
-                    ),
-                  ),
-                  border: const OutlineInputBorder(),
                 ),
-                onChanged: (_) => setState(() {}),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (!isEmailLogin) return null;
                   if (value == null || value.trim().isEmpty) {
@@ -298,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.5 Botón ingresar
+              // 4.5 Botón iniciar sesión
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -323,13 +318,16 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.6 Botones externos (desactivados)
+              // 4.6 Botón Google
               OutlinedButton.icon(
-                onPressed: null,
+                onPressed: _signInWithGoogle,
                 icon: const Icon(Icons.g_mobiledata),
-                label: Text('${loc.googleSignIn} (Coming soon)'),
+                label: Text(loc.googleSignIn),
               ),
+
               const SizedBox(height: 12),
+
+              // 4.7 Botón Facebook (placeholder)
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.facebook),
@@ -338,7 +336,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.7 Enlace a registro
+              // 4.8 Enlace registro
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 child: Text.rich(
@@ -359,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 8),
 
-              // 4.8 Enlace a términos y privacidad
+              // 4.9 Enlace términos
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/terms'),
                 child: Text(
@@ -375,6 +373,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 4),
 
+              // 4.10 Enlace privacidad
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/privacy'),
                 child: Text(
