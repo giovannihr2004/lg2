@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
-// 📝 Descripción: Pantalla de login completa con validación, carga visual, temas e internacionalización
-// 📅 Última actualización: 14/05/2025 - 10:38 (Hora de Colombia)
+// 📝 Descripción: Pantalla de login completa con animaciones, validación, carga visual, temas e internacionalización
+// 📅 Última actualización: 14/05/2025 - 12:37 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -27,7 +27,8 @@ class LoginScreen extends StatefulWidget {
 // -----------------------------------------------------------------------------
 // 3. Estado y lógica
 // -----------------------------------------------------------------------------
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailOrPhoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -35,10 +36,30 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  late AnimationController _logoController;
+  late AnimationController _sloganController;
+
+  @override
+  void initState() {
+    super.initState();
+    _logoController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _sloganController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _logoController.forward().whenComplete(() => _sloganController.forward());
+  }
+
   @override
   void dispose() {
     emailOrPhoneController.dispose();
     passwordController.dispose();
+    _logoController.dispose();
+    _sloganController.dispose();
     super.dispose();
   }
 
@@ -134,6 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final inputText = emailOrPhoneController.text.trim();
     final passwordText = passwordController.text.trim();
     final isEmailLogin = _isEmail(inputText);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.loginTitle),
@@ -159,33 +181,30 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 40),
 
-              // -------------------------------------------------------------------------
-              // 4.1 Logo principal
-              // -------------------------------------------------------------------------
-              Center(
-                child: Image.asset("assets/images/logo1.png", height: 100),
+              FadeTransition(
+                opacity: _logoController,
+                child: Center(
+                  child: Image.asset("assets/images/logo1.png", height: 100),
+                ),
               ),
 
               const SizedBox(height: 12),
 
-              // -------------------------------------------------------------------------
-              // 4.2 Eslogan oficial de la app
-              // -------------------------------------------------------------------------
-              Text(
-                loc.loginSlogan,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black87,
+              FadeTransition(
+                opacity: _sloganController,
+                child: Text(
+                  loc.loginSlogan,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
 
               const SizedBox(height: 24),
 
-              // -------------------------------------------------------------------------
-              // 4.3 Campo de correo o teléfono
-              // -------------------------------------------------------------------------
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -221,9 +240,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 16),
 
-              // -------------------------------------------------------------------------
-              // 4.4 Campo de contraseña
-              // -------------------------------------------------------------------------
               TextFormField(
                 controller: passwordController,
                 enabled: isEmailLogin,
@@ -268,11 +284,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
+
               const SizedBox(height: 24),
 
-              // -------------------------------------------------------------------------
-              // 4.5 Botón "Ingresar"
-              // -------------------------------------------------------------------------
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
@@ -300,9 +314,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 24),
 
-              // -------------------------------------------------------------------------
-              // 4.6 Botones autenticación externa
-              // -------------------------------------------------------------------------
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.g_mobiledata),
@@ -317,9 +328,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 24),
 
-              // -------------------------------------------------------------------------
-              // 4.7 Enlaces de navegación
-              // -------------------------------------------------------------------------
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 child: Text.rich(
