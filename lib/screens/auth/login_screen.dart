@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
-// 📝 Descripción: Pantalla de login con animaciones, validación, tema oscuro y secciones comentadas
-// 📅 Última actualización: 14/05/2025 - 13:25 (Hora de Colombia)
+// 📝 Descripción: Pantalla de login con animaciones, validaciones personalizadas, modo oscuro y errores visuales
+// 📅 Última actualización: 14/05/2025 - 13:45 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 5. Construcción de la interfaz visual
+  // 5. Construcción visual de la interfaz
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -212,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 5.3 Campo de correo o teléfono
+              // 5.3 Campo de correo o teléfono con mensaje de error personalizado
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -222,25 +222,17 @@ class _LoginScreenState extends State<LoginScreen>
                       _isEmail(inputText) || _isPhone(inputText)
                           ? const Icon(Icons.check_circle, color: Colors.green)
                           : null,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color:
-                          (_isEmail(inputText) || _isPhone(inputText))
-                              ? Colors.green
-                              : theme.dividerColor,
-                    ),
-                  ),
-                  border: const OutlineInputBorder(),
+                  errorStyle: const TextStyle(fontSize: 12),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterEmailOrPhone;
+                    return '⚠️ ${loc.pleaseEnterEmailOrPhone}';
                   }
                   if (!_isEmail(value.trim()) && !_isPhone(value.trim())) {
-                    return loc.invalidFormat;
+                    return '⚠️ ${loc.invalidFormat}';
                   }
                   return null;
                 },
@@ -248,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 16),
 
-              // 5.4 Campo de contraseña
+              // 5.4 Campo de contraseña con mensaje de error personalizado
               TextFormField(
                 controller: passwordController,
                 enabled: isEmailLogin,
@@ -270,25 +262,17 @@ class _LoginScreenState extends State<LoginScreen>
                                   () => _obscureText = !_obscureText,
                                 ),
                           ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color:
-                          isEmailLogin && _isValidPassword(passwordText)
-                              ? Colors.green
-                              : theme.dividerColor,
-                    ),
-                  ),
-                  border: const OutlineInputBorder(),
+                  errorStyle: const TextStyle(fontSize: 12),
                 ),
                 onChanged: (_) => setState(() {}),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (!isEmailLogin) return null;
                   if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterPassword;
+                    return '⚠️ ${loc.pleaseEnterPassword}';
                   }
                   if (!_isValidPassword(value.trim())) {
-                    return 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
+                    return '⚠️ Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
                   }
                   return null;
                 },
@@ -324,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 5.6 Botones autenticación externa
+              // 5.6 Botones autenticación externa (inactivos)
               OutlinedButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.g_mobiledata),
@@ -360,7 +344,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 8),
 
-              // 5.8 Texto de términos y privacidad adaptativo
+              // 5.8 Términos y condiciones con estilo adaptado
               Text(
                 loc.termsAndPrivacy,
                 textAlign: TextAlign.center,
