@@ -43,6 +43,7 @@
 
   "splash_slogan": "Si puedes leer, puedes comprender.\nY si puedes comprender, puedes cambiar tu vida.\nY si cambiamos vidas, cambiamos el mundo.",
   "welcomeBackMessage": "¡Bienvenido de nuevo! Inicia sesión para seguir aprendiendo con Lector Global.",
-
-  "loginSlogan": "Si puedes leer, puedes comprender. Y si puedes comprender, puedes cambiar tu vida. Y si cambiamos vidas, cambiamos el mundo."
+  "loginSlogan": "Si puedes leer, puedes comprender. Y si puedes comprender, puedes cambiar tu vida. Y si cambiamos vidas, cambiamos el mundo.",
+  
+  "resetPasswordSuccess": "Hemos enviado un enlace para restablecer tu contraseña."
 }

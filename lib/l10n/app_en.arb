@@ -45,5 +45,7 @@
   "passwordLabelLogin": "Password",
   "welcomeBackMessage": "Welcome back! Log in to keep learning with Lector Global.",
 
-  "loginSlogan": "If you can read, you can understand. And if you can understand, you can change your life. And if we change lives, we change the world."
+  "loginSlogan": "If you can read, you can understand. And if you can understand, you can change your life. And if we change lives, we change the world.",
+  
+  "resetPasswordSuccess": "We've sent you a link to reset your password."
 }

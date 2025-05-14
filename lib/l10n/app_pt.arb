@@ -45,5 +45,7 @@
   "passwordLabelLogin": "Senha",
   "welcomeBackMessage": "Bem-vindo de volta! Faça login para continuar aprendendo com o Lector Global.",
 
-  "loginSlogan": "Se você pode ler, pode compreender. E se pode compreender, pode mudar sua vida. E se mudamos vidas, mudamos o mundo."
+  "loginSlogan": "Se você pode ler, pode compreender. E se pode compreender, pode mudar sua vida. E se mudamos vidas, mudamos o mundo.",
+  
+  "resetPasswordSuccess": "Enviamos um link para redefinir sua senha."
 }

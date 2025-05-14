@@ -1,24 +1,31 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
-// 📝 Descripción: Inicialización de Firebase + LanguageProvider + Modo oscuro controlado manualmente
-// 📅 Última actualización: 13/05/2025 - 21:20 (Hora de Colombia)
+// 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
+// 📅 Última actualización: 14/05/2025 - 14:15 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// 1. Importaciones necesarias
+// -----------------------------------------------------------------------------
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:lector_global/providers/language_provider.dart';
+import 'providers/language_provider.dart';
 import 'screens/language_selector_screen.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/register_screen.dart';
+import 'screens/auth/reset_password_screen.dart';
+import 'screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ---------------------------------------------------------------------------
-  // 1. Inicialización de Firebase para Web y otras plataformas
+  // 2. Inicialización de Firebase
   // ---------------------------------------------------------------------------
   await Firebase.initializeApp(
     options:
@@ -35,7 +42,7 @@ void main() async {
   );
 
   // ---------------------------------------------------------------------------
-  // 2. Inicia la app con LanguageProvider
+  // 3. Ejecutar app con Provider
   // ---------------------------------------------------------------------------
   runApp(
     ChangeNotifierProvider(
@@ -45,6 +52,9 @@ void main() async {
   );
 }
 
+// -----------------------------------------------------------------------------
+// 4. Widget raíz con MaterialApp
+// -----------------------------------------------------------------------------
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -55,11 +65,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lector Global',
+
+      // 🌐 Localización e idiomas
       locale: languageProvider.locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
 
-      // 🌓 Tema gestionado por el LanguageProvider
+      // 🌓 Tema claro/oscuro controlado por el usuario
       themeMode: languageProvider.themeMode,
 
       // 🌞 Tema claro personalizado
@@ -96,7 +108,16 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: const LanguageSelectorScreen(),
+      // -----------------------------------------------------------------------
+      // 5. Rutas de navegación nombradas
+      // -----------------------------------------------------------------------
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LanguageSelectorScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/resetPassword': (context) => const ResetPasswordScreen(),
+        '/dashboard': (context) => const DashboardScreen(),
+      },
     );
   }
 }
