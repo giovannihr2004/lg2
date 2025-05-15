@@ -1,0 +1,52 @@
+// -----------------------------------------------------------------------------
+// 📄 Archivo: android/app/build.gradle
+// 📝 Descripción: Configuración del módulo Android + SDK Facebook + Flutter
+// 📅 Última actualización: 14/05/2025 - 18:45 (Hora de Colombia)
+// -----------------------------------------------------------------------------
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services' // Firebase
+}
+
+android {
+    namespace "com.example.lg2"
+    compileSdkVersion 34
+
+    defaultConfig {
+        // ✅ ID real de Facebook configurado en strings.xml
+        applicationId "com.example.lg2"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
+
+    // ✅ Dependencias del SDK de Facebook
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+    // ✅ Flutter
+    implementation project(':flutter')
+}
