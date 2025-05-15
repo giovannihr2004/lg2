@@ -1,0 +1,10 @@
+// -----------------------------------------------------------------------------
+// 📄 Archivo: settings.gradle
+// 📍 Ubicación: android/settings.gradle
+// 📝 Descripción: Configura los módulos y el nombre raíz del proyecto Flutter
+// 📅 Última actualización: 14/05/2025 - 20:13 (Hora de Colombia)
+// -----------------------------------------------------------------------------
+
+rootProject.name = 'lg2'
+
+include ':app'
