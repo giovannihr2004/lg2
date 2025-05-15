@@ -2,7 +2,7 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 14/05/2025 - 22:46 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 23:50 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -254,33 +254,24 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 16),
 
-              // 4.4 Campo contraseña
+              // 4.4 Campo contraseña (siempre habilitado)
               TextFormField(
                 controller: passwordController,
                 obscureText: _obscureText,
-                enabled: isEmailLogin,
                 decoration: InputDecoration(
                   labelText: loc.passwordLabelLogin,
                   prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon:
-                      isEmailLogin && _isValidPassword(passwordText)
-                          ? const Icon(Icons.check_circle, color: Colors.green)
-                          : IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed:
-                                () => setState(
-                                  () => _obscureText = !_obscureText,
-                                ),
-                          ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                    ),
+                    onPressed:
+                        () => setState(() => _obscureText = !_obscureText),
+                  ),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
-                  if (!isEmailLogin) return null;
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterPassword;
                   }
@@ -289,6 +280,21 @@ class _LoginScreenState extends State<LoginScreen>
                   }
                   return null;
                 },
+              ),
+
+              const SizedBox(height: 8),
+
+              // 4.4.1 Enlace ¿Olvidaste tu contraseña?
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed:
+                      () => Navigator.pushNamed(context, '/resetPassword'),
+                  child: Text(
+                    loc.forgotPassword,
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
               ),
 
               const SizedBox(height: 24),
