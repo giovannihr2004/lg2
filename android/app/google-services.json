@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "562353221228",
+    "project_id": "lector-global-1c462",
+    "storage_bucket": "lector-global-1c462.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562353221228:android:2054fc9321ff60258fb249",
+        "android_client_info": {
+          "package_name": "com.android.LectorGlobal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562353221228-09204evp201088rrbn5misusdjnrjljk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfvs1UKEmLVX1nkmiNNnBIUuSJZ0AvBb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562353221228-09204evp201088rrbn5misusdjnrjljk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "562353221228-phs5ku5i6513t7ki7hm3p0enplngjpf1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lectorGlobal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,19 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: android/build.gradle.kts
-// 📅 Última actualización: 15/05/2025 - 19:30 (Hora de Colombia)
-// 📝 Descripción: Configuración raíz con repositorios y classpath para Firebase
+// 📝 Descripción: Configuración raíz sin errores Kotlin DSL.
+// 📅 Última actualización: 08/05/2025 - 00:05 (Hora de Colombia)
 // -----------------------------------------------------------------------------
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("com.google.gms:google-services:4.4.1")
-    }
-}
 
 allprojects {
     repositories {
@@ -22,12 +11,16 @@ allprojects {
     }
 }
 
+// ✅ Reconfigura la carpeta de salida build para todos los subproyectos
 val newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
     val newSubprojectBuildDir = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
+}
+
+subprojects {
     project.evaluationDependsOn(":app")
 }
 

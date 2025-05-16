@@ -2,7 +2,7 @@
 // 📄 Archivo: phone_verification_screen.dart
 // 📍 Ubicación: lib/screens/auth/phone_verification_screen.dart
 // 📝 Descripción: Pantalla para ingresar el código SMS de verificación.
-// 📅 Última actualización: 09/05/2025 - 23:40 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 18:32 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -10,8 +10,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   final String verificationId;
+  final String phoneNumber; // ✅ NUEVO: para mostrar el número
 
-  const PhoneVerificationScreen({super.key, required this.verificationId});
+  const PhoneVerificationScreen({
+    super.key,
+    required this.verificationId,
+    required this.phoneNumber,
+  });
 
   @override
   State<PhoneVerificationScreen> createState() =>
@@ -22,13 +27,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   final TextEditingController _codeController = TextEditingController();
   bool _isVerifying = false;
 
-  // -----------------------------------------------------------------
-  // Método para verificar el código SMS
-  // -----------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // 🔐 Verificar el código SMS ingresado
+  // ---------------------------------------------------------------------------
   Future<void> _verifyCode() async {
-    setState(() {
-      _isVerifying = true;
-    });
+    setState(() => _isVerifying = true);
 
     try {
       final credential = PhoneAuthProvider.credential(
@@ -40,25 +43,23 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
+        const SnackBar(content: Text('✅ ¡Inicio de sesión exitoso!')),
       );
 
-      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/dashboard');
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al verificar el código: ${e.message}')),
+        SnackBar(content: Text('❌ Error al verificar el código: ${e.message}')),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _isVerifying = false;
-        });
-      }
+      if (mounted) setState(() => _isVerifying = false);
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // 🖼️ Interfaz de usuario
+  // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +75,18 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Introduce el código enviado a tu teléfono',
+                'Introduce el código enviado a:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.phoneNumber,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.deepPurple,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 24),
               TextField(

@@ -2,7 +2,7 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 15/05/2025 - 23:50 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 23:58 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
@@ -76,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isPhone(String input) => RegExp(r'^\+?[0-9]{7,15}$').hasMatch(input);
 
   bool _isValidPassword(String input) => RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
-  ).hasMatch(input);
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
+      ).hasMatch(input);
 
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
@@ -153,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.3 Lógica de inicio con Google
+  // 3.3 Inicio con Google
   // ---------------------------------------------------------------------------
   Future<void> _signInWithGoogle() async {
     final credential = await GoogleSignInService.signInWithGoogle();
@@ -162,6 +163,27 @@ class _LoginScreenState extends State<LoginScreen>
       Navigator.pushReplacementNamed(context, '/dashboard');
     } else {
       _showSnackBar("No se pudo iniciar sesión con Google", isError: true);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 3.4 Inicio con Facebook
+  // ---------------------------------------------------------------------------
+  Future<void> _signInWithFacebook() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.success) {
+        final OAuthCredential credential = FacebookAuthProvider.credential(
+          result.accessToken!.tokenString,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        _showSnackBar("Facebook login cancelado o fallido", isError: true);
+      }
+    } catch (e) {
+      _showSnackBar("Error al iniciar sesión con Facebook: $e", isError: true);
     }
   }
 
@@ -227,16 +249,15 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.3 Campo email/teléfono
+              // 4.3 Email/teléfono
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
                   labelText: loc.emailOrPhoneLabel,
                   prefixIcon: const Icon(Icons.person_outline),
-                  suffixIcon:
-                      _isEmail(inputText) || _isPhone(inputText)
-                          ? const Icon(Icons.check_circle, color: Colors.green)
-                          : null,
+                  suffixIcon: _isEmail(inputText) || _isPhone(inputText)
+                      ? const Icon(Icons.check_circle, color: Colors.green)
+                      : null,
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -254,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 16),
 
-              // 4.4 Campo contraseña (siempre habilitado)
+              // 4.4 Contraseña
               TextFormField(
                 controller: passwordController,
                 obscureText: _obscureText,
@@ -265,8 +286,8 @@ class _LoginScreenState extends State<LoginScreen>
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
                     ),
-                    onPressed:
-                        () => setState(() => _obscureText = !_obscureText),
+                    onPressed: () =>
+                        setState(() => _obscureText = !_obscureText),
                   ),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -284,12 +305,12 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 8),
 
-              // 4.4.1 Enlace ¿Olvidaste tu contraseña?
+              // 4.5 ¿Olvidaste tu contraseña?
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed:
-                      () => Navigator.pushNamed(context, '/resetPassword'),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, '/resetPassword'),
                   child: Text(
                     loc.forgotPassword,
                     style: const TextStyle(fontSize: 13),
@@ -299,32 +320,31 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 24),
 
-              // 4.5 Botón iniciar sesión
+              // 4.6 Botón iniciar sesión
               SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _login,
-                  child:
-                      _isLoading
-                          ? const SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              color: Colors.white,
-                            ),
-                          )
-                          : Text(
-                            loc.loginButton,
-                            style: const TextStyle(fontSize: 18),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
                           ),
+                        )
+                      : Text(
+                          loc.loginButton,
+                          style: const TextStyle(fontSize: 18),
+                        ),
                 ),
               ),
 
               const SizedBox(height: 24),
 
-              // 4.6 Botón Google
+              // 4.7 Google
               OutlinedButton.icon(
                 onPressed: _signInWithGoogle,
                 icon: const Icon(Icons.g_mobiledata),
@@ -333,16 +353,16 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 12),
 
-              // 4.7 Botón Facebook (placeholder)
+              // 4.8 Facebook
               OutlinedButton.icon(
-                onPressed: null,
+                onPressed: _signInWithFacebook,
                 icon: const Icon(Icons.facebook),
-                label: Text('${loc.facebookSignIn} (Coming soon)'),
+                label: Text(loc.facebookSignIn),
               ),
 
               const SizedBox(height: 24),
 
-              // 4.8 Enlace registro
+              // 4.9 Enlace a registro
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
                 child: Text.rich(
@@ -363,7 +383,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 8),
 
-              // 4.9 Enlace términos
+              // 4.10 Términos
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/terms'),
                 child: Text(
@@ -379,7 +399,7 @@ class _LoginScreenState extends State<LoginScreen>
 
               const SizedBox(height: 4),
 
-              // 4.10 Enlace privacidad
+              // 4.11 Política
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/privacy'),
                 child: Text(
