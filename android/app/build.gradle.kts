@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: android/app/build.gradle.kts
-// 📅 Última actualización: 15/05/2025 - 19:55 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 20:32 (Hora de Colombia)
 // 📝 Descripción: Configuración completa con Firebase y Google Services
 // -----------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ plugins {
 android {
     namespace = "com.android.LectorGlobal"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973" // ✅ Versión NDK actualizada requerida por los plugins
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
