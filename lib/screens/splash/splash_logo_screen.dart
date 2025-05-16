@@ -2,7 +2,7 @@
 // 📄 Archivo: splash_logo_screen.dart
 // 📍 Ubicación: lib/screens/splash/splash_logo_screen.dart
 // 📝 Descripción: Muestra el logo animado y redirige con transición a SplashTextScreen
-// 📅 Última actualización: 13/05/2025 - 17:57 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 22:05 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------

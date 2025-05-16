@@ -1,10 +1,9 @@
-// ----------------------------------------------------------
-// Archivo: lib/services/auth_service.dart
-// Fecha de creación: 2025-04-21
-// ----------------------------------------------------------
-// Descripción: Servicio centralizado de autenticación que
-// maneja login, registro, Google y Facebook.
-// ----------------------------------------------------------
+// -----------------------------------------------------------------------------
+// 📄 Archivo: lib/services/auth_service.dart
+// 📝 Descripción: Servicio centralizado de autenticación con login, registro,
+// Google y Facebook.
+// 📅 Última actualización: 15/05/2025 - 21:44 (Hora de Colombia)
+// -----------------------------------------------------------------------------
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -69,7 +68,7 @@ class AuthService {
     if (result.status != LoginStatus.success) return null;
 
     final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(result.accessToken!.token);
+        FacebookAuthProvider.credential(result.accessToken!.tokenString);
 
     return await _auth.signInWithCredential(facebookAuthCredential);
   }

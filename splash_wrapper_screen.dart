@@ -2,11 +2,11 @@
 // 📄 Archivo: splash_wrapper_screen.dart
 // 📍 Ubicación: lib/screens/splash/splash_wrapper_screen.dart
 // 📝 Descripción: Pantalla intermedia para redirigir al logo tras el cambio de idioma.
-// 📅 Última actualización: 13/05/2025 - 17:54 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 21:50 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
-import 'splash_logo_screen.dart';
+import 'package:lector_global/screens/splash/splash_logo_screen.dart';
 
 class SplashWrapperScreen extends StatefulWidget {
   const SplashWrapperScreen({super.key});
@@ -30,10 +30,6 @@ class _SplashWrapperScreenState extends State<SplashWrapperScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

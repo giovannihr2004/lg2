@@ -2,24 +2,24 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-// 📅 Última actualización: 15/05/2025 - 18:45 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 21:58 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 // 1. Importaciones necesarias
 // -----------------------------------------------------------------------------
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'firebase_options.dart'; // ✅ Importación añadida
 import 'providers/language_provider.dart';
 import 'screens/language_selector_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/auth/reset_password_screen.dart';
-import 'screens/auth/phone_verification_screen.dart'; // ✅ Nueva importación
+import 'screens/auth/phone_verification_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/legal/terms_screen.dart';
 import 'screens/legal/privacy_policy_screen.dart';
@@ -28,21 +28,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ---------------------------------------------------------------------------
-  // 2. Inicialización de Firebase
+  // 2. Inicialización de Firebase con opciones según plataforma
   // ---------------------------------------------------------------------------
-  await Firebase.initializeApp(
-    options:
-        kIsWeb
-            ? const FirebaseOptions(
-              apiKey: "AIzaSyD2ihUQEbdSxsJvuf4t0YP7Sy9XYp-HRKs",
-              authDomain: "lector-global-1c462.firebaseapp.com",
-              projectId: "lector-global-1c462",
-              storageBucket: "lector-global-1c462.firebasestorage.app",
-              messagingSenderId: "562353221228",
-              appId: "1:562353221228:web:580e0b1018505a8e8fb249",
-            )
-            : null,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // ---------------------------------------------------------------------------
   // 3. Ejecutar app con Provider
@@ -117,6 +105,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LanguageSelectorScreen(),
+        '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/resetPassword': (context) => const ResetPasswordScreen(),
         '/dashboard': (context) => const DashboardScreen(),
@@ -138,7 +127,7 @@ class MyApp extends StatelessWidget {
                 ),
           );
         }
-        return null; // Ruta no encontrada
+        return null;
       },
     );
   }

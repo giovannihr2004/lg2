@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: lib/firebase_options.dart
 // 📝 Descripción: Configuración automática generada por FlutterFire CLI para conectar la app a Firebase.
-// 📅 Última actualización: 06/05/2025 - 20:50 (Hora de Colombia)
+// 📅 Última actualización: 15/05/2025 - 21:35 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // ignore_for_file: type=lint
@@ -11,9 +11,7 @@ import 'package:flutter/foundation.dart'
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
+    if (kIsWeb) return web;
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -26,11 +24,11 @@ class DefaultFirebaseOptions {
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this ejecutando FlutterFire CLI de nuevo.',
         );
       default:
         throw UnsupportedError(
-          'DefaultFirebaseOptions are not supported for this platform.',
+          'DefaultFirebaseOptions no soportado para esta plataforma.',
         );
     }
   }
@@ -60,7 +58,7 @@ class DefaultFirebaseOptions {
     projectId: 'lector-global-1c462',
     storageBucket: 'lector-global-1c462.appspot.com',
     androidClientId:
-        '562353221228-affetitg1b1l6ijrvcan3pt9ncvki8hh.apps.googleusercontent.com',
+        '562353221228-09204evp201088rrbn5misusdjnrjljk.apps.googleusercontent.com',
     iosClientId:
         '562353221228-phs5ku5i6513t7ki7hm3p0enplngjpf1.apps.googleusercontent.com',
     iosBundleId: 'com.example.lectorGlobal',
@@ -73,7 +71,7 @@ class DefaultFirebaseOptions {
     projectId: 'lector-global-1c462',
     storageBucket: 'lector-global-1c462.appspot.com',
     androidClientId:
-        '562353221228-affetitg1b1l6ijrvcan3pt9ncvki8hh.apps.googleusercontent.com',
+        '562353221228-09204evp201088rrbn5misusdjnrjljk.apps.googleusercontent.com',
     iosClientId:
         '562353221228-phs5ku5i6513t7ki7hm3p0enplngjpf1.apps.googleusercontent.com',
     iosBundleId: 'com.example.lectorGlobal',
