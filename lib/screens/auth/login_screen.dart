@@ -2,7 +2,7 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 15/05/2025 - 23:58 (Hora de Colombia)
+// 📅 Última actualización: 16/05/2025 - 23:17 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -12,11 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 import '../../services/google_sign_in_service.dart';
+import 'register_screen.dart'; // ✅ Importación directa
 
 // -----------------------------------------------------------------------------
 // 2. Clase principal con estado
@@ -33,6 +33,9 @@ class LoginScreen extends StatefulWidget {
 // -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
+  // ---------------------------------------------------------------------------
+  // 3.1 Controladores y variables
+  // ---------------------------------------------------------------------------
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailOrPhoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -45,6 +48,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // ---------------------------------------------------------------------------
+  // 3.2 Inicialización y liberación de animaciones
+  // ---------------------------------------------------------------------------
   @override
   void initState() {
     super.initState();
@@ -69,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.1 Validadores y helpers
+  // 3.3 Validadores auxiliares
   // ---------------------------------------------------------------------------
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
@@ -77,8 +83,8 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isPhone(String input) => RegExp(r'^\+?[0-9]{7,15}$').hasMatch(input);
 
   bool _isValidPassword(String input) => RegExp(
-        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
-      ).hasMatch(input);
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
+  ).hasMatch(input);
 
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
@@ -91,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.2 Lógica de inicio de sesión con correo o teléfono
+  // 3.4 Lógica de autenticación
   // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
@@ -154,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.3 Inicio con Google
+  // 3.5 Inicio con Google
   // ---------------------------------------------------------------------------
   Future<void> _signInWithGoogle() async {
     final credential = await GoogleSignInService.signInWithGoogle();
@@ -167,35 +173,12 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 3.4 Inicio con Facebook
-  // ---------------------------------------------------------------------------
-  Future<void> _signInWithFacebook() async {
-    try {
-      final LoginResult result = await FacebookAuth.instance.login();
-      if (result.status == LoginStatus.success) {
-        final OAuthCredential credential = FacebookAuthProvider.credential(
-          result.accessToken!.tokenString,
-        );
-        await FirebaseAuth.instance.signInWithCredential(credential);
-        if (!mounted) return;
-        Navigator.pushReplacementNamed(context, '/dashboard');
-      } else {
-        _showSnackBar("Facebook login cancelado o fallido", isError: true);
-      }
-    } catch (e) {
-      _showSnackBar("Error al iniciar sesión con Facebook: $e", isError: true);
-    }
-  }
-
-  // ---------------------------------------------------------------------------
   // 4. Interfaz de usuario
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final inputText = emailOrPhoneController.text.trim();
-    final passwordText = passwordController.text.trim();
-    final isEmailLogin = _isEmail(inputText);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -230,7 +213,6 @@ class _LoginScreenState extends State<LoginScreen>
                   child: Image.asset("assets/images/logo1.png", height: 100),
                 ),
               ),
-
               const SizedBox(height: 12),
 
               // 4.2 Eslogan animado
@@ -246,7 +228,6 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
 
               // 4.3 Email/teléfono
@@ -255,24 +236,22 @@ class _LoginScreenState extends State<LoginScreen>
                 decoration: InputDecoration(
                   labelText: loc.emailOrPhoneLabel,
                   prefixIcon: const Icon(Icons.person_outline),
-                  suffixIcon: _isEmail(inputText) || _isPhone(inputText)
-                      ? const Icon(Icons.check_circle, color: Colors.green)
-                      : null,
+                  suffixIcon:
+                      _isEmail(inputText) || _isPhone(inputText)
+                          ? const Icon(Icons.check_circle, color: Colors.green)
+                          : null,
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty)
                     return loc.pleaseEnterEmailOrPhone;
-                  }
-                  if (!_isEmail(value.trim()) && !_isPhone(value.trim())) {
+                  if (!_isEmail(value.trim()) && !_isPhone(value.trim()))
                     return loc.invalidFormat;
-                  }
                   return null;
                 },
               ),
-
               const SizedBox(height: 16),
 
               // 4.4 Contraseña
@@ -286,38 +265,35 @@ class _LoginScreenState extends State<LoginScreen>
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
                     ),
-                    onPressed: () =>
-                        setState(() => _obscureText = !_obscureText),
+                    onPressed:
+                        () => setState(() => _obscureText = !_obscureText),
                   ),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty)
                     return loc.pleaseEnterPassword;
-                  }
                   if (!_isValidPassword(value.trim())) {
                     return 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
                   }
                   return null;
                 },
               ),
-
               const SizedBox(height: 8),
 
               // 4.5 ¿Olvidaste tu contraseña?
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/resetPassword'),
+                  onPressed:
+                      () => Navigator.pushNamed(context, '/resetPassword'),
                   child: Text(
                     loc.forgotPassword,
                     style: const TextStyle(fontSize: 13),
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
 
               // 4.6 Botón iniciar sesión
@@ -326,45 +302,42 @@ class _LoginScreenState extends State<LoginScreen>
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _login,
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            color: Colors.white,
+                  child:
+                      _isLoading
+                          ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              color: Colors.white,
+                            ),
+                          )
+                          : Text(
+                            loc.loginButton,
+                            style: const TextStyle(fontSize: 18),
                           ),
-                        )
-                      : Text(
-                          loc.loginButton,
-                          style: const TextStyle(fontSize: 18),
-                        ),
                 ),
               ),
-
               const SizedBox(height: 24),
 
-              // 4.7 Google
+              // 4.7 Inicio con Google
               OutlinedButton.icon(
                 onPressed: _signInWithGoogle,
                 icon: const Icon(Icons.g_mobiledata),
                 label: Text(loc.googleSignIn),
               ),
-
-              const SizedBox(height: 12),
-
-              // 4.8 Facebook
-              OutlinedButton.icon(
-                onPressed: _signInWithFacebook,
-                icon: const Icon(Icons.facebook),
-                label: Text(loc.facebookSignIn),
-              ),
-
               const SizedBox(height: 24),
 
-              // 4.9 Enlace a registro
+              // 4.8 Enlace a registro (actualizado)
               TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/register'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                  );
+                },
                 child: Text.rich(
                   TextSpan(
                     text: '${loc.noAccount} ',
@@ -380,10 +353,9 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
 
-              // 4.10 Términos
+              // 4.9 Términos
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/terms'),
                 child: Text(
@@ -396,10 +368,9 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
               ),
-
               const SizedBox(height: 4),
 
-              // 4.11 Política
+              // 4.10 Política de privacidad
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/privacy'),
                 child: Text(
