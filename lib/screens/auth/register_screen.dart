@@ -1,11 +1,18 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: register_screen.dart
+// 📍 Ubicación: lib/screens/auth/register_screen.dart
 // 📝 Descripción: Registro de usuario moderno, validaciones estrictas, animaciones suaves.
-// 📅 Última actualización: 06/05/2025 - (hora Colombia GMT-5)
+// 📅 Última actualización: 16/05/2025 - 12:32 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// 1. Importaciones necesarias
+// -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 
+// -----------------------------------------------------------------------------
+// 2. Widget principal con estado
+// -----------------------------------------------------------------------------
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -13,24 +20,25 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+// -----------------------------------------------------------------------------
+// 3. Estado interno del widget
+// -----------------------------------------------------------------------------
 class _RegisterScreenState extends State<RegisterScreen>
     with TickerProviderStateMixin {
-  // ---------------------------------------------------------------------------
-  // Controladores y Variables
-  // ---------------------------------------------------------------------------
+  // Controladores de texto
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  // Variables de estado
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   double _buttonScale = 1.0;
 
-  // Variables para controlar la animación de FadeIn
+  // Estados de aparición de campos
   bool _showNameField = false;
   bool _showEmailField = false;
   bool _showPasswordField = false;
@@ -42,7 +50,6 @@ class _RegisterScreenState extends State<RegisterScreen>
     _startFadeInAnimations();
   }
 
-  // Secuencia de aparición de campos
   void _startFadeInAnimations() async {
     await Future.delayed(const Duration(milliseconds: 300));
     setState(() => _showNameField = true);
@@ -55,34 +62,31 @@ class _RegisterScreenState extends State<RegisterScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // Validadores de Campos
+  // 4. Funciones auxiliares de validación
   // ---------------------------------------------------------------------------
-
   bool _isPasswordValid(String password) {
-    final RegExp regex = RegExp(
+    final regex = RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$',
     );
     return regex.hasMatch(password);
   }
 
   bool _isEmailValid(String email) {
-    final RegExp regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return regex.hasMatch(email);
   }
 
   Future<void> _register() async {
     final messenger = ScaffoldMessenger.of(context);
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
 
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(
+        const Duration(seconds: 2),
+      ); // Simula llamada a backend
 
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
 
         messenger.showSnackBar(
           const SnackBar(content: Text('Usuario registrado exitosamente.')),
@@ -92,9 +96,8 @@ class _RegisterScreenState extends State<RegisterScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // Construcción de la interfaz
+  // 5. Construcción de la interfaz
   // ---------------------------------------------------------------------------
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 32),
 
-                // Nombre
+                // Campo: Nombre completo
                 AnimatedOpacity(
                   opacity: _showNameField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
@@ -154,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Email
+                // Campo: Correo electrónico
                 AnimatedOpacity(
                   opacity: _showEmailField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
@@ -179,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Contraseña
+                // Campo: Contraseña
                 AnimatedOpacity(
                   opacity: _showPasswordField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
@@ -197,9 +200,9 @@ class _RegisterScreenState extends State<RegisterScreen>
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
+                          setState(
+                            () => _isPasswordVisible = !_isPasswordVisible,
+                          );
                         },
                       ),
                     ),
@@ -216,7 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Confirmar Contraseña
+                // Campo: Confirmar contraseña
                 AnimatedOpacity(
                   opacity: _showConfirmPasswordField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
@@ -225,7 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     obscureText: !_isConfirmPasswordVisible,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.lock_outline),
-                      labelText: 'Confirmar Contraseña',
+                      labelText: 'Confirmar contraseña',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -234,10 +237,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            _isConfirmPasswordVisible =
-                                !_isConfirmPasswordVisible;
-                          });
+                          setState(
+                            () =>
+                                _isConfirmPasswordVisible =
+                                    !_isConfirmPasswordVisible,
+                          );
                         },
                       ),
                     ),
@@ -254,7 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 32),
 
-                // Botón de registro
+                // Botón de registro con animación
                 _isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : AnimatedScale(
@@ -269,15 +273,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         onPressed: () async {
-                          setState(() {
-                            _buttonScale = 0.95;
-                          });
+                          setState(() => _buttonScale = 0.95);
                           await Future.delayed(
                             const Duration(milliseconds: 100),
                           );
-                          setState(() {
-                            _buttonScale = 1.0;
-                          });
+                          setState(() => _buttonScale = 1.0);
 
                           await _register();
                         },
