@@ -1,18 +1,12 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
-// 📝 Descripción: Registro de usuario moderno, validaciones estrictas, animaciones suaves.
-// 📅 Última actualización: 16/05/2025 - 12:32 (Hora de Colombia)
+// 📝 Descripción: Registro con validación en tiempo real e íconos de retroalimentación
+// 📅 Última actualización: 16/05/2025 - 12:57 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// 1. Importaciones necesarias
-// -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 
-// -----------------------------------------------------------------------------
-// 2. Widget principal con estado
-// -----------------------------------------------------------------------------
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -20,29 +14,29 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-// -----------------------------------------------------------------------------
-// 3. Estado interno del widget
-// -----------------------------------------------------------------------------
 class _RegisterScreenState extends State<RegisterScreen>
     with TickerProviderStateMixin {
-  // Controladores de texto
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  // Variables de estado
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   double _buttonScale = 1.0;
 
-  // Estados de aparición de campos
+  // Estado de aparición animada
   bool _showNameField = false;
   bool _showEmailField = false;
   bool _showPasswordField = false;
   bool _showConfirmPasswordField = false;
+
+  // Estado de validación en tiempo real
+  bool _isNameValid = false;
+  bool _isEmailValid = false;
+  bool _isPasswordValidField = false;
 
   @override
   void initState() {
@@ -61,33 +55,27 @@ class _RegisterScreenState extends State<RegisterScreen>
     setState(() => _showConfirmPasswordField = true);
   }
 
-  // ---------------------------------------------------------------------------
-  // 4. Funciones auxiliares de validación
-  // ---------------------------------------------------------------------------
-  bool _isPasswordValid(String password) {
-    final regex = RegExp(
-      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$',
-    );
-    return regex.hasMatch(password);
+  bool _validateName(String value) {
+    return value.trim().isNotEmpty && !RegExp(r'[0-9]').hasMatch(value);
   }
 
-  bool _isEmailValid(String email) {
-    final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    return regex.hasMatch(email);
+  bool _validateEmail(String value) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+  }
+
+  bool _validatePassword(String value) {
+    return RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$',
+    ).hasMatch(value);
   }
 
   Future<void> _register() async {
     final messenger = ScaffoldMessenger.of(context);
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-
-      await Future.delayed(
-        const Duration(seconds: 2),
-      ); // Simula llamada a backend
-
+      await Future.delayed(const Duration(seconds: 2));
       if (mounted) {
         setState(() => _isLoading = false);
-
         messenger.showSnackBar(
           const SnackBar(content: Text('Usuario registrado exitosamente.')),
         );
@@ -95,9 +83,12 @@ class _RegisterScreenState extends State<RegisterScreen>
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // 5. Construcción de la interfaz
-  // ---------------------------------------------------------------------------
+  Icon? _buildValidationIcon(bool isValid) {
+    return isValid
+        ? const Icon(Icons.check_circle, color: Colors.green)
+        : const Icon(Icons.error_outline, color: Colors.redAccent);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,23 +124,27 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 32),
 
-                // Campo: Nombre completo
+                // Nombre
                 AnimatedOpacity(
                   opacity: _showNameField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
                   child: TextFormField(
                     controller: _nameController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person),
                       labelText: 'Nombre completo',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
+                      suffixIcon:
+                          _nameController.text.isEmpty
+                              ? null
+                              : _buildValidationIcon(_isNameValid),
                     ),
+                    onChanged:
+                        (value) =>
+                            setState(() => _isNameValid = _validateName(value)),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Por favor ingresa tu nombre completo.';
-                      }
-                      if (RegExp(r'[0-9]').hasMatch(value)) {
-                        return 'El nombre no debe contener números.';
+                      if (!_validateName(value ?? '')) {
+                        return 'Nombre inválido.';
                       }
                       return null;
                     },
@@ -157,24 +152,29 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Campo: Correo electrónico
+                // Email
                 AnimatedOpacity(
                   opacity: _showEmailField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
                   child: TextFormField(
                     controller: _emailController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      labelText: 'Correo electrónico',
-                      border: OutlineInputBorder(),
-                    ),
                     keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.email),
+                      labelText: 'Correo electrónico',
+                      border: const OutlineInputBorder(),
+                      suffixIcon:
+                          _emailController.text.isEmpty
+                              ? null
+                              : _buildValidationIcon(_isEmailValid),
+                    ),
+                    onChanged:
+                        (value) => setState(
+                          () => _isEmailValid = _validateEmail(value),
+                        ),
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Por favor ingresa tu correo electrónico.';
-                      }
-                      if (!_isEmailValid(value.trim())) {
-                        return 'Por favor ingresa un correo válido.';
+                      if (!_validateEmail(value ?? '')) {
+                        return 'Correo inválido.';
                       }
                       return null;
                     },
@@ -182,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Campo: Contraseña
+                // Contraseña
                 AnimatedOpacity(
                   opacity: _showPasswordField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
@@ -193,25 +193,34 @@ class _RegisterScreenState extends State<RegisterScreen>
                       prefixIcon: const Icon(Icons.lock),
                       labelText: 'Contraseña',
                       border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(
-                            () => _isPasswordVisible = !_isPasswordVisible,
-                          );
-                        },
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (_passwordController.text.isNotEmpty)
+                            _buildValidationIcon(_isPasswordValidField)!,
+                          IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(
+                                () => _isPasswordVisible = !_isPasswordVisible,
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
+                    onChanged:
+                        (value) => setState(
+                          () =>
+                              _isPasswordValidField = _validatePassword(value),
+                        ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor crea una contraseña.';
-                      }
-                      if (!_isPasswordValid(value)) {
-                        return 'Debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.';
+                      if (!_validatePassword(value ?? '')) {
+                        return 'Mínimo 8 caracteres, mayúscula, minúscula, número y símbolo.';
                       }
                       return null;
                     },
@@ -219,7 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Campo: Confirmar contraseña
+                // Confirmar contraseña
                 AnimatedOpacity(
                   opacity: _showConfirmPasswordField ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
@@ -230,25 +239,33 @@ class _RegisterScreenState extends State<RegisterScreen>
                       prefixIcon: const Icon(Icons.lock_outline),
                       labelText: 'Confirmar contraseña',
                       border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isConfirmPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(
-                            () =>
-                                _isConfirmPasswordVisible =
-                                    !_isConfirmPasswordVisible,
-                          );
-                        },
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (_confirmPasswordController.text.isNotEmpty)
+                            _buildValidationIcon(
+                              _confirmPasswordController.text ==
+                                  _passwordController.text,
+                            )!,
+                          IconButton(
+                            icon: Icon(
+                              _isConfirmPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(
+                                () =>
+                                    _isConfirmPasswordVisible =
+                                        !_isConfirmPasswordVisible,
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
+                    onChanged: (_) => setState(() {}),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor confirma tu contraseña.';
-                      }
                       if (value != _passwordController.text) {
                         return 'Las contraseñas no coinciden.';
                       }
@@ -258,7 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 const SizedBox(height: 32),
 
-                // Botón de registro con animación
+                // Botón de registro
                 _isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : AnimatedScale(
@@ -278,7 +295,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                             const Duration(milliseconds: 100),
                           );
                           setState(() => _buttonScale = 1.0);
-
                           await _register();
                         },
                         child: const Text(
