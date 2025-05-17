@@ -2,12 +2,9 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 16/05/2025 - 23:17 (Hora de Colombia)
+// 📅 Última actualización: 17/05/2025 - 02:22 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// 1. Importaciones necesarias
-// -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,11 +13,8 @@ import 'package:provider/provider.dart';
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 import '../../services/google_sign_in_service.dart';
-import 'register_screen.dart'; // ✅ Importación directa
+import 'register_screen.dart';
 
-// -----------------------------------------------------------------------------
-// 2. Clase principal con estado
-// -----------------------------------------------------------------------------
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -28,14 +22,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-// -----------------------------------------------------------------------------
-// 3. Estado interno y lógica
-// -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-  // ---------------------------------------------------------------------------
-  // 3.1 Controladores y variables
-  // ---------------------------------------------------------------------------
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailOrPhoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -48,9 +36,6 @@ class _LoginScreenState extends State<LoginScreen>
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // ---------------------------------------------------------------------------
-  // 3.2 Inicialización y liberación de animaciones
-  // ---------------------------------------------------------------------------
   @override
   void initState() {
     super.initState();
@@ -74,9 +59,6 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  // ---------------------------------------------------------------------------
-  // 3.3 Validadores auxiliares
-  // ---------------------------------------------------------------------------
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
 
@@ -96,9 +78,6 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 3.4 Lógica de autenticación
-  // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
     final password = passwordController.text.trim();
@@ -159,22 +138,10 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // 3.5 Inicio con Google
-  // ---------------------------------------------------------------------------
   Future<void> _signInWithGoogle() async {
-    final credential = await GoogleSignInService.signInWithGoogle();
-    if (credential != null) {
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/dashboard');
-    } else {
-      _showSnackBar("No se pudo iniciar sesión con Google", isError: true);
-    }
+    await GoogleSignInService.signInWithGoogleAndNavigate(context);
   }
 
-  // ---------------------------------------------------------------------------
-  // 4. Interfaz de usuario
-  // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -205,8 +172,6 @@ class _LoginScreenState extends State<LoginScreen>
           child: Column(
             children: [
               const SizedBox(height: 40),
-
-              // 4.1 Logo animado
               FadeTransition(
                 opacity: _logoController,
                 child: Center(
@@ -214,8 +179,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 12),
-
-              // 4.2 Eslogan animado
               FadeTransition(
                 opacity: _sloganController,
                 child: Text(
@@ -229,8 +192,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-
-              // 4.3 Email/teléfono
               TextFormField(
                 controller: emailOrPhoneController,
                 decoration: InputDecoration(
@@ -245,16 +206,16 @@ class _LoginScreenState extends State<LoginScreen>
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty)
+                  if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterEmailOrPhone;
-                  if (!_isEmail(value.trim()) && !_isPhone(value.trim()))
+                  }
+                  if (!_isEmail(value.trim()) && !_isPhone(value.trim())) {
                     return loc.invalidFormat;
+                  }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
-
-              // 4.4 Contraseña
               TextFormField(
                 controller: passwordController,
                 obscureText: _obscureText,
@@ -272,8 +233,9 @@ class _LoginScreenState extends State<LoginScreen>
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty)
+                  if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterPassword;
+                  }
                   if (!_isValidPassword(value.trim())) {
                     return 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
                   }
@@ -281,8 +243,6 @@ class _LoginScreenState extends State<LoginScreen>
                 },
               ),
               const SizedBox(height: 8),
-
-              // 4.5 ¿Olvidaste tu contraseña?
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -295,8 +255,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-
-              // 4.6 Botón iniciar sesión
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -319,16 +277,12 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-
-              // 4.7 Inicio con Google
               OutlinedButton.icon(
                 onPressed: _signInWithGoogle,
-                icon: const Icon(Icons.g_mobiledata),
+                icon: Image.asset("assets/images/google.png", height: 20),
                 label: Text(loc.googleSignIn),
               ),
               const SizedBox(height: 24),
-
-              // 4.8 Enlace a registro (actualizado)
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -354,12 +308,10 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 8),
-
-              // 4.9 Términos
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/terms'),
                 child: Text(
-                  loc.termsAndPrivacy,
+                  'Lee nuestros términos y condiciones aquí.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 11,
@@ -369,8 +321,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 4),
-
-              // 4.10 Política de privacidad
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/privacy'),
                 child: Text(

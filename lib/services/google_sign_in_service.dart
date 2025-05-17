@@ -1,60 +1,100 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: google_sign_in_service.dart
 // 📍 Ubicación: lib/services/google_sign_in_service.dart
-// 📝 Descripción: Servicio centralizado para autenticación con Google.
-//                Compatible con Android y Web mediante FirebaseAuth.
-// 📅 Última actualización: 14/05/2025 - 15:24 (Hora de Colombia)
+// 📝 Descripción: Autenticación con Google y verificación de usuario en Firestore
+// 📅 Última actualización: 17/05/2025 - 02:20 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// 1. Importaciones necesarias
-// -----------------------------------------------------------------------------
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-// -----------------------------------------------------------------------------
-// 2. Clase de servicio para inicio/cierre de sesión con Google
-// -----------------------------------------------------------------------------
 class GoogleSignInService {
-  static final GoogleSignIn _googleSignIn = GoogleSignIn();
+  static final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+    serverClientId:
+        '562353221228-09204evp201088rrbn5misusdjnrjljk.apps.googleusercontent.com',
+  );
 
-  // ---------------------------------------------------------------------------
-  // 2.1 Iniciar sesión con Google y Firebase
-  // ---------------------------------------------------------------------------
-  static Future<UserCredential?> signInWithGoogle() async {
+  static Future<void> signInWithGoogleAndNavigate(BuildContext context) async {
     try {
       final auth = FirebaseAuth.instance;
+      final firestore = FirebaseFirestore.instance;
+
+      UserCredential credential;
+
+      print("🟡 Iniciando flujo de Google");
 
       if (kIsWeb) {
-        // Plataforma: WEB
         final googleProvider = GoogleAuthProvider();
-        return await auth.signInWithPopup(googleProvider);
+        credential = await auth.signInWithPopup(googleProvider);
       } else {
-        // Plataforma: ANDROID
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        if (googleUser == null) return null; // Usuario canceló
+        if (googleUser == null) {
+          log('⚠️ Usuario canceló el inicio de sesión');
+          return;
+        }
 
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
 
-        final credential = GoogleAuthProvider.credential(
+        if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+          log('❌ No se obtuvo token válido de Google.');
+          return;
+        }
+
+        final authCredential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
 
-        return await auth.signInWithCredential(credential);
+        credential = await auth.signInWithCredential(authCredential);
+      }
+
+      final uid = credential.user?.uid;
+      if (uid == null) {
+        log('❌ UID nulo después del inicio de sesión.');
+        return;
+      }
+
+      print("🟢 UID obtenido: $uid");
+
+      final userDoc = await firestore.collection('usuarios').doc(uid).get();
+
+      print("🔎 Documento Firestore existe: ${userDoc.exists}");
+
+      if (!context.mounted) return;
+
+      if (userDoc.exists && userDoc.data()!.containsKey('email')) {
+        print("✅ Usuario reconocido en Firestore. Redirigiendo a /dashboard");
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        final email = credential.user?.email;
+        if (email != null) {
+          await firestore.collection('usuarios').doc(uid).set({'email': email});
+          print("📄 Documento creado en Firestore con el email: $email");
+        } else {
+          print("⚠️ No se pudo obtener el email del usuario.");
+        }
+        print("🆕 Usuario sin datos en Firestore. Redirigiendo a /register");
+        Navigator.pushReplacementNamed(context, '/register');
       }
     } catch (e) {
-      log('Error al iniciar sesión con Google: $e');
-      return null;
+      log('❌ Error en signInWithGoogleAndNavigate: ${e.toString()}');
+      print('❌ EXCEPCIÓN: ${e.toString()}');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al iniciar sesión con Google.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // 2.2 Cerrar sesión tanto de Google como de Firebase
-  // ---------------------------------------------------------------------------
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     await _googleSignIn.signOut();
