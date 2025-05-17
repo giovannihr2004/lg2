@@ -47,5 +47,10 @@
 
   "loginSlogan": "If you can read, you can understand. And if you can understand, you can change your life. And if we change lives, we change the world.",
   
-  "resetPasswordSuccess": "We've sent you a link to reset your password."
+  "resetPasswordSuccess": "We've sent you a link to reset your password.",
+  
+  "registerTitle": "Create account",
+  "pleaseEnterEmail": "Please enter your email.",
+  "passwordLabelRegister": "Password",
+  "registerButton": "Register"
 }

@@ -47,5 +47,10 @@
 
   "loginSlogan": "Wenn du lesen kannst, kannst du verstehen. Und wenn du verstehen kannst, kannst du dein Leben verändern. Und wenn wir Leben verändern, verändern wir die Welt.",
   
-  "resetPasswordSuccess": "Wir haben dir einen Link zum Zurücksetzen deines Passworts gesendet."
+  "resetPasswordSuccess": "Wir haben dir einen Link zum Zurücksetzen deines Passworts gesendet.",
+  
+  "registerTitle": "Konto erstellen",
+  "pleaseEnterEmail": "Bitte gib deine E-Mail-Adresse ein.",
+  "passwordLabelRegister": "Passwort",
+  "registerButton": "Registrieren"
 }

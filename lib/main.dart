@@ -2,7 +2,7 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-// 📅 Última actualización: 15/05/2025 - 21:58 (Hora de Colombia)
+// 📅 Última actualización: 16/05/2025 - 21:24 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -31,6 +31,7 @@ void main() async {
   // 2. Inicialización de Firebase con opciones según plataforma
   // ---------------------------------------------------------------------------
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print('✅ Firebase inicializado correctamente');
 
   // ---------------------------------------------------------------------------
   // 3. Ejecutar app con Provider

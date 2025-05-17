@@ -1,10 +1,9 @@
-<!-- AndroidManifest.xml actualizado - 15/05/2025 -->
+<!-- AndroidManifest.xml actualizado - 16/05/2025 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.LectorGlobal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:label="lector_global"
+        android:label="lector_global1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         

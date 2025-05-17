@@ -1,11 +1,13 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
-// 📝 Descripción: Registro con validación en tiempo real e íconos de retroalimentación
-// 📅 Última actualización: 16/05/2025 - 12:57 (Hora de Colombia)
+// 📝 Descripción: Pantalla de registro con validación, envío de verificación y Firebase
+// 📅 Última actualización: 17/05/2025 - 10:45 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,297 +16,116 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen>
-    with TickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+class _RegisterScreenState extends State<RegisterScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
-  double _buttonScale = 1.0;
+  bool _obscureText = true;
 
-  // Estado de aparición animada
-  bool _showNameField = false;
-  bool _showEmailField = false;
-  bool _showPasswordField = false;
-  bool _showConfirmPasswordField = false;
-
-  // Estado de validación en tiempo real
-  bool _isNameValid = false;
-  bool _isEmailValid = false;
-  bool _isPasswordValidField = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _startFadeInAnimations();
-  }
-
-  void _startFadeInAnimations() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    setState(() => _showNameField = true);
-    await Future.delayed(const Duration(milliseconds: 150));
-    setState(() => _showEmailField = true);
-    await Future.delayed(const Duration(milliseconds: 150));
-    setState(() => _showPasswordField = true);
-    await Future.delayed(const Duration(milliseconds: 150));
-    setState(() => _showConfirmPasswordField = true);
-  }
-
-  bool _validateName(String value) {
-    return value.trim().isNotEmpty && !RegExp(r'[0-9]').hasMatch(value);
-  }
-
-  bool _validateEmail(String value) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
-  }
-
-  bool _validatePassword(String value) {
-    return RegExp(
-      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$',
-    ).hasMatch(value);
+  void _showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
+      ),
+    );
   }
 
   Future<void> _register() async {
-    final messenger = ScaffoldMessenger.of(context);
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-      await Future.delayed(const Duration(seconds: 2));
-      if (mounted) {
-        setState(() => _isLoading = false);
-        messenger.showSnackBar(
-          const SnackBar(content: Text('Usuario registrado exitosamente.')),
-        );
-      }
-    }
-  }
+    if (!_formKey.currentState!.validate()) return;
 
-  Icon? _buildValidationIcon(bool isValid) {
-    return isValid
-        ? const Icon(Icons.check_circle, color: Colors.green)
-        : const Icon(Icons.error_outline, color: Colors.redAccent);
+    setState(() => _isLoading = true);
+    try {
+      final UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
+
+      // Enviar correo de verificación
+      await userCredential.user!.sendEmailVerification();
+
+      _showSnackBar('Registro exitoso. Verifica tu correo electrónico.');
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      _showSnackBar('Error: ${e.message}', isError: true);
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
-      backgroundColor: Colors.deepPurple[50],
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-        title: const Text('Crear cuenta'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  '¡Bienvenido!',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
-                  ),
-                  textAlign: TextAlign.center,
+      appBar: AppBar(title: Text(loc.registerTitle)),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: loc.emailLabel,
+                  prefixIcon: const Icon(Icons.email_outlined),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Crea tu cuenta para comenzar',
-                  style: TextStyle(fontSize: 16, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-
-                // Nombre
-                AnimatedOpacity(
-                  opacity: _showNameField ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 500),
-                  child: TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
-                      labelText: 'Nombre completo',
-                      border: const OutlineInputBorder(),
-                      suffixIcon:
-                          _nameController.text.isEmpty
-                              ? null
-                              : _buildValidationIcon(_isNameValid),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return loc.pleaseEnterEmail;
+                  }
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value)) {
+                    return loc.invalidEmail;
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: _obscureText,
+                decoration: InputDecoration(
+                  labelText: loc.passwordLabelRegister,
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
                     ),
-                    onChanged:
-                        (value) =>
-                            setState(() => _isNameValid = _validateName(value)),
-                    validator: (value) {
-                      if (!_validateName(value ?? '')) {
-                        return 'Nombre inválido.';
-                      }
-                      return null;
-                    },
+                    onPressed:
+                        () => setState(() => _obscureText = !_obscureText),
                   ),
                 ),
-                const SizedBox(height: 16),
-
-                // Email
-                AnimatedOpacity(
-                  opacity: _showEmailField ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 500),
-                  child: TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.email),
-                      labelText: 'Correo electrónico',
-                      border: const OutlineInputBorder(),
-                      suffixIcon:
-                          _emailController.text.isEmpty
-                              ? null
-                              : _buildValidationIcon(_isEmailValid),
-                    ),
-                    onChanged:
-                        (value) => setState(
-                          () => _isEmailValid = _validateEmail(value),
-                        ),
-                    validator: (value) {
-                      if (!_validateEmail(value ?? '')) {
-                        return 'Correo inválido.';
-                      }
-                      return null;
-                    },
-                  ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return loc.pleaseEnterPassword;
+                  }
+                  if (value.length < 8) {
+                    return 'Debe tener al menos 8 caracteres.';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _register,
+                  child:
+                      _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(loc.registerButton),
                 ),
-                const SizedBox(height: 16),
-
-                // Contraseña
-                AnimatedOpacity(
-                  opacity: _showPasswordField ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 500),
-                  child: TextFormField(
-                    controller: _passwordController,
-                    obscureText: !_isPasswordVisible,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      labelText: 'Contraseña',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (_passwordController.text.isNotEmpty)
-                            _buildValidationIcon(_isPasswordValidField)!,
-                          IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(
-                                () => _isPasswordVisible = !_isPasswordVisible,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    onChanged:
-                        (value) => setState(
-                          () =>
-                              _isPasswordValidField = _validatePassword(value),
-                        ),
-                    validator: (value) {
-                      if (!_validatePassword(value ?? '')) {
-                        return 'Mínimo 8 caracteres, mayúscula, minúscula, número y símbolo.';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Confirmar contraseña
-                AnimatedOpacity(
-                  opacity: _showConfirmPasswordField ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 500),
-                  child: TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: !_isConfirmPasswordVisible,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      labelText: 'Confirmar contraseña',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (_confirmPasswordController.text.isNotEmpty)
-                            _buildValidationIcon(
-                              _confirmPasswordController.text ==
-                                  _passwordController.text,
-                            )!,
-                          IconButton(
-                            icon: Icon(
-                              _isConfirmPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(
-                                () =>
-                                    _isConfirmPasswordVisible =
-                                        !_isConfirmPasswordVisible,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    onChanged: (_) => setState(() {}),
-                    validator: (value) {
-                      if (value != _passwordController.text) {
-                        return 'Las contraseñas no coinciden.';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Botón de registro
-                _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : AnimatedScale(
-                      scale: _buttonScale,
-                      duration: const Duration(milliseconds: 200),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () async {
-                          setState(() => _buttonScale = 0.95);
-                          await Future.delayed(
-                            const Duration(milliseconds: 100),
-                          );
-                          setState(() => _buttonScale = 1.0);
-                          await _register();
-                        },
-                        child: const Text(
-                          'Registrarse',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                    ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

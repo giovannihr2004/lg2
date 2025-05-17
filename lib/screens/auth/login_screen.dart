@@ -92,6 +92,19 @@ class _LoginScreenState extends State<LoginScreen>
           email: input,
           password: password,
         );
+
+        // Verificar si el correo está verificado
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await user.reload();
+          if (!user.emailVerified) {
+            _showSnackBar(
+              "Por favor, verifica tu correo antes de iniciar sesión.",
+            );
+            return;
+          }
+        }
+
         if (!mounted) return;
         Navigator.pushReplacementNamed(context, '/dashboard');
       } on FirebaseAuthException catch (e) {

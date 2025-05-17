@@ -1,12 +1,11 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: lib/services/auth_service.dart
 // 📝 Descripción: Servicio centralizado de autenticación con login, registro,
-// Google y Facebook.
-// 📅 Última actualización: 15/05/2025 - 21:44 (Hora de Colombia)
+// Google. Eliminada integración con Facebook.
+// 📅 Última actualización: 16/05/2025 - 23:50 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// Servicio de autenticación con Firebase.
@@ -58,30 +57,13 @@ class AuthService {
   }
 
   // -------------------------------------------------------------------------
-  // Parte 3: Autenticación con Facebook
-  // -------------------------------------------------------------------------
-
-  /// Iniciar sesión con cuenta de Facebook
-  Future<UserCredential?> signInWithFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login();
-
-    if (result.status != LoginStatus.success) return null;
-
-    final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(result.accessToken!.tokenString);
-
-    return await _auth.signInWithCredential(facebookAuthCredential);
-  }
-
-  // -------------------------------------------------------------------------
-  // Parte 4: Cerrar sesión
+  // Parte 3: Cerrar sesión
   // -------------------------------------------------------------------------
 
   /// Cerrar sesión del usuario
   Future<void> signOut() async {
     await _auth.signOut();
     await GoogleSignIn().signOut();
-    await FacebookAuth.instance.logOut();
   }
 
   /// Obtener el usuario actual
