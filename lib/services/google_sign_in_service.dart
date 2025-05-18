@@ -1,15 +1,15 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: google_sign_in_service.dart
 // 📍 Ubicación: lib/services/google_sign_in_service.dart
-// 📝 Descripción: Autenticación con Google y verificación de usuario en Firestore
-// 📅 Última actualización: 18/05/2025 - 17:10 (Hora de Colombia)
+// 📝 Descripción: Autenticación con Google (sin Firestore en esta versión web)
+// 📅 Última actualización: 18/05/2025 - 18:12 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart'; // ❌ No se usa en esta rama
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInService {
@@ -22,7 +22,7 @@ class GoogleSignInService {
   static Future<void> signInWithGoogleAndNavigate(BuildContext context) async {
     try {
       final auth = FirebaseAuth.instance;
-      final firestore = FirebaseFirestore.instance;
+      // final firestore = FirebaseFirestore.instance; // ❌ Firestore desactivado
 
       UserCredential credential;
 
@@ -62,8 +62,9 @@ class GoogleSignInService {
 
       print("🟢 UID obtenido: $uid");
 
+      // 🔽 Se omite Firestore en esta versión web
+      /*
       final userDoc = await firestore.collection('usuarios').doc(uid).get();
-
       print("🔎 Documento Firestore existe: ${userDoc.exists}");
 
       if (!context.mounted) return;
@@ -82,6 +83,11 @@ class GoogleSignInService {
         print("🆕 Usuario sin datos en Firestore. Redirigiendo a /register");
         Navigator.pushReplacementNamed(context, '/register');
       }
+      */
+
+      // 🔁 Redirección genérica en esta versión web (sin Firestore)
+      if (!context.mounted) return;
+      Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
       log('❌ Error en signInWithGoogleAndNavigate: ${e.toString()}');
       print('❌ EXCEPCIÓN: ${e.toString()}');
