@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "lg2" "\0"
+            VALUE "CompanyName", "com.lector" "\0"
+            VALUE "FileDescription", "lector_global" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "lg2" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "lg2.exe" "\0"
-            VALUE "ProductName", "lg2" "\0"
+            VALUE "InternalName", "lector_global" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.lector. All rights reserved." "\0"
+            VALUE "OriginalFilename", "lector_global.exe" "\0"
+            VALUE "ProductName", "lector_global" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

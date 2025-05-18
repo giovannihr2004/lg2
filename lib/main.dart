@@ -2,7 +2,7 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-// 📅 Última actualización: 16/05/2025 - 21:24 (Hora de Colombia)
+// 📅 Última actualización: 18/05/2025 - 15:20 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -13,7 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'firebase_options.dart'; // ✅ Importación añadida
+import 'firebase_options.dart'; // ✅ Importación necesaria
 import 'providers/language_provider.dart';
 import 'screens/language_selector_screen.dart';
 import 'screens/auth/login_screen.dart';
@@ -28,9 +28,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ---------------------------------------------------------------------------
-  // 2. Inicialización de Firebase con opciones según plataforma
+  // 2. Inicialización de Firebase con opciones explícitas para Windows
   // ---------------------------------------------------------------------------
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   print('✅ Firebase inicializado correctamente');
 
   // ---------------------------------------------------------------------------
@@ -121,11 +123,10 @@ class MyApp extends StatelessWidget {
         if (settings.name == '/phoneVerification') {
           final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
-            builder:
-                (context) => PhoneVerificationScreen(
-                  verificationId: args['verificationId'],
-                  phoneNumber: args['phoneNumber'],
-                ),
+            builder: (context) => PhoneVerificationScreen(
+              verificationId: args['verificationId'],
+              phoneNumber: args['phoneNumber'],
+            ),
           );
         }
         return null;

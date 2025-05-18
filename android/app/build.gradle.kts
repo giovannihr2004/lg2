@@ -1,20 +1,14 @@
-// -----------------------------------------------------------------------------
-// 📄 Archivo: android/app/build.gradle.kts
-// 📅 Última actualización: 16/05/2025 - 19:00 (Hora de Colombia)
-// 📝 Descripción: Configuración completa con Firebase y Google Services
-// -----------------------------------------------------------------------------
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.gms.google-services") // ✅ Plugin Firebase
-    id("dev.flutter.flutter-gradle-plugin") // Siempre debe ir al final
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-    namespace = "com.lector.global1"
+    namespace = "com.example.lector_global"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973" // ✅ Versión NDK actualizada requerida por los plugins
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -26,7 +20,10 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.lector.global1"
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.example.lector_global"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -35,6 +32,8 @@ android {
 
     buildTypes {
         release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -42,12 +41,4 @@ android {
 
 flutter {
     source = "../.."
-}
-
-dependencies {
-    // ✅ Plataforma BoM para versiones consistentes
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-
-    // ✅ Módulo requerido para evitar el error del Instance ID
-    implementation("com.google.firebase:firebase-analytics")
 }

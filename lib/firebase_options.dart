@@ -1,7 +1,8 @@
 // -----------------------------------------------------------------------------
-// 📄 Archivo: lib/firebase_options.dart
-// 📝 Descripción: Configuración automática generada por FlutterFire CLI para conectar la app a Firebase.
-// 📅 Última actualización: 15/05/2025 - 21:35 (Hora de Colombia)
+// 📄 Archivo: firebase_options.dart
+// 📍 Ubicación: lib/firebase_options.dart
+// 📝 Descripción: Configuración multiplataforma de Firebase para Flutter
+// 📅 Última actualización: 18/05/2025 - 15:50 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // ignore_for_file: type=lint
@@ -11,7 +12,9 @@ import 'package:flutter/foundation.dart'
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) return web;
+    if (kIsWeb) {
+      return web;
+    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -24,11 +27,11 @@ class DefaultFirebaseOptions {
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this ejecutando FlutterFire CLI de nuevo.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
-          'DefaultFirebaseOptions no soportado para esta plataforma.',
+          'DefaultFirebaseOptions are not supported for this platform.',
         );
     }
   }
@@ -41,6 +44,7 @@ class DefaultFirebaseOptions {
     authDomain: 'lector-global-1c462.firebaseapp.com',
     storageBucket: 'lector-global-1c462.firebasestorage.app',
     measurementId: 'G-4Z6182TTRE',
+    databaseURL: 'https://lector-global-1c462.firebaseio.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -49,28 +53,35 @@ class DefaultFirebaseOptions {
     messagingSenderId: '562353221228',
     projectId: 'lector-global-1c462',
     storageBucket: 'lector-global-1c462.firebasestorage.app',
+    databaseURL: 'https://lector-global-1c462.firebaseio.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDHyDeeGr59c9Z8KQqlZP_T7jGExaYNsZ0',
-    appId: '1:562353221228:ios:dd91bcb463e2f8da8fb249',
+    appId: '1:562353221228:ios:daa0b34a8f9d654e8fb249',
     messagingSenderId: '562353221228',
     projectId: 'lector-global-1c462',
     storageBucket: 'lector-global-1c462.firebasestorage.app',
-    androidClientId: '562353221228-affetitg1b1l6ijrvcan3pt9ncvki8hh.apps.googleusercontent.com',
-    iosClientId: '562353221228-drq2o9envrmbj5u5dds2amqf1vgc40vv.apps.googleusercontent.com',
+    androidClientId:
+        '562353221228-67ha8ei9djmbr2ehdsf9apmt8966839n.apps.googleusercontent.com',
+    iosClientId:
+        '562353221228-drq2o9envrmbj5u5dds2amqf1vgc40vv.apps.googleusercontent.com',
     iosBundleId: 'com.example.lg2',
+    databaseURL: 'https://lector-global-1c462.firebaseio.com',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDHyDeeGr59c9Z8KQqlZP_T7jGExaYNsZ0',
-    appId: '1:562353221228:ios:dd91bcb463e2f8da8fb249',
+    appId: '1:562353221228:ios:daa0b34a8f9d654e8fb249',
     messagingSenderId: '562353221228',
     projectId: 'lector-global-1c462',
     storageBucket: 'lector-global-1c462.firebasestorage.app',
-    androidClientId: '562353221228-affetitg1b1l6ijrvcan3pt9ncvki8hh.apps.googleusercontent.com',
-    iosClientId: '562353221228-drq2o9envrmbj5u5dds2amqf1vgc40vv.apps.googleusercontent.com',
+    androidClientId:
+        '562353221228-67ha8ei9djmbr2ehdsf9apmt8966839n.apps.googleusercontent.com',
+    iosClientId:
+        '562353221228-drq2o9envrmbj5u5dds2amqf1vgc40vv.apps.googleusercontent.com',
     iosBundleId: 'com.example.lg2',
+    databaseURL: 'https://lector-global-1c462.firebaseio.com',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -81,6 +92,6 @@ class DefaultFirebaseOptions {
     authDomain: 'lector-global-1c462.firebaseapp.com',
     storageBucket: 'lector-global-1c462.firebasestorage.app',
     measurementId: 'G-2ZGGKZYVB9',
+    databaseURL: 'https://lector-global-1c462.firebaseio.com',
   );
-
 }

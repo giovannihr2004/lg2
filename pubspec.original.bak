@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # 📄 Archivo: pubspec.yaml
 # 📝 Descripción: Configuración principal del proyecto Lector Global
-# 📅 Última actualización: 18/05/2025 - 16:46 (Hora de Colombia)
+# 📅 Última actualización: 17/05/2025
 # -----------------------------------------------------------------------------
 
 name: lector_global
@@ -26,18 +26,18 @@ dependencies:
   cupertino_icons: ^1.0.8
   audioplayers: ^6.4.0
 
-  # 🔐 Firebase (últimas versiones modernas)
-  firebase_core: ^2.15.1
-  firebase_auth: ^4.8.0
-  firebase_analytics: ^10.4.3
+  # 🔐 Firebase (versiones compatibles con Windows)
+  firebase_core: 2.15.1
+  firebase_auth: 4.8.0
+  firebase_analytics: 10.4.3
 
   google_sign_in: ^6.3.0
   plugin_platform_interface: ^2.1.8
   flutter_svg: ^2.0.7
   http: ^1.3.0
-  flutter_launcher_icons: ^0.14.3
+  flutter_launcher_icons: ^0.14.3 # ✅ Generador de íconos
   intl_phone_field: ^3.2.0
-  # cloud_firestore: ❌ Removido temporalmente por incompatibilidad en Windows
+  cloud_firestore: 4.8.0
 
 dev_dependencies:
   flutter_test:
@@ -54,10 +54,16 @@ flutter:
     - assets/lang/
     - assets/images/
 
+# -----------------------------------------------------------------------------
+# 🔧 Configuración para generar el ícono personalizado de la app
+# -----------------------------------------------------------------------------
 flutter_launcher_icons:
   android: true
   ios: false
-  image_path: "assets/images/icono.png"
+  image_path: "assets/images/icono.png" # ✅ Icono personalizado con el ratón
 
+# -----------------------------------------------------------------------------
+# 🚨 Solución para conflictos con plataformas modernas de Firebase
+# -----------------------------------------------------------------------------
 dependency_overrides:
   firebase_core_platform_interface: ^5.0.0
