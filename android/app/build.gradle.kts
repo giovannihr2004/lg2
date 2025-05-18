@@ -1,14 +1,21 @@
+// -----------------------------------------------------------------------------
+// 📄 Archivo: build.gradle.kts
+// 📍 Ubicación: android/app/build.gradle.kts
+// 📝 Descripción: Configuración del módulo de app Android para Lector Global
+// 📅 Última actualización: 18/05/2025 - 17:53 (Hora de Colombia)
+// -----------------------------------------------------------------------------
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // El plugin de Flutter debe ir al final
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
     namespace = "com.example.lector_global"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973" // ✅ Actualizado para compatibilidad con Firestore y plugins
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -20,20 +27,25 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Identificador único de la aplicación
         applicationId = "com.example.lector_global"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+
+        // Configuraciones mínimas y de destino
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
+
+        // Versión de la app
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    // ✅ Corrección obligatoria para Firestore en Android
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
