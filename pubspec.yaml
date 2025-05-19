@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # 📄 Archivo: pubspec.yaml
-# 📝 Descripción: Configuración principal del proyecto Lector Global (rama web_firestore)
-# 📅 Última actualización: 18/05/2025 - 17:22 (Hora de Colombia)
+# 📝 Descripción: Configuración principal del proyecto Lector Global (rama web_only_firestore_180520251812)
+# 📅 Última actualización: 18/05/2025 - 18:22 (Hora de Colombia)
 # -----------------------------------------------------------------------------
 
 name: lector_global
@@ -26,13 +26,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   audioplayers: ^6.4.0
 
-  # 🔐 Firebase completo (compatible con Flutter Web)
+  # 🔐 Firebase (sin Firestore ni Analytics para compatibilidad Android/Windows)
   firebase_core: ^2.15.1
   firebase_auth: ^4.8.0
-  firebase_analytics: ^10.4.3
-  cloud_firestore: ^4.9.1
-  firebase_auth_web: ^5.8.0
-  cloud_firestore_web: ^3.7.0
 
   google_sign_in: ^6.3.0
   plugin_platform_interface: ^2.1.8
