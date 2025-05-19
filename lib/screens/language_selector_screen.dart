@@ -2,7 +2,7 @@
 // 📄 Archivo: language_selector_screen.dart
 // 📍 Ubicación: lib/screens/language_selector_screen.dart
 // 📝 Descripción: Pantalla inicial para seleccionar el idioma con navegación directa.
-// 📅 Última actualización: 18/05/2025 - 21:42 (Hora de Colombia)
+// 📅 Última actualización: 18/05/2025 - 22:00 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -76,10 +76,21 @@ class LanguageSelectorScreen extends StatelessWidget {
                                   border:
                                       isFocused
                                           ? Border.all(
-                                            color: Colors.white,
+                                            color: Colors.amberAccent,
                                             width: 2,
                                           )
                                           : null,
+                                  boxShadow:
+                                      isFocused
+                                          ? [
+                                            BoxShadow(
+                                              color: Colors.amberAccent
+                                                  .withOpacity(0.6),
+                                              blurRadius: 8,
+                                              spreadRadius: 1,
+                                            ),
+                                          ]
+                                          : [],
                                 ),
                                 child: Text(
                                   entry.value,
