@@ -2,7 +2,7 @@
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
 // 📝 Descripción: Pantalla de registro con validación, envío de verificación y Firebase
-// 📅 Última actualización: 17/05/2025 - 10:45 (Hora de Colombia)
+// 📅 Última actualización: 18/05/2025 - (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -35,6 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _register() async {
+    final loc = AppLocalizations.of(context)!;
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
@@ -45,13 +47,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
             password: _passwordController.text.trim(),
           );
 
-      // Enviar correo de verificación
       await userCredential.user!.sendEmailVerification();
 
-      _showSnackBar('Registro exitoso. Verifica tu correo electrónico.');
+      _showSnackBar(loc.registrationSuccess);
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
-      _showSnackBar('Error: ${e.message}', isError: true);
+      String errorMessage;
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage = loc.emailAlreadyInUse;
+          break;
+        case 'invalid-email':
+          errorMessage = loc.invalidEmail;
+          break;
+        case 'weak-password':
+          errorMessage = loc.weakPassword;
+          break;
+        case 'operation-not-allowed':
+          errorMessage = loc.registrationDisabled;
+          break;
+        default:
+          errorMessage = '${loc.registrationError}: ${e.message}';
+      }
+      _showSnackBar(errorMessage, isError: true);
+    } catch (e) {
+      _showSnackBar('${loc.unexpectedError}: $e', isError: true);
     } finally {
       setState(() => _isLoading = false);
     }
@@ -108,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return loc.pleaseEnterPassword;
                   }
                   if (value.length < 8) {
-                    return 'Debe tener al menos 8 caracteres.';
+                    return loc.passwordTooShort;
                   }
                   return null;
                 },

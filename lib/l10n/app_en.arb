@@ -31,6 +31,8 @@
   "loginSubtitle": "Access with your account",
   "emailLabel": "Email",
   "passwordLabel": "Password",
+  "emailOrPhoneLabel": "Email or phone",
+  "passwordLabelLogin": "Password",
   "loginButton": "Sign in",
   "googleSignIn": "Sign in with Google",
   "facebookSignIn": "Sign in with Facebook",
@@ -40,17 +42,20 @@
   "forgotPassword": "Forgot your password?",
 
   "splash_slogan": "If you can read, you can understand.\nAnd if you can understand, you can change your life.\nAnd if we change lives, we change the world.",
-
-  "emailOrPhoneLabel": "Email or phone",
-  "passwordLabelLogin": "Password",
   "welcomeBackMessage": "Welcome back! Log in to keep learning with Lector Global.",
-
   "loginSlogan": "If you can read, you can understand. And if you can understand, you can change your life. And if we change lives, we change the world.",
-  
+
   "resetPasswordSuccess": "We've sent you a link to reset your password.",
-  
+
   "registerTitle": "Create account",
   "pleaseEnterEmail": "Please enter your email.",
   "passwordLabelRegister": "Password",
-  "registerButton": "Register"
+  "registerButton": "Register",
+
+  "registrationSuccess": "Registration successful. Please verify your email.",
+  "emailAlreadyInUse": "This email is already in use.",
+  "weakPassword": "The password is too weak.",
+  "registrationDisabled": "Registration is currently disabled.",
+  "registrationError": "An error occurred during registration",
+  "passwordTooShort": "Must be at least 8 characters long."
 }

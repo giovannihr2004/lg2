@@ -31,6 +31,8 @@
   "loginSubtitle": "Acesse com sua conta",
   "emailLabel": "E-mail",
   "passwordLabel": "Senha",
+  "emailOrPhoneLabel": "E-mail ou telefone",
+  "passwordLabelLogin": "Senha",
   "loginButton": "Entrar",
   "googleSignIn": "Entrar com o Google",
   "facebookSignIn": "Entrar com o Facebook",
@@ -40,17 +42,20 @@
   "forgotPassword": "Esqueceu sua senha?",
 
   "splash_slogan": "Se você pode ler, pode compreender.\nE se pode compreender, pode mudar sua vida.\nE se mudamos vidas, mudamos o mundo.",
-
-  "emailOrPhoneLabel": "E-mail ou telefone",
-  "passwordLabelLogin": "Senha",
   "welcomeBackMessage": "Bem-vindo de volta! Faça login para continuar aprendendo com o Lector Global.",
-
   "loginSlogan": "Se você pode ler, pode compreender. E se pode compreender, pode mudar sua vida. E se mudamos vidas, mudamos o mundo.",
-  
+
   "resetPasswordSuccess": "Enviamos um link para redefinir sua senha.",
-  
+
   "registerTitle": "Criar conta",
   "pleaseEnterEmail": "Por favor, insira seu e-mail.",
   "passwordLabelRegister": "Senha",
-  "registerButton": "Registrar"
+  "registerButton": "Registrar",
+
+  "registrationSuccess": "Registro bem-sucedido. Verifique seu e-mail.",
+  "emailAlreadyInUse": "Este e-mail já está em uso.",
+  "weakPassword": "A senha é muito fraca.",
+  "registrationDisabled": "O registro está desativado no momento.",
+  "registrationError": "Ocorreu um erro durante o registro",
+  "passwordTooShort": "Deve conter pelo menos 8 caracteres."
 }
