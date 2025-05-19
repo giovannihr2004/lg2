@@ -1,16 +1,55 @@
-# lg2
+# 📚 Lector Global
 
-A new Flutter project.
+**Lector Global** es una aplicación educativa multiplataforma desarrollada en Flutter para mejorar la comprensión lectora en todos los idiomas. Permite a los usuarios registrarse, iniciar sesión, validar su correo, y navegar por un entorno intuitivo y profesional.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Cómo ejecutar
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+git clone https://github.com/giovannihr2004/lg2.git
+cd lg2
+flutter pub get
+flutter run -d chrome  # o -d windows, -d <android_id>
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🧩 Plataformas soportadas
+
+- Android
+- Web
+- Windows
+
+---
+
+## 🧪 Funcionalidades actuales
+
+- Autenticación por correo y contraseña
+- Autenticación con Google (Web y Android)
+- Validación obligatoria de correo electrónico
+- Soporte de internacionalización (más de 9 idiomas configurables)
+- Recuperación de contraseña
+- Control de estado global (Provider)
+- Arquitectura modular y escalable
+
+---
+
+## ⚙️ Tecnologías utilizadas
+
+- Flutter 3.22.0
+- Dart 3.7.2
+- Firebase Auth
+- Provider
+- flutter_localizations (i18n)
+- intl_phone_field
+- flutter_svg
+- shared_preferences
+
+---
+
+## 🧑‍💻 Autor
+
+Giovanni Holguín Rojas  
+Docente e Investigador en Educación y Tecnología  
+[Repositorio oficial de Lector Global](https://github.com/giovannihr2004/lg2)
