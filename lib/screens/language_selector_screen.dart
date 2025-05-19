@@ -2,7 +2,7 @@
 // 📄 Archivo: language_selector_screen.dart
 // 📍 Ubicación: lib/screens/language_selector_screen.dart
 // 📝 Descripción: Pantalla inicial para seleccionar el idioma con navegación directa.
-// 📅 Última actualización: 13/05/2025 - 20:05 (Hora de Colombia)
+// 📅 Última actualización: 18/05/2025 - 21:42 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -57,25 +57,40 @@ class LanguageSelectorScreen extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children:
                     languageNames.entries.map((entry) {
-                      return ElevatedButton(
-                        onPressed:
-                            () => _onLanguageSelected(context, entry.key),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          entry.value,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
+                      return Focus(
+                        child: Builder(
+                          builder: (context) {
+                            final isFocused = Focus.of(context).hasFocus;
+                            return InkWell(
+                              onTap:
+                                  () => _onLanguageSelected(context, entry.key),
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border:
+                                      isFocused
+                                          ? Border.all(
+                                            color: Colors.white,
+                                            width: 2,
+                                          )
+                                          : null,
+                                ),
+                                child: Text(
+                                  entry.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     }).toList(),
