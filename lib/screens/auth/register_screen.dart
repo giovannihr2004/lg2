@@ -5,6 +5,8 @@
 // 📅 Última actualización: 19/05/2025 - 23:52 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
+import 'dart:async'; // Para debounce
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,6 +41,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
   bool _isLoading = false;
+
+  bool _isEmailChecking = false;
+  bool _isEmailDuplicate = false;
+  String? _emailErrorMessage;
+
+  Timer? _debounceTimer;
 
   // ---------------------------------------------------------------------------
   // 3. Función para mostrar mensajes con SnackBar
@@ -105,7 +113,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // 5. Construcción del widget (formulario)
+  // 5. Función para verificar si el correo ya está registrado (debounce)
+  // ---------------------------------------------------------------------------
+  void _onEmailChanged(String email) {
+    if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      _checkEmailDuplicate(email);
+    });
+  }
+
+  Future<void> _checkEmailDuplicate(String email) async {
+    if (email.trim().isEmpty) return;
+
+    setState(() {
+      _isEmailChecking = true;
+      _emailErrorMessage = null;
+      _isEmailDuplicate = false;
+    });
+
+    try {
+      final methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(
+        email.trim(),
+      );
+      if (methods.isNotEmpty) {
+        setState(() {
+          _isEmailDuplicate = true;
+          _emailErrorMessage = AppLocalizations.of(context)!.emailAlreadyInUse;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _emailErrorMessage = AppLocalizations.of(context)!.invalidEmail;
+      });
+    } finally {
+      if (mounted) setState(() => _isEmailChecking = false);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 6. Construcción del widget (formulario)
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -119,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: Column(
             children: [
-              // 5.1 Campo: Nombre
+              // Campo: Nombre
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -136,15 +182,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 16),
 
-              // 5.2 Campo: Email
+              // Campo: Email con debounce y verificación duplicado
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: loc.emailLabel,
                   prefixIcon: const Icon(Icons.email_outlined),
+                  suffixIcon:
+                      _isEmailChecking
+                          ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                          : _isEmailDuplicate
+                          ? const Icon(Icons.error, color: Colors.red)
+                          : const Icon(Icons.check_circle, color: Colors.green),
                 ),
                 keyboardType: TextInputType.emailAddress,
-                onChanged: (_) => setState(() {}),
+                onChanged: (value) {
+                  setState(() {});
+                  _onEmailChanged(value);
+                },
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterEmail;
@@ -154,12 +213,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ).hasMatch(value)) {
                     return loc.invalidEmail;
                   }
+                  if (_isEmailDuplicate) {
+                    return _emailErrorMessage;
+                  }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              // 5.3 Campo: Teléfono
+              // Campo: Teléfono
               IntlPhoneField(
                 controller: _phoneController,
                 decoration: InputDecoration(
@@ -178,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 16),
 
-              // 5.4 Campo: Contraseña
+              // Campo: Contraseña
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
@@ -210,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8),
 
-              // 5.4.1 Checklist visual
+              // Checklist visual
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -243,7 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 16),
 
-              // 5.5 Campo: Confirmar Contraseña
+              // Campo: Confirmar Contraseña
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirm,
@@ -268,8 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 24),
-
-              // 5.6 Botón: Registrarse
+              // Botón: Registrarse
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -288,9 +349,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 6. Checklist visual
-  // ---------------------------------------------------------------------------
+  // Widget para checklist visual
   Widget _buildCheckItem(bool condition, String text) {
     return Row(
       children: [
@@ -311,9 +370,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 7. Validación de formulario
-  // ---------------------------------------------------------------------------
+  // Validación del formulario
   bool _isFormValid() {
     final password = _passwordController.text;
     final confirm = _confirmPasswordController.text;
@@ -338,6 +395,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         validEmail &&
         validPhone &&
         validPassword &&
-        password == confirm;
+        password == confirm &&
+        !_isEmailDuplicate;
   }
 }
