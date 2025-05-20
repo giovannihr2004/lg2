@@ -57,5 +57,12 @@
   "weakPassword": "La password è troppo debole.",
   "registrationDisabled": "La registrazione è attualmente disabilitata.",
   "registrationError": "Si è verificato un errore durante la registrazione",
-  "passwordTooShort": "Deve contenere almeno 8 caratteri."
+  "passwordTooShort": "Deve contenere almeno 8 caratteri.",
+  "nameLabel": "Nome completo",
+  "pleaseEnterName": "Per favore inserisci il tuo nome.",
+  "phoneLabel": "Numero di telefono",
+  "pleaseEnterPhone": "Per favore inserisci il tuo numero di telefono.",
+  "includeCountryCode": "Includi il prefisso internazionale",
+  "confirmPasswordLabel": "Conferma password",
+  "passwordsDoNotMatch": "Le password non corrispondono"
 }

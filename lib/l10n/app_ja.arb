@@ -57,5 +57,12 @@
   "weakPassword": "パスワードが弱すぎます。",
   "registrationDisabled": "現在、登録は無効になっています。",
   "registrationError": "登録中にエラーが発生しました",
-  "passwordTooShort": "8文字以上で入力してください。"
+  "passwordTooShort": "8文字以上で入力してください。",
+  "nameLabel": "氏名",
+  "pleaseEnterName": "氏名を入力してください。",
+  "phoneLabel": "電話番号",
+  "pleaseEnterPhone": "電話番号を入力してください。",
+  "includeCountryCode": "国番号を含めてください",
+  "confirmPasswordLabel": "パスワードの確認",
+  "passwordsDoNotMatch": "パスワードが一致しません"
 }

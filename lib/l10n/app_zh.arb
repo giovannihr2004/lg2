@@ -57,5 +57,12 @@
   "weakPassword": "密码太弱。",
   "registrationDisabled": "目前已禁用注册功能。",
   "registrationError": "注册过程中发生错误",
-  "passwordTooShort": "密码至少需要8个字符。"
+  "passwordTooShort": "密码至少需要8个字符。",
+  "nameLabel": "全名",
+  "pleaseEnterName": "请输入您的姓名。",
+  "phoneLabel": "电话号码",
+  "pleaseEnterPhone": "请输入您的电话号码。",
+  "includeCountryCode": "包括国家代码",
+  "confirmPasswordLabel": "确认密码",
+  "passwordsDoNotMatch": "密码不匹配"
 }

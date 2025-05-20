@@ -57,5 +57,13 @@
   "weakPassword": "The password is too weak.",
   "registrationDisabled": "Registration is currently disabled.",
   "registrationError": "An error occurred during registration",
-  "passwordTooShort": "Must be at least 8 characters long."
+  "passwordTooShort": "Must be at least 8 characters long.",
+
+  "nameLabel": "Full name",
+  "pleaseEnterName": "Please enter your name.",
+  "phoneLabel": "Phone number",
+  "pleaseEnterPhone": "Please enter your phone number.",
+  "includeCountryCode": "Include the country code",
+  "confirmPasswordLabel": "Confirm password",
+  "passwordsDoNotMatch": "Passwords do not match"
 }

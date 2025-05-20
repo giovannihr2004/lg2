@@ -57,5 +57,12 @@
   "weakPassword": "A senha é muito fraca.",
   "registrationDisabled": "O registro está desativado no momento.",
   "registrationError": "Ocorreu um erro durante o registro",
-  "passwordTooShort": "Deve conter pelo menos 8 caracteres."
+  "passwordTooShort": "Deve conter pelo menos 8 caracteres.",
+  "nameLabel": "Nome completo",
+  "pleaseEnterName": "Por favor, insira seu nome.",
+  "phoneLabel": "Número de telefone",
+  "pleaseEnterPhone": "Por favor, insira seu número de telefone.",
+  "includeCountryCode": "Incluir código do país",
+  "confirmPasswordLabel": "Confirmar senha",
+  "passwordsDoNotMatch": "As senhas não coincidem"
 }

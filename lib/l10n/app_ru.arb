@@ -57,5 +57,12 @@
   "weakPassword": "Пароль слишком простой.",
   "registrationDisabled": "Регистрация в настоящее время отключена.",
   "registrationError": "Произошла ошибка при регистрации",
-  "passwordTooShort": "Пароль должен содержать не менее 8 символов."
+  "passwordTooShort": "Пароль должен содержать не менее 8 символов.",
+  "nameLabel": "Полное имя",
+  "pleaseEnterName": "Пожалуйста, введите ваше имя.",
+  "phoneLabel": "Номер телефона",
+  "pleaseEnterPhone": "Пожалуйста, введите ваш номер телефона.",
+  "includeCountryCode": "Укажите код страны",
+  "confirmPasswordLabel": "Подтвердите пароль",
+  "passwordsDoNotMatch": "Пароли не совпадают"
 }

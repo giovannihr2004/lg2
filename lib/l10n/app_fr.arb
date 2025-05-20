@@ -57,5 +57,12 @@
   "weakPassword": "Le mot de passe est trop faible.",
   "registrationDisabled": "L'inscription est actuellement désactivée.",
   "registrationError": "Une erreur est survenue lors de l'inscription",
-  "passwordTooShort": "Doit contenir au moins 8 caractères."
+  "passwordTooShort": "Doit contenir au moins 8 caractères.",
+  "nameLabel": "Nom complet",
+  "pleaseEnterName": "Veuillez entrer votre nom.",
+  "phoneLabel": "Numéro de téléphone",
+  "pleaseEnterPhone": "Veuillez entrer votre numéro de téléphone.",
+  "includeCountryCode": "Inclure l'indicatif du pays",
+  "confirmPasswordLabel": "Confirmer le mot de passe",
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"
 }

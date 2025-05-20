@@ -57,5 +57,12 @@
   "weakPassword": "Das Passwort ist zu schwach.",
   "registrationDisabled": "Die Registrierung ist derzeit deaktiviert.",
   "registrationError": "Ein Fehler ist bei der Registrierung aufgetreten",
-  "passwordTooShort": "Mindestens 8 Zeichen erforderlich."
+  "passwordTooShort": "Mindestens 8 Zeichen erforderlich.",
+  "nameLabel": "Vollständiger Name",
+  "pleaseEnterName": "Bitte gib deinen Namen ein.",
+  "phoneLabel": "Telefonnummer",
+  "pleaseEnterPhone": "Bitte gib deine Telefonnummer ein.",
+  "includeCountryCode": "Ländervorwahl einschließen",
+  "confirmPasswordLabel": "Passwort bestätigen",
+  "passwordsDoNotMatch": "Passwörter stimmen nicht überein"
 }
