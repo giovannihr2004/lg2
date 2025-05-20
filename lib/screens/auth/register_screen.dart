@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
-// 📝 Descripción: Registro con validaciones visuales, checklist y accesibilidad.
+// 📝 Descripción: Registro con checklist visual y botón condicional.
 // 📅 Última actualización: 19/05/2025 - 23:52 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
@@ -126,6 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: loc.nameLabel,
                   prefixIcon: const Icon(Icons.person_outline),
                 ),
+                onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterName;
@@ -143,6 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: const Icon(Icons.email_outlined),
                 ),
                 keyboardType: TextInputType.emailAddress,
+                onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterEmail;
@@ -166,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   border: const OutlineInputBorder(),
                 ),
                 initialCountryCode: 'CO',
-                onChanged: (phone) {},
+                onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value == null || value.number.isEmpty) {
                     return loc.pleaseEnterPhone;
@@ -257,6 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             setState(() => _obscureConfirm = !_obscureConfirm),
                   ),
                 ),
+                onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value != _passwordController.text) {
                     return loc.passwordsDoNotMatch;
@@ -271,7 +274,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: _isLoading ? null : _register,
+                  onPressed: _isLoading || !_isFormValid() ? null : _register,
                   child:
                       _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
@@ -286,7 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // 6. Widget para checklist visual
+  // 6. Checklist visual
   // ---------------------------------------------------------------------------
   Widget _buildCheckItem(bool condition, String text) {
     return Row(
@@ -306,5 +309,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ],
     );
+  }
+
+  // ---------------------------------------------------------------------------
+  // 7. Validación de formulario
+  // ---------------------------------------------------------------------------
+  bool _isFormValid() {
+    final password = _passwordController.text;
+    final confirm = _confirmPasswordController.text;
+    final email = _emailController.text;
+    final name = _nameController.text;
+    final phone = _phoneController.text;
+
+    final validPassword =
+        password.length >= 8 &&
+        RegExp(r'[A-Z]').hasMatch(password) &&
+        RegExp(r'[a-z]').hasMatch(password) &&
+        RegExp(r'[0-9]').hasMatch(password) &&
+        RegExp(r'[!@#\$&*~%^_+=().,\-]').hasMatch(password);
+
+    final validEmail = RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    ).hasMatch(email);
+    final validPhone = phone.isNotEmpty;
+    final validName = name.trim().isNotEmpty;
+
+    return validName &&
+        validEmail &&
+        validPhone &&
+        validPassword &&
+        password == confirm;
   }
 }
