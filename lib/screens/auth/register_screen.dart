@@ -220,7 +220,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               // Campo: Teléfono
               IntlPhoneField(
                 controller: _phoneController,
@@ -239,6 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
+
               // Campo: Contraseña
               TextFormField(
                 controller: _passwordController,
