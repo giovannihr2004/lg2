@@ -239,7 +239,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               // Campo: Contraseña
               TextFormField(
                 controller: _passwordController,
@@ -330,6 +329,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 24),
+
               // Botón: Registrarse
               SizedBox(
                 width: double.infinity,
@@ -397,5 +397,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
         validPassword &&
         password == confirm &&
         !_isEmailDuplicate;
+  }
+
+  @override
+  void dispose() {
+    // Liberar recursos de los controladores para evitar fugas de memoria
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _debounceTimer?.cancel();
+    super.dispose();
   }
 }
