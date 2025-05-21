@@ -2,7 +2,7 @@
 // 📄 Archivo: splash_logo_screen.dart
 // 📍 Ubicación: lib/screens/splash/splash_logo_screen.dart
 // 📝 Descripción: Muestra el logo animado y redirige con transición a SplashTextScreen
-// 📅 Última actualización: 15/05/2025 - 22:05 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 22:20 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -75,8 +75,9 @@ class _SplashLogoScreenState extends State<SplashLogoScreen>
         child: FadeTransition(
           opacity: _fadeIn,
           child: Image.asset(
-            'assets/images/logo1.png', // ⚠️ Verifica que esté incluido en pubspec.yaml
-            height: 160,
+            'assets/images/logo_splash2.png', // ✅ Nuevo logo más grande
+            width: 300,
+            height: 300,
             fit: BoxFit.contain,
           ),
         ),
