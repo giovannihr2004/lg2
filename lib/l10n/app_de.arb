@@ -64,5 +64,11 @@
   "pleaseEnterPhone": "Bitte gib deine Telefonnummer ein.",
   "includeCountryCode": "Ländervorwahl einschließen",
   "confirmPasswordLabel": "Passwort bestätigen",
-  "passwordsDoNotMatch": "Passwörter stimmen nicht überein"
+  "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+
+  "min8Characters": "• Mindestens 8 Zeichen",
+  "uppercaseLetter": "• Ein Großbuchstabe",
+  "lowercaseLetter": "• Ein Kleinbuchstabe",
+  "number": "• Eine Zahl",
+  "specialCharacter": "• Ein Sonderzeichen"
 }

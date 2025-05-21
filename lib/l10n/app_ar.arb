@@ -64,5 +64,11 @@
   "pleaseEnterPhone": "يرجى إدخال رقم هاتفك.",
   "includeCountryCode": "يرجى تضمين رمز الدولة",
   "confirmPasswordLabel": "تأكيد كلمة المرور",
-  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين"
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+
+  "min8Characters": "• الحد الأدنى 8 أحرف",
+  "uppercaseLetter": "• حرف كبير",
+  "lowercaseLetter": "• حرف صغير",
+  "number": "• رقم",
+  "specialCharacter": "• حرف خاص"
 }

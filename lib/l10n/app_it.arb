@@ -64,5 +64,11 @@
   "pleaseEnterPhone": "Per favore inserisci il tuo numero di telefono.",
   "includeCountryCode": "Includi il prefisso internazionale",
   "confirmPasswordLabel": "Conferma password",
-  "passwordsDoNotMatch": "Le password non corrispondono"
+  "passwordsDoNotMatch": "Le password non corrispondono",
+
+  "min8Characters": "• Minimo 8 caratteri",
+  "uppercaseLetter": "• Una lettera maiuscola",
+  "lowercaseLetter": "• Una lettera minuscola",
+  "number": "• Un numero",
+  "specialCharacter": "• Un carattere speciale"
 }

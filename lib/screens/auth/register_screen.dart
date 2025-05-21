@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
-// 📝 Descripción: Registro con checklist visual y botón condicional.
-// 📅 Última actualización: 19/05/2025 - 23:52 (Hora de Colombia)
+// 📝 Descripción: Registro con checklist visual, botón condicional y navegación condicional tras registro exitoso.
+// 📅 Última actualización: 20/05/2025 - 19:00 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'dart:async'; // Para debounce
@@ -62,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Función para registrar al usuario con validaciones
+  // 4. Función para registrar al usuario con validaciones y navegación condicional
   // ---------------------------------------------------------------------------
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
@@ -79,7 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (!mounted) return;
       _showSnackBar(AppLocalizations.of(context)!.registrationSuccess);
-      Navigator.pop(context);
+      // Navegación condicional: ir a dashboard tras registro exitoso
+      Navigator.pushReplacementNamed(context, '/dashboard');
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final loc = AppLocalizations.of(context)!;
@@ -149,6 +150,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) setState(() => _isEmailChecking = false);
     }
   }
+
+  // La parte continúa en la siguiente entrega...
 
   // ---------------------------------------------------------------------------
   // 6. Construcción del widget (formulario)
@@ -220,6 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
+
               // Campo: Teléfono
               IntlPhoneField(
                 controller: _phoneController,
@@ -238,7 +242,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               // Campo: Contraseña
               TextFormField(
                 controller: _passwordController,
@@ -271,7 +274,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8),
 
-              // Checklist visual
+              // Checklist visual para requisitos de contraseña
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(

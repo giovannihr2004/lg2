@@ -64,5 +64,11 @@
   "pleaseEnterPhone": "電話番号を入力してください。",
   "includeCountryCode": "国番号を含めてください",
   "confirmPasswordLabel": "パスワードの確認",
-  "passwordsDoNotMatch": "パスワードが一致しません"
+  "passwordsDoNotMatch": "パスワードが一致しません",
+
+  "min8Characters": "• 最少8文字",
+  "uppercaseLetter": "• 大文字1文字",
+  "lowercaseLetter": "• 小文字1文字",
+  "number": "• 数字1文字",
+  "specialCharacter": "• 特殊文字1文字"
 }

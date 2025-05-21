@@ -64,5 +64,11 @@
   "pleaseEnterPhone": "请输入您的电话号码。",
   "includeCountryCode": "包括国家代码",
   "confirmPasswordLabel": "确认密码",
-  "passwordsDoNotMatch": "密码不匹配"
+  "passwordsDoNotMatch": "密码不匹配",
+
+  "min8Characters": "• 最少8个字符",
+  "uppercaseLetter": "• 一个大写字母",
+  "lowercaseLetter": "• 一个小写字母",
+  "number": "• 一个数字",
+  "specialCharacter": "• 一个特殊字符"
 }
