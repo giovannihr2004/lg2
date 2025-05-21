@@ -2,7 +2,7 @@
 // 📄 Archivo: splash_text_screen.dart
 // 📍 Ubicación: lib/screens/splash/splash_text_screen.dart
 // 📝 Descripción: Pantalla con logo familiar, eslogan animado y transición automática a WelcomeScreen
-// 📅 Última actualización: 20/05/2025 - 22:45 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 22:50 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -42,8 +42,8 @@ class _SplashTextScreenState extends State<SplashTextScreen>
     _fadeIn = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
     _controller.forward();
 
-    // Navega automáticamente a WelcomeScreen tras 4.5 segundos
-    Future.delayed(const Duration(milliseconds: 4500), () {
+    // Navega automáticamente a WelcomeScreen tras 6.5 segundos
+    Future.delayed(const Duration(milliseconds: 6500), () {
       if (!mounted) return;
 
       Navigator.of(context).pushReplacement(
