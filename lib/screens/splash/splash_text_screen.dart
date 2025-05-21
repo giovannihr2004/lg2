@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: splash_text_screen.dart
 // 📍 Ubicación: lib/screens/splash/splash_text_screen.dart
-// 📝 Descripción: Pantalla con eslogan animado y transición automática a WelcomeScreen
-// 📅 Última actualización: 13/05/2025 - 19:58 (Hora de Colombia)
+// 📝 Descripción: Pantalla con logo familiar, eslogan animado y transición automática a WelcomeScreen
+// 📅 Última actualización: 20/05/2025 - 22:45 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ class _SplashTextScreenState extends State<SplashTextScreen>
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Construcción visual: nombre de la app y eslogan traducido
+  // 4. Construcción visual: logo + nombre + eslogan traducido
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -81,6 +81,12 @@ class _SplashTextScreenState extends State<SplashTextScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Image.asset(
+                  'assets/images/logo_bienvenida.png',
+                  height: 220,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 20),
                 const Text(
                   'LECTOR GLOBAL',
                   style: TextStyle(
@@ -94,8 +100,8 @@ class _SplashTextScreenState extends State<SplashTextScreen>
                 Text(
                   loc?.splash_slogan ??
                       'Si puedes leer, puedes comprender.\n'
-                      'Y si puedes comprender, puedes cambiar tu vida.\n'
-                      'Y si cambiamos vidas, cambiamos el mundo.',
+                          'Y si puedes comprender, puedes cambiar tu vida.\n'
+                          'Y si cambiamos vidas, cambiamos el mundo.',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,
