@@ -2,7 +2,7 @@
 // 📄 Archivo: welcome_screen.dart
 // 📍 Ubicación: lib/screens/welcome_screen.dart
 // 📝 Descripción: Pantalla de bienvenida con traducciones y selector de idioma
-// 📅 Última actualización: 13/05/2025 - 18:06 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 23:00 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -51,10 +51,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 🖼 Logo
+                // 🖼 Logo actualizado
                 Image.asset(
-                  'assets/images/logo1.png',
-                  height: 120,
+                  'assets/images/logo_welcome.png',
+                  height: 200,
                   fit: BoxFit.contain,
                 ),
                 const SizedBox(height: 30),
