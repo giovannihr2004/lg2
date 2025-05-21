@@ -2,9 +2,12 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 17/05/2025 - 02:22 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 23:20 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// 1. Importaciones necesarias
+// -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,6 +18,9 @@ import '../../widgets/language_selector.dart';
 import '../../services/google_sign_in_service.dart';
 import 'register_screen.dart';
 
+// -----------------------------------------------------------------------------
+// 2. Widget con estado: LoginScreen
+// -----------------------------------------------------------------------------
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -188,7 +194,11 @@ class _LoginScreenState extends State<LoginScreen>
               FadeTransition(
                 opacity: _logoController,
                 child: Center(
-                  child: Image.asset("assets/images/logo1.png", height: 100),
+                  child: Image.asset(
+                    "assets/images/logo_login.png", // ✅ Imagen actualizada
+                    height: 220,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
