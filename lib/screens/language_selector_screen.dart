@@ -2,7 +2,7 @@
 // 📄 Archivo: language_selector_screen.dart
 // 📍 Ubicación: lib/screens/language_selector_screen.dart
 // 📝 Descripción: Pantalla inicial para seleccionar el idioma con navegación directa.
-// 📅 Última actualización: 20/05/2025 - 20:45 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 23:35 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -28,7 +28,6 @@ class LanguageSelectorScreen extends StatelessWidget {
 
   void _onLanguageSelected(BuildContext context, String langCode) {
     context.read<LanguageProvider>().changeLanguage(langCode);
-
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => const SplashLogoScreen()));
@@ -44,8 +43,15 @@ class LanguageSelectorScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // 🟣 Nuevo ícono con logo
+              Image.asset(
+                'assets/images/logo_titulo.png',
+                height: 80,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 12),
               const Text(
-                '🌍 Lector Global',
+                'Lector Global',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w900,
@@ -55,8 +61,6 @@ class LanguageSelectorScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
-              const Icon(Icons.language, size: 64, color: Colors.deepPurple),
-              const SizedBox(height: 16),
               const Text(
                 'Selecciona tu idioma',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
