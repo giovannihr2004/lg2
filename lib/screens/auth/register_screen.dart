@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
-// 📝 Descripción: Registro con checklist visual, botón condicional y navegación condicional tras registro exitoso.
-// 📅 Última actualización: 20/05/2025 - 19:00 (Hora de Colombia)
+// 📝 Descripción: Registro con validaciones, verificación, almacenamiento y displayName
+// 📅 Última actualización: 20/05/2025 - 23:40 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
-import 'dart:async'; // Para debounce
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,28 +29,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // 2.1 Controladores para campos del formulario
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
-  // 2.2 Estados para visibilidad y carga
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
   bool _isLoading = false;
-
   bool _isEmailChecking = false;
   bool _isEmailDuplicate = false;
   String? _emailErrorMessage;
 
   Timer? _debounceTimer;
 
-  // ---------------------------------------------------------------------------
-  // 3. Función para mostrar mensajes con SnackBar
-  // ---------------------------------------------------------------------------
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -61,12 +54,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 4. Función para registrar al usuario con validaciones y navegación condicional
-  // ---------------------------------------------------------------------------
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _isLoading = true);
 
     try {
@@ -75,11 +64,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordController.text.trim(),
       );
 
-      await userCredential.user!.sendEmailVerification();
+      // ✅ Guardar displayName
+      await userCredential.user?.updateDisplayName(_nameController.text.trim());
+
+      await userCredential.user?.sendEmailVerification();
 
       if (!mounted) return;
       _showSnackBar(AppLocalizations.of(context)!.registrationSuccess);
-      // Navegación condicional: ir a dashboard tras registro exitoso
       Navigator.pushReplacementNamed(context, '/dashboard');
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
@@ -112,9 +103,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
-
   // ---------------------------------------------------------------------------
-  // 5. Función para verificar si el correo ya está registrado (debounce)
+  // 3. Verificación del correo duplicado con debounce (no usar método deprecated)
   // ---------------------------------------------------------------------------
   void _onEmailChanged(String email) {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
@@ -133,16 +123,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      final methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(
-        email.trim(),
-      );
+      final methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email.trim());
       if (methods.isNotEmpty) {
         setState(() {
           _isEmailDuplicate = true;
           _emailErrorMessage = AppLocalizations.of(context)!.emailAlreadyInUse;
         });
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (_) {
       setState(() {
         _emailErrorMessage = AppLocalizations.of(context)!.invalidEmail;
       });
@@ -151,10 +139,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // La parte continúa en la siguiente entrega...
-
   // ---------------------------------------------------------------------------
-  // 6. Construcción del widget (formulario)
+  // 4. Construcción visual del formulario
   // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -163,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(loc.registerTitle)),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: Form(
           key: _formKey,
           child: Column(
@@ -184,21 +170,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
-              // Campo: Email con debounce y verificación duplicado
+              // Campo: Email con verificación visual y duplicado
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: loc.emailLabel,
                   prefixIcon: const Icon(Icons.email_outlined),
-                  suffixIcon:
-                      _isEmailChecking
-                          ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                          : _isEmailDuplicate
+                  suffixIcon: _isEmailChecking
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : _isEmailDuplicate
                           ? const Icon(Icons.error, color: Colors.red)
                           : const Icon(Icons.check_circle, color: Colors.green),
                 ),
@@ -211,9 +195,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterEmail;
                   }
-                  if (!RegExp(
-                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                  ).hasMatch(value)) {
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      .hasMatch(value)) {
                     return loc.invalidEmail;
                   }
                   if (_isEmailDuplicate) {
@@ -255,10 +238,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? Icons.visibility_off
                           : Icons.visibility,
                     ),
-                    onPressed:
-                        () => setState(
-                          () => _obscurePassword = !_obscurePassword,
-                        ),
+                    onPressed: () => setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    }),
                   ),
                 ),
                 onChanged: (_) => setState(() {}),
@@ -274,7 +256,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 8),
 
-              // Checklist visual para requisitos de contraseña
+              // Checklist visual de contraseña
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -297,9 +279,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       '• Un número',
                     ),
                     _buildCheckItem(
-                      RegExp(
-                        r'[!@#\$&*~%^_+=().,\-]',
-                      ).hasMatch(_passwordController.text),
+                      RegExp(r'[!@#\$&*~%^_+=().,\-]')
+                          .hasMatch(_passwordController.text),
                       '• Un carácter especial',
                     ),
                   ],
@@ -317,9 +298,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icon(
                       _obscureConfirm ? Icons.visibility_off : Icons.visibility,
                     ),
-                    onPressed:
-                        () =>
-                            setState(() => _obscureConfirm = !_obscureConfirm),
+                    onPressed: () =>
+                        setState(() => _obscureConfirm = !_obscureConfirm),
                   ),
                 ),
                 onChanged: (_) => setState(() {}),
@@ -332,16 +312,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 24),
 
-              // Botón: Registrarse
+              // Botón de registro
               SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
                   onPressed: _isLoading || !_isFormValid() ? null : _register,
-                  child:
-                      _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(loc.registerButton),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(loc.registerButton),
                 ),
               ),
             ],
@@ -351,7 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Widget para checklist visual
+  // ✔️ Checklist visual
   Widget _buildCheckItem(bool condition, String text) {
     return Row(
       children: [
@@ -372,7 +351,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Validación del formulario
+  // ✔️ Validación general del formulario
   bool _isFormValid() {
     final password = _passwordController.text;
     final confirm = _confirmPasswordController.text;
@@ -380,8 +359,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final name = _nameController.text;
     final phone = _phoneController.text;
 
-    final validPassword =
-        password.length >= 8 &&
+    final validPassword = password.length >= 8 &&
         RegExp(r'[A-Z]').hasMatch(password) &&
         RegExp(r'[a-z]').hasMatch(password) &&
         RegExp(r'[0-9]').hasMatch(password) &&
@@ -403,7 +381,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    // Liberar recursos de los controladores para evitar fugas de memoria
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
