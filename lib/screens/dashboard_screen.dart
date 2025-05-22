@@ -2,7 +2,7 @@
 // 📄 Archivo: dashboard_screen.dart
 // 📍 Ubicación: lib/screens/dashboard_screen.dart
 // 📝 Descripción: Pantalla principal con saludo personalizado, logout real y botones de navegación.
-// 📅 Última actualización: 07/05/2025 - 21:45 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 23:40 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -16,7 +16,12 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtener el usuario actual
     final user = FirebaseAuth.instance.currentUser;
-    final String userName = user?.displayName ?? user?.email ?? 'Usuario';
+
+    // Mostrar displayName si está disponible, si no, tomar el nombre de la dirección de correo
+    final String userName =
+        user?.displayName?.trim().isNotEmpty == true
+            ? user!.displayName!
+            : (user?.email?.split('@').first ?? 'Usuario');
 
     // Acceso a las traducciones
     final localizations = AppLocalizations.of(context)!;
@@ -31,10 +36,10 @@ class DashboardScreen extends StatelessWidget {
             tooltip: localizations.logout,
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              final navigator = Navigator.of(context); // ✅ Capturamos el navigator antes del await
+              final navigator = Navigator.of(context);
               await FirebaseAuth.instance.signOut();
               Future.delayed(Duration.zero, () {
-                navigator.pushReplacementNamed('/login'); // ✅ Usamos navigator seguro
+                navigator.pushReplacementNamed('/login');
               });
             },
           ),
