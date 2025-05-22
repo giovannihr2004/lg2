@@ -33,7 +33,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
@@ -103,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+
   // ---------------------------------------------------------------------------
   // 3. Verificación del correo duplicado con debounce (no usar método deprecated)
   // ---------------------------------------------------------------------------
@@ -123,7 +125,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      final methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email.trim());
+      final methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(
+        email.trim(),
+      );
       if (methods.isNotEmpty) {
         setState(() {
           _isEmailDuplicate = true;
@@ -170,19 +174,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
+
               // Campo: Email con verificación visual y duplicado
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: loc.emailLabel,
                   prefixIcon: const Icon(Icons.email_outlined),
-                  suffixIcon: _isEmailChecking
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : _isEmailDuplicate
+                  suffixIcon:
+                      _isEmailChecking
+                          ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                          : _isEmailDuplicate
                           ? const Icon(Icons.error, color: Colors.red)
                           : const Icon(Icons.check_circle, color: Colors.green),
                 ),
@@ -195,8 +201,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (value == null || value.trim().isEmpty) {
                     return loc.pleaseEnterEmail;
                   }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                      .hasMatch(value)) {
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value)) {
                     return loc.invalidEmail;
                   }
                   if (_isEmailDuplicate) {
@@ -238,9 +245,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? Icons.visibility_off
                           : Icons.visibility,
                     ),
-                    onPressed: () => setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    }),
+                    onPressed:
+                        () => setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        }),
                   ),
                 ),
                 onChanged: (_) => setState(() {}),
@@ -279,9 +287,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       '• Un número',
                     ),
                     _buildCheckItem(
-                      RegExp(r'[!@#\$&*~%^_+=().,\-]')
-                          .hasMatch(_passwordController.text),
+                      RegExp(
+                        r'[!@#\$&*~%^_+=().,\-]',
+                      ).hasMatch(_passwordController.text),
                       '• Un carácter especial',
+                    ),
+                    _buildCheckItem(
+                      _confirmPasswordController.text ==
+                          _passwordController.text,
+                      '• Las contraseñas coinciden',
                     ),
                   ],
                 ),
@@ -298,8 +312,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icon(
                       _obscureConfirm ? Icons.visibility_off : Icons.visibility,
                     ),
-                    onPressed: () =>
-                        setState(() => _obscureConfirm = !_obscureConfirm),
+                    onPressed:
+                        () =>
+                            setState(() => _obscureConfirm = !_obscureConfirm),
                   ),
                 ),
                 onChanged: (_) => setState(() {}),
@@ -318,9 +333,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 48,
                 child: ElevatedButton(
                   onPressed: _isLoading || !_isFormValid() ? null : _register,
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : Text(loc.registerButton),
+                  child:
+                      _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(loc.registerButton),
                 ),
               ),
             ],
@@ -359,7 +375,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final name = _nameController.text;
     final phone = _phoneController.text;
 
-    final validPassword = password.length >= 8 &&
+    final validPassword =
+        password.length >= 8 &&
         RegExp(r'[A-Z]').hasMatch(password) &&
         RegExp(r'[a-z]').hasMatch(password) &&
         RegExp(r'[0-9]').hasMatch(password) &&
