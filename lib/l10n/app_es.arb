@@ -46,6 +46,7 @@
   "loginSlogan": "Si puedes leer, puedes comprender. Y si puedes comprender, puedes cambiar tu vida. Y si cambiamos vidas, cambiamos el mundo.",
 
   "resetPasswordSuccess": "Hemos enviado un enlace para restablecer tu contraseña.",
+  "resetPasswordButton": "Recuperar contraseña",
 
   "registerTitle": "Crear cuenta",
   "pleaseEnterEmail": "Por favor ingresa tu correo electrónico.",

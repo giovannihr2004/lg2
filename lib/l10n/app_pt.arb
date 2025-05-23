@@ -46,6 +46,7 @@
   "loginSlogan": "Se você pode ler, pode compreender. E se pode compreender, pode mudar sua vida. E se mudamos vidas, mudamos o mundo.",
 
   "resetPasswordSuccess": "Enviamos um link para redefinir sua senha.",
+  "resetPasswordButton": "Redefinir senha",
 
   "registerTitle": "Criar conta",
   "pleaseEnterEmail": "Por favor, insira seu e-mail.",

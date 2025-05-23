@@ -46,6 +46,7 @@
   "loginSlogan": "読むことができれば、理解できる。理解できれば、人生を変えられる。人生を変えれば、世界を変えることができる。",
 
   "resetPasswordSuccess": "パスワードをリセットするリンクをメールで送信しました。",
+  "resetPasswordButton": "パスワードをリセット",
 
   "registerTitle": "アカウント作成",
   "pleaseEnterEmail": "メールアドレスを入力してください。",
