@@ -2,7 +2,8 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-// 📅 Última actualización: 18/05/2025 - 15:20 (Hora de Colombia)
+//                Incluye logger profesional en lugar de print()
+// 📅 Última actualización: 23/05/2025 - 17:25 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -12,8 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logger/logger.dart'; // ✅ Logger profesional
 
-import 'firebase_options.dart'; // ✅ Importación necesaria
+import 'firebase_options.dart';
 import 'providers/language_provider.dart';
 import 'screens/language_selector_screen.dart';
 import 'screens/auth/login_screen.dart';
@@ -21,8 +23,10 @@ import 'screens/auth/register_screen.dart';
 import 'screens/auth/reset_password_screen.dart';
 import 'screens/auth/phone_verification_screen.dart';
 import 'screens/dashboard_screen.dart';
-import 'screens/legal/terms_screen.dart';
+import 'screens/legal/terms_conditions_screen.dart';
 import 'screens/legal/privacy_policy_screen.dart';
+
+final logger = Logger(); // ✅ Instancia global del logger
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +34,8 @@ void main() async {
   // ---------------------------------------------------------------------------
   // 2. Inicialización de Firebase con opciones explícitas para Windows
   // ---------------------------------------------------------------------------
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  print('✅ Firebase inicializado correctamente');
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  logger.i('✅ Firebase inicializado correctamente'); // ✅ Reemplazo de print()
 
   // ---------------------------------------------------------------------------
   // 3. Ejecutar app con Provider
@@ -112,7 +114,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/resetPassword': (context) => const ResetPasswordScreen(),
         '/dashboard': (context) => const DashboardScreen(),
-        '/terms': (context) => const TermsScreen(),
+        '/terms': (context) => const TermsConditionsScreen(),
         '/privacy': (context) => const PrivacyPolicyScreen(),
       },
 
@@ -123,10 +125,11 @@ class MyApp extends StatelessWidget {
         if (settings.name == '/phoneVerification') {
           final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
-            builder: (context) => PhoneVerificationScreen(
-              verificationId: args['verificationId'],
-              phoneNumber: args['phoneNumber'],
-            ),
+            builder:
+                (context) => PhoneVerificationScreen(
+                  verificationId: args['verificationId'],
+                  phoneNumber: args['phoneNumber'],
+                ),
           );
         }
         return null;
