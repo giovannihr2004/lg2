@@ -2,9 +2,13 @@
 // 📄 Archivo: register_screen.dart
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
 // 📝 Descripción: Registro con validaciones, verificación, almacenamiento y displayName
-// 📅 Última actualización: 22/05/2025 - 20:32 (Hora de Colombia)
+// ♿ Mejora: Accesibilidad con Semantics implementada en campos clave
+// 📅 Última actualización: 22/05/2025 - 21:00 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// 1. Importaciones necesarias
+// -----------------------------------------------------------------------------
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -14,7 +18,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 // -----------------------------------------------------------------------------
-// 1. Clase StatefulWidget para la pantalla de registro
+// 2. Definición del StatefulWidget RegisterScreen
 // -----------------------------------------------------------------------------
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -24,7 +28,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 // -----------------------------------------------------------------------------
-// 2. Estado interno de la pantalla de registro
+// 3. Estado interno del formulario de registro con controladores y lógica
 // -----------------------------------------------------------------------------
 class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -50,6 +54,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Timer? _debounceTimer;
 
+  // ---------------------------------------------------------------------------
+  // 4. Mostrar snackbar con mensaje contextual
+  // ---------------------------------------------------------------------------
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -60,14 +67,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // -----------------------------------------------------------------------------
-  // 3. Función principal de registro con almacenamiento en Firestore
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // 5. Función principal de registro
+  // ✔️ Verifica campos, crea usuario, guarda displayName, envía verificación
+  // ✔️ Guarda información en Firestore (colección: usuarios)
+  // ---------------------------------------------------------------------------
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
 
     try {
+      // 5.1 Crear usuario en Firebase Auth
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -76,19 +86,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final user = userCredential.user;
       if (user == null) throw Exception("No se pudo crear el usuario");
 
-      // ✅ Guardar displayName en FirebaseAuth
+      // 5.2 Guardar displayName en el perfil del usuario
       await user.updateDisplayName(_nameController.text.trim());
 
-      // ✅ Enviar correo de verificación
+      // 5.3 Enviar correo de verificación
       await user.sendEmailVerification();
 
-      // ✅ Preparar campos adicionales
+      // 5.4 Preparar datos adicionales para Firestore
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final phone = fullPhoneNumber;
       final uid = user.uid;
 
-      // ✅ Guardar datos completos en Firestore
+      // 5.5 Guardar usuario completo en Firestore
       await FirebaseFirestore.instance.collection('usuarios').doc(uid).set({
         'uid': uid,
         'email': email,
@@ -99,6 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
+      // 5.6 Mostrar éxito y navegar al dashboard
       if (!mounted) return;
       _showSnackBar(AppLocalizations.of(context)!.registrationSuccess);
       Navigator.pushReplacementNamed(context, '/dashboard');
@@ -134,9 +145,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // -----------------------------------------------------------------------------
-  // 4. Verificación del correo duplicado con debounce
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // 6. Verificación de correo duplicado con debounce
+  // ---------------------------------------------------------------------------
   void _onEmailChanged(String email) {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {
@@ -170,9 +181,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // -----------------------------------------------------------------------------
-  // 5. Construcción visual del formulario (inicio)
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // 7. Inicio del formulario visual con campos accesibles
+  // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -185,119 +196,150 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: Column(
             children: [
-              // Campo: Nombre
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: loc.nameLabel,
-                  prefixIcon: const Icon(Icons.person_outline),
-                ),
-                onChanged: (_) => setState(() {}),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterName;
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Campo: Email con validación visual
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: loc.emailLabel,
-                  prefixIcon: const Icon(Icons.email_outlined),
-                  suffixIcon:
-                      _isEmailChecking
-                          ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                          : _isEmailDuplicate
-                          ? const Icon(Icons.error, color: Colors.red)
-                          : const Icon(Icons.check_circle, color: Colors.green),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                onChanged: (value) {
-                  setState(() {});
-                  _onEmailChanged(value);
-                },
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterEmail;
-                  }
-                  if (!RegExp(
-                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                  ).hasMatch(value)) {
-                    return loc.invalidEmail;
-                  }
-                  if (_isEmailDuplicate) {
-                    return _emailErrorMessage;
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Campo: Teléfono
-              IntlPhoneField(
-                controller: _phoneController,
-                decoration: InputDecoration(
-                  labelText: loc.phoneLabel,
-                  helperText: loc.includeCountryCode,
-                  border: const OutlineInputBorder(),
-                ),
-                initialCountryCode: 'CO',
-                onChanged: (phone) {
-                  selectedCountryCode = '+${phone.countryCode}';
-                  selectedFlagEmoji =
-                      phone.countryISOCode == 'CO' ? '🇨🇴' : '🌐';
-                  fullPhoneNumber = phone.completeNumber;
-                  setState(() {});
-                },
-                validator: (value) {
-                  if (value == null || value.number.isEmpty) {
-                    return loc.pleaseEnterPhone;
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              // Campo: Contraseña
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  labelText: loc.passwordLabelRegister,
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                    ),
-                    onPressed:
-                        () => setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        }),
+              // -----------------------------------------------------------------
+              // Campo 1: Nombre con Semantics
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Nombre completo',
+                textField: true,
+                child: TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: loc.nameLabel,
+                    prefixIcon: const Icon(Icons.person_outline),
                   ),
+                  onChanged: (_) => setState(() {}),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return loc.pleaseEnterName;
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (_) => setState(() {}),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterPassword;
-                  }
-                  if (value.length < 8) {
-                    return loc.passwordTooShort;
-                  }
-                  return null;
-                },
+              ),
+              const SizedBox(height: 16),
+
+              // -----------------------------------------------------------------
+              // Campo 2: Correo electrónico con Semantics
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Correo electrónico',
+                textField: true,
+                child: TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: loc.emailLabel,
+                    prefixIcon: const Icon(Icons.email_outlined),
+                    suffixIcon:
+                        _isEmailChecking
+                            ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                            : _isEmailDuplicate
+                            ? const Icon(Icons.error, color: Colors.red)
+                            : const Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                            ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    setState(() {});
+                    _onEmailChanged(value);
+                  },
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return loc.pleaseEnterEmail;
+                    }
+                    if (!RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    ).hasMatch(value)) {
+                      return loc.invalidEmail;
+                    }
+                    if (_isEmailDuplicate) {
+                      return _emailErrorMessage;
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // -----------------------------------------------------------------
+              // Campo 3: Número de teléfono con Semantics
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Número de teléfono con código de país',
+                textField: true,
+                child: IntlPhoneField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                    labelText: loc.phoneLabel,
+                    helperText: loc.includeCountryCode,
+                    border: const OutlineInputBorder(),
+                  ),
+                  initialCountryCode: 'CO',
+                  onChanged: (phone) {
+                    selectedCountryCode = '+${phone.countryCode}';
+                    selectedFlagEmoji =
+                        phone.countryISOCode == 'CO' ? '🇨🇴' : '🌐';
+                    fullPhoneNumber = phone.completeNumber;
+                    setState(() {});
+                  },
+                  validator: (value) {
+                    if (value == null || value.number.isEmpty) {
+                      return loc.pleaseEnterPhone;
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // -----------------------------------------------------------------
+              // Campo 4: Contraseña con Semantics y botón de visibilidad
+              // -----------------------------------------------------------------
+              Semantics(
+                label:
+                    'Contraseña. Mínimo 8 caracteres, mayúscula, minúscula, número y símbolo',
+                textField: true,
+                child: TextFormField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
+                    labelText: loc.passwordLabelRegister,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed:
+                          () => setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          }),
+                    ),
+                  ),
+                  onChanged: (_) => setState(() {}),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return loc.pleaseEnterPassword;
+                    }
+                    if (value.length < 8) {
+                      return loc.passwordTooShort;
+                    }
+                    return null;
+                  },
+                ),
               ),
               const SizedBox(height: 8),
 
-              // ✔️ Checklist visual de contraseña
+              // -----------------------------------------------------------------
+              // Checklist visual de requisitos de contraseña
+              // -----------------------------------------------------------------
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -335,43 +377,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Campo: Confirmar Contraseña
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: _obscureConfirm,
-                decoration: InputDecoration(
-                  labelText: loc.confirmPasswordLabel,
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirm ? Icons.visibility_off : Icons.visibility,
+              // -----------------------------------------------------------------
+              // Campo 5: Confirmar contraseña con Semantics
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Confirmar contraseña. Debe coincidir con la anterior',
+                textField: true,
+                child: TextFormField(
+                  controller: _confirmPasswordController,
+                  obscureText: _obscureConfirm,
+                  decoration: InputDecoration(
+                    labelText: loc.confirmPasswordLabel,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureConfirm
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed:
+                          () => setState(() {
+                            _obscureConfirm = !_obscureConfirm;
+                          }),
                     ),
-                    onPressed:
-                        () => setState(() {
-                          _obscureConfirm = !_obscureConfirm;
-                        }),
                   ),
+                  onChanged: (_) => setState(() {}),
+                  validator: (value) {
+                    if (value != _passwordController.text) {
+                      return loc.passwordsDoNotMatch;
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (_) => setState(() {}),
-                validator: (value) {
-                  if (value != _passwordController.text) {
-                    return loc.passwordsDoNotMatch;
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 24),
-
-              // Botón de registro
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _isLoading || !_isFormValid() ? null : _register,
-                  child:
-                      _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(loc.registerButton),
+              // -----------------------------------------------------------------
+              // Botón principal de registro con Semantics
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Botón para crear cuenta',
+                button: true,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: _isLoading || !_isFormValid() ? null : _register,
+                    child:
+                        _isLoading
+                            ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                            : Text(loc.registerButton),
+                  ),
                 ),
               ),
             ],
@@ -381,7 +438,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ✔️ Ítem visual del checklist de contraseña
+  // ---------------------------------------------------------------------------
+  // 8. Ítem visual del checklist de contraseña
+  // ---------------------------------------------------------------------------
   Widget _buildCheckItem(bool condition, String text) {
     return Row(
       children: [
@@ -402,7 +461,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ✔️ Validación general del formulario
+  // ---------------------------------------------------------------------------
+  // 9. Validación completa del formulario (todos los campos clave)
+  // ---------------------------------------------------------------------------
   bool _isFormValid() {
     final password = _passwordController.text;
     final confirm = _confirmPasswordController.text;
@@ -431,6 +492,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         !_isEmailDuplicate;
   }
 
+  // ---------------------------------------------------------------------------
+  // 10. Liberar recursos al cerrar la pantalla
+  // ---------------------------------------------------------------------------
   @override
   void dispose() {
     _nameController.dispose();
