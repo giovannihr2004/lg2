@@ -2,7 +2,8 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 📅 Última actualización: 20/05/2025 - 23:20 (Hora de Colombia)
+// 🧩 Mejora: Accesibilidad implementada con etiquetas Semantics
+// 📅 Última actualización: 22/05/2025 - 20:00 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -28,6 +29,9 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+// -----------------------------------------------------------------------------
+// 3. Clase interna del estado con controladores, validaciones y animaciones
+// -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -65,6 +69,9 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
+  // ---------------------------------------------------------------------------
+  // 4. Funciones de validación de formato (correo, teléfono, contraseña)
+  // ---------------------------------------------------------------------------
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
 
@@ -73,7 +80,9 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isValidPassword(String input) => RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
   ).hasMatch(input);
-
+  // ---------------------------------------------------------------------------
+  // 5. Función auxiliar: Mostrar mensaje en snackbar contextual
+  // ---------------------------------------------------------------------------
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -84,6 +93,9 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
+  // ---------------------------------------------------------------------------
+  // 6. Función principal: Login con correo/contraseña o teléfono
+  // ---------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
     final password = passwordController.text.trim();
@@ -157,6 +169,9 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // 7. Login con Google: función invocada por botón correspondiente
+  // ---------------------------------------------------------------------------
   Future<void> _signInWithGoogle() async {
     await GoogleSignInService.signInWithGoogleAndNavigate(context);
   }
@@ -191,168 +206,241 @@ class _LoginScreenState extends State<LoginScreen>
           child: Column(
             children: [
               const SizedBox(height: 40),
+              // -----------------------------------------------------------------
+              // 8. Logo de la app con animación y descripción accesible
+              // -----------------------------------------------------------------
               FadeTransition(
                 opacity: _logoController,
-                child: Center(
-                  child: Image.asset(
-                    "assets/images/logo_login.png", // ✅ Imagen actualizada
-                    height: 220,
-                    fit: BoxFit.contain,
+                child: Semantics(
+                  label: 'Logo de Lector Global',
+                  image: true,
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/logo_login.png",
+                      height: 220,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 12),
+              // -----------------------------------------------------------------
+              // 9. Eslogan de bienvenida accesible
+              // -----------------------------------------------------------------
               FadeTransition(
                 opacity: _sloganController,
-                child: Text(
-                  loc.loginSlogan,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.black87,
+                child: Semantics(
+                  label: loc.loginSlogan,
+                  child: Text(
+                    loc.loginSlogan,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              TextFormField(
-                controller: emailOrPhoneController,
-                decoration: InputDecoration(
-                  labelText: loc.emailOrPhoneLabel,
-                  prefixIcon: const Icon(Icons.person_outline),
-                  suffixIcon:
-                      _isEmail(inputText) || _isPhone(inputText)
-                          ? const Icon(Icons.check_circle, color: Colors.green)
-                          : null,
+              // -----------------------------------------------------------------
+              // 10. Campo de entrada para email o teléfono (con accesibilidad)
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Correo electrónico o número de teléfono',
+                textField: true,
+                child: TextFormField(
+                  controller: emailOrPhoneController,
+                  decoration: InputDecoration(
+                    labelText: loc.emailOrPhoneLabel,
+                    prefixIcon: const Icon(Icons.person_outline),
+                    suffixIcon:
+                        _isEmail(inputText) || _isPhone(inputText)
+                            ? const Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                            )
+                            : null,
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onChanged: (_) => setState(() {}),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return loc.pleaseEnterEmailOrPhone;
+                    }
+                    if (!_isEmail(value.trim()) && !_isPhone(value.trim())) {
+                      return loc.invalidFormat;
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.emailAddress,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                onChanged: (_) => setState(() {}),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterEmailOrPhone;
-                  }
-                  if (!_isEmail(value.trim()) && !_isPhone(value.trim())) {
-                    return loc.invalidFormat;
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: passwordController,
-                obscureText: _obscureText,
-                decoration: InputDecoration(
-                  labelText: loc.passwordLabelLogin,
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed:
-                        () => setState(() => _obscureText = !_obscureText),
-                  ),
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                onChanged: (_) => setState(() {}),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return loc.pleaseEnterPassword;
-                  }
-                  if (!_isValidPassword(value.trim())) {
-                    return 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed:
-                      () => Navigator.pushNamed(context, '/resetPassword'),
-                  child: Text(
-                    loc.forgotPassword,
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _login,
-                  child:
-                      _isLoading
-                          ? const SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              color: Colors.white,
-                            ),
-                          )
-                          : Text(
-                            loc.loginButton,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              OutlinedButton.icon(
-                onPressed: _signInWithGoogle,
-                icon: Image.asset("assets/images/google.png", height: 20),
-                label: Text(loc.googleSignIn),
-              ),
-              const SizedBox(height: 24),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    ),
-                  );
-                },
-                child: Text.rich(
-                  TextSpan(
-                    text: '${loc.noAccount} ',
-                    children: [
-                      TextSpan(
-                        text: loc.registerHere,
-                        style: const TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold,
-                        ),
+              // -----------------------------------------------------------------
+              // 11. Campo de contraseña con accesibilidad y visibilidad alternante
+              // -----------------------------------------------------------------
+              Semantics(
+                label:
+                    'Contraseña. Debe tener mínimo 8 caracteres, mayúscula, minúscula, número y símbolo',
+                textField: true,
+                child: TextFormField(
+                  controller: passwordController,
+                  obscureText: _obscureText,
+                  decoration: InputDecoration(
+                    labelText: loc.passwordLabelLogin,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
                       ),
-                    ],
+                      onPressed:
+                          () => setState(() => _obscureText = !_obscureText),
+                    ),
+                  ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onChanged: (_) => setState(() {}),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return loc.pleaseEnterPassword;
+                    }
+                    if (!_isValidPassword(value.trim())) {
+                      return 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+              // -----------------------------------------------------------------
+              // 12. Enlace para recuperación de contraseña con descripción accesible
+              // -----------------------------------------------------------------
+              Semantics(
+                label: '¿Olvidaste tu contraseña?',
+                button: true,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed:
+                        () => Navigator.pushNamed(context, '/resetPassword'),
+                    child: Text(
+                      loc.forgotPassword,
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // -----------------------------------------------------------------
+              // 13. Botón principal de login con feedback visual accesible
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Botón para iniciar sesión',
+                button: true,
+                child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _login,
+                    child:
+                        _isLoading
+                            ? const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: Colors.white,
+                              ),
+                            )
+                            : Text(
+                              loc.loginButton,
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // -----------------------------------------------------------------
+              // 14. Botón de login con Google accesible
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Iniciar sesión con cuenta de Google',
+                button: true,
+                child: OutlinedButton.icon(
+                  onPressed: _signInWithGoogle,
+                  icon: Image.asset("assets/images/google.png", height: 20),
+                  label: Text(loc.googleSignIn),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // -----------------------------------------------------------------
+              // 15. Botón para navegar a pantalla de registro
+              // -----------------------------------------------------------------
+              Semantics(
+                label: '¿No tienes cuenta? Regístrate aquí',
+                button: true,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ),
+                    );
+                  },
+                  child: Text.rich(
+                    TextSpan(
+                      text: '${loc.noAccount} ',
+                      children: [
+                        TextSpan(
+                          text: loc.registerHere,
+                          style: const TextStyle(
+                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 8),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/terms'),
-                child: Text(
-                  'Lee nuestros términos y condiciones aquí.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: theme.textTheme.bodySmall?.color?.withAlpha(204),
-                    decoration: TextDecoration.underline,
+              // -----------------------------------------------------------------
+              // 16. Enlace accesible a términos y condiciones
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Lee nuestros términos y condiciones aquí',
+                link: true,
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, '/terms'),
+                  child: Text(
+                    'Lee nuestros términos y condiciones aquí.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: theme.textTheme.bodySmall?.color?.withAlpha(204),
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 4),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/privacy'),
-                child: Text(
-                  'Lee nuestra política de privacidad aquí.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: theme.textTheme.bodySmall?.color?.withAlpha(204),
-                    decoration: TextDecoration.underline,
+              // -----------------------------------------------------------------
+              // 17. Enlace accesible a política de privacidad
+              // -----------------------------------------------------------------
+              Semantics(
+                label: 'Lee nuestra política de privacidad aquí',
+                link: true,
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, '/privacy'),
+                  child: Text(
+                    'Lee nuestra política de privacidad aquí.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: theme.textTheme.bodySmall?.color?.withAlpha(204),
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ),
