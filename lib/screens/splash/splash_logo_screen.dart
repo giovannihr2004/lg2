@@ -64,7 +64,7 @@ class _SplashLogoScreenState extends State<SplashLogoScreen>
             label: 'Logo de Lector Global',
             image: true,
             child: Image.asset(
-              'assets/images/logo_splash2.png',
+              'assets/images/logo_splash2.webp',
               width: 300,
               height: 300,
               fit: BoxFit.contain,

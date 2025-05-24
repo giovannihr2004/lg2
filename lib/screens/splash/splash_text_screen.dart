@@ -75,7 +75,7 @@ class _SplashTextScreenState extends State<SplashTextScreen>
                   label: 'Logo familiar de Lector Global',
                   image: true,
                   child: Image.asset(
-                    'assets/images/logo_bienvenida.png',
+                    'assets/images/logo_bienvenida.webp',
                     height: 220,
                     fit: BoxFit.contain,
                   ),

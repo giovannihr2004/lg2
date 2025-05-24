@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen>
                   image: true,
                   child: Center(
                     child: Image.asset(
-                      "assets/images/logo_login.png",
+                      "assets/images/logo_login.webp",
                       height: 220,
                       fit: BoxFit.contain,
                     ),
@@ -377,7 +377,7 @@ class _LoginScreenState extends State<LoginScreen>
                 button: true,
                 child: OutlinedButton.icon(
                   onPressed: _signInWithGoogle,
-                  icon: Image.asset("assets/images/google.png", height: 20),
+                  icon: Image.asset("assets/images/google.webp", height: 20),
                   label: Text(loc.googleSignIn),
                 ),
               ),
