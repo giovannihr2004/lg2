@@ -2,8 +2,8 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-//                Incluye logger profesional y prueba de Lazy Loading
-// 📅 Última actualización: 23/05/2025 - 18:45 (Hora de Colombia)
+//                Incluye logger profesional y detección de sesión activa
+// 📅 Última actualización: 24/05/2025 - 13:10 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -17,7 +17,7 @@ import 'package:logger/logger.dart';
 
 import 'firebase_options.dart';
 import 'providers/language_provider.dart';
-import 'screens/language_selector_screen.dart';
+import 'screens/session/session_wrapper_screen.dart'; // ✅ NUEVO: detección de sesión
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/auth/reset_password_screen.dart';
@@ -26,6 +26,7 @@ import 'screens/dashboard_screen.dart';
 import 'screens/legal/terms_conditions_screen.dart';
 import 'screens/legal/privacy_policy_screen.dart';
 import 'screens/testing/lazy_loading_demo.dart'; // ✅ Demo de Lazy Loading
+
 // -----------------------------------------------------------------------------
 // 2. Función principal y ejecución con Provider
 // -----------------------------------------------------------------------------
@@ -101,20 +102,22 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+
       // -----------------------------------------------------------------------
       // 4. Rutas de navegación nombradas
       // -----------------------------------------------------------------------
       initialRoute: '/',
       routes: {
-        '/': (context) => const LanguageSelectorScreen(),
+        '/':
+            (context) =>
+                const SessionWrapperScreen(), // ✅ reemplazo automático de inicio
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/resetPassword': (context) => const ResetPasswordScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/terms': (context) => const TermsConditionsScreen(),
         '/privacy': (context) => const PrivacyPolicyScreen(),
-        '/lazy':
-            (context) => const LazyLoadingDemo(), // ✅ Ruta demo lazy loading
+        '/lazy': (context) => const LazyLoadingDemo(),
       },
 
       // -----------------------------------------------------------------------
