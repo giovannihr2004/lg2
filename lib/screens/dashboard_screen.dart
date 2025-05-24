@@ -2,38 +2,62 @@
 // 📄 Archivo: dashboard_screen.dart
 // 📍 Ubicación: lib/screens/dashboard_screen.dart
 // 📝 Descripción: Pantalla principal con saludo personalizado, logout real y botones de navegación.
-// ♿ Mejora: Accesibilidad implementada con Semantics
-// 📅 Última actualización: 22/05/2025 - 21:55 (Hora de Colombia)
+// 🤩 Mejora: Usa flutter_secure_storage para personalizar el saludo con el email guardado
+// 📅 Última actualización: 23/05/2025 - 18:00 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-// 1. Importaciones necesarias
+// INICIO PARTE 1 - Importaciones necesarias
 // -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Traducciones
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../services/secure_storage_service.dart'; // ✅ Nueva importación
 
 // -----------------------------------------------------------------------------
-// 2. Declaración del widget sin estado
+// FIN PARTE 1
 // -----------------------------------------------------------------------------
-class DashboardScreen extends StatelessWidget {
+// -----------------------------------------------------------------------------
+// INICIO PARTE 2 - StatefulWidget y método para leer el email seguro
+// -----------------------------------------------------------------------------
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
-  // ---------------------------------------------------------------------------
-  // 3. Construcción visual con Semantics
-  // ---------------------------------------------------------------------------
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  String userName = 'Usuario';
+  final SecureStorageService _storage = SecureStorageService();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final storedEmail = await _storage.read('email');
+    if (storedEmail != null && storedEmail.trim().isNotEmpty) {
+      final name = storedEmail.split('@').first;
+      if (mounted) {
+        setState(() {
+          userName = name;
+        });
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 2
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 3 - AppBar y estructura general del Scaffold
+  // -----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    // 3.1 Obtener usuario actual de Firebase Auth
-    final user = FirebaseAuth.instance.currentUser;
-
-    // 3.2 Extraer displayName o email como nombre visible
-    final String userName =
-        user?.displayName?.trim().isNotEmpty == true
-            ? user!.displayName!
-            : (user?.email?.split('@').first ?? 'Usuario');
-
-    // 3.3 Acceso a localizaciones
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -55,19 +79,23 @@ class DashboardScreen extends StatelessWidget {
           ),
         ],
       ),
+      // -----------------------------------------------------------------------------
+      // FIN PARTE 3
+      // -----------------------------------------------------------------------------
+      // -----------------------------------------------------------------------------
+      // INICIO PARTE 4 - Saludo personalizado, mensaje motivacional y botones
+      // -----------------------------------------------------------------------------
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // -----------------------------------------------------------------
-              // 4.1 Saludo personalizado con Semantics
-              // -----------------------------------------------------------------
               Semantics(
-                label: 'Bienvenida. ${localizations.welcome}, $userName',
+                label:
+                    'Bienvenida. ${AppLocalizations.of(context)!.welcome}, $userName',
                 child: Text(
-                  '${localizations.welcome}, $userName',
+                  '${AppLocalizations.of(context)!.welcome}, $userName',
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -78,13 +106,10 @@ class DashboardScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // -----------------------------------------------------------------
-              // 4.2 Mensaje motivacional accesible
-              // -----------------------------------------------------------------
               Semantics(
-                label: localizations.startYourReadingJourney,
+                label: AppLocalizations.of(context)!.startYourReadingJourney,
                 child: Text(
-                  localizations.startYourReadingJourney,
+                  AppLocalizations.of(context)!.startYourReadingJourney,
                   style: const TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -92,20 +117,21 @@ class DashboardScreen extends StatelessWidget {
 
               const SizedBox(height: 40),
 
-              // -----------------------------------------------------------------
-              // 4.3 Botón "Lecciones" con Semantics
-              // -----------------------------------------------------------------
               Semantics(
                 label: 'Abrir sección de lecciones',
                 button: true,
                 child: ElevatedButton.icon(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(localizations.lessonsComingSoon)),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)!.lessonsComingSoon,
+                        ),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.menu_book),
-                  label: Text(localizations.lessons),
+                  label: Text(AppLocalizations.of(context)!.lessons),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,
@@ -118,20 +144,22 @@ class DashboardScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 20),
-              // -----------------------------------------------------------------
-              // 4.4 Botón "Mi progreso" con Semantics
-              // -----------------------------------------------------------------
+
               Semantics(
                 label: 'Ver mi progreso',
                 button: true,
                 child: ElevatedButton.icon(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(localizations.progressComingSoon)),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)!.progressComingSoon,
+                        ),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.show_chart),
-                  label: Text(localizations.myProgress),
+                  label: Text(AppLocalizations.of(context)!.myProgress),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,
@@ -149,3 +177,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 }
+
+// -----------------------------------------------------------------------------
+// FIN PARTE 4 - Fin del archivo completo
+// -----------------------------------------------------------------------------
