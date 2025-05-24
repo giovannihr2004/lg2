@@ -2,8 +2,8 @@
 // 📄 Archivo: main.dart
 // 📍 Ubicación: lib/main.dart
 // 📝 Descripción: Inicialización de Firebase + rutas + temas + recuperación
-//                Incluye logger profesional en lugar de print()
-// 📅 Última actualización: 23/05/2025 - 17:25 (Hora de Colombia)
+//                Incluye logger profesional y prueba de Lazy Loading
+// 📅 Última actualización: 23/05/2025 - 18:45 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:logger/logger.dart'; // ✅ Logger profesional
+import 'package:logger/logger.dart';
 
 import 'firebase_options.dart';
 import 'providers/language_provider.dart';
@@ -25,21 +25,19 @@ import 'screens/auth/phone_verification_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/legal/terms_conditions_screen.dart';
 import 'screens/legal/privacy_policy_screen.dart';
+import 'screens/testing/lazy_loading_demo.dart'; // ✅ Demo de Lazy Loading
+// -----------------------------------------------------------------------------
+// 2. Función principal y ejecución con Provider
+// -----------------------------------------------------------------------------
 
 final logger = Logger(); // ✅ Instancia global del logger
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ---------------------------------------------------------------------------
-  // 2. Inicialización de Firebase con opciones explícitas para Windows
-  // ---------------------------------------------------------------------------
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  logger.i('✅ Firebase inicializado correctamente'); // ✅ Reemplazo de print()
+  logger.i('✅ Firebase inicializado correctamente');
 
-  // ---------------------------------------------------------------------------
-  // 3. Ejecutar app con Provider
-  // ---------------------------------------------------------------------------
   runApp(
     ChangeNotifierProvider(
       create: (_) => LanguageProvider(),
@@ -49,7 +47,7 @@ void main() async {
 }
 
 // -----------------------------------------------------------------------------
-// 4. Widget raíz con MaterialApp
+// 3. Widget raíz con configuración visual y de localización
 // -----------------------------------------------------------------------------
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -103,9 +101,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-
       // -----------------------------------------------------------------------
-      // 5. Rutas de navegación nombradas
+      // 4. Rutas de navegación nombradas
       // -----------------------------------------------------------------------
       initialRoute: '/',
       routes: {
@@ -116,10 +113,12 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const DashboardScreen(),
         '/terms': (context) => const TermsConditionsScreen(),
         '/privacy': (context) => const PrivacyPolicyScreen(),
+        '/lazy':
+            (context) => const LazyLoadingDemo(), // ✅ Ruta demo lazy loading
       },
 
       // -----------------------------------------------------------------------
-      // 6. Rutas generadas dinámicamente con argumentos
+      // 5. Rutas generadas dinámicamente con argumentos
       // -----------------------------------------------------------------------
       onGenerateRoute: (settings) {
         if (settings.name == '/phoneVerification') {
