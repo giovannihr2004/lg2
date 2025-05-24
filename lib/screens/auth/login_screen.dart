@@ -2,12 +2,12 @@
 // 📄 Archivo: login_screen.dart
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
-// 🧩 Mejora: Accesibilidad implementada con etiquetas Semantics
-// 📅 Última actualización: 22/05/2025 - 20:00 (Hora de Colombia)
+// 🤩 Mejora: Integración con almacenamiento seguro para guardar correo tras login
+// 📅 Última actualización: 23/05/2025 - 17:50 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-// 1. Importaciones necesarias
+// INICIO PARTE 1 - Importaciones necesarias
 // -----------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,10 +17,14 @@ import 'package:provider/provider.dart';
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 import '../../services/google_sign_in_service.dart';
+import '../../services/secure_storage_service.dart'; // ✅ Nueva importación
 import 'register_screen.dart';
 
 // -----------------------------------------------------------------------------
-// 2. Widget con estado: LoginScreen
+// FIN PARTE 1
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// INICIO PARTE 2 - Declaración de widget con estado y controladores
 // -----------------------------------------------------------------------------
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,9 +33,6 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-// -----------------------------------------------------------------------------
-// 3. Clase interna del estado con controladores, validaciones y animaciones
-// -----------------------------------------------------------------------------
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -45,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen>
   late AnimationController _sloganController;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final SecureStorageService _secureStorage =
+      SecureStorageService(); // ✅ Nueva instancia
 
   @override
   void initState() {
@@ -69,9 +72,12 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  // ---------------------------------------------------------------------------
-  // 4. Funciones de validación de formato (correo, teléfono, contraseña)
-  // ---------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 2
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 3 - Validaciones y función de snackbar
+  // -----------------------------------------------------------------------------
   bool _isEmail(String input) =>
       RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
 
@@ -80,9 +86,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isValidPassword(String input) => RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$',
   ).hasMatch(input);
-  // ---------------------------------------------------------------------------
-  // 5. Función auxiliar: Mostrar mensaje en snackbar contextual
-  // ---------------------------------------------------------------------------
+
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -93,9 +97,12 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 6. Función principal: Login con correo/contraseña o teléfono
-  // ---------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 3
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 4 - Función principal de login con almacenamiento seguro
+  // -----------------------------------------------------------------------------
   Future<void> _login() async {
     final input = emailOrPhoneController.text.trim();
     final password = passwordController.text.trim();
@@ -111,7 +118,6 @@ class _LoginScreenState extends State<LoginScreen>
           password: password,
         );
 
-        // Verificar si el correo está verificado
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
           await user.reload();
@@ -121,6 +127,9 @@ class _LoginScreenState extends State<LoginScreen>
             );
             return;
           }
+
+          // ✅ Guardar el correo en almacenamiento seguro
+          await _secureStorage.save('email', input);
         }
 
         if (!mounted) return;
@@ -169,9 +178,12 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // 7. Login con Google: función invocada por botón correspondiente
-  // ---------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 4
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 5 - Login con Google y método build inicial
+  // -----------------------------------------------------------------------------
   Future<void> _signInWithGoogle() async {
     await GoogleSignInService.signInWithGoogleAndNavigate(context);
   }
@@ -205,10 +217,13 @@ class _LoginScreenState extends State<LoginScreen>
           key: _formKey,
           child: Column(
             children: [
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 5
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 6 - Logo, eslogan, campo de email/teléfono
+              // -----------------------------------------------------------------------------
               const SizedBox(height: 40),
-              // -----------------------------------------------------------------
-              // 8. Logo de la app con animación y descripción accesible
-              // -----------------------------------------------------------------
               FadeTransition(
                 opacity: _logoController,
                 child: Semantics(
@@ -224,9 +239,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 12),
-              // -----------------------------------------------------------------
-              // 9. Eslogan de bienvenida accesible
-              // -----------------------------------------------------------------
               FadeTransition(
                 opacity: _sloganController,
                 child: Semantics(
@@ -243,9 +255,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-              // -----------------------------------------------------------------
-              // 10. Campo de entrada para email o teléfono (con accesibilidad)
-              // -----------------------------------------------------------------
               Semantics(
                 label: 'Correo electrónico o número de teléfono',
                 textField: true,
@@ -277,9 +286,12 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 16),
-              // -----------------------------------------------------------------
-              // 11. Campo de contraseña con accesibilidad y visibilidad alternante
-              // -----------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 6
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 7 - Campo de contraseña y enlace de recuperación
+              // -----------------------------------------------------------------------------
               Semantics(
                 label:
                     'Contraseña. Debe tener mínimo 8 caracteres, mayúscula, minúscula, número y símbolo',
@@ -312,9 +324,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 8),
-              // -----------------------------------------------------------------
-              // 12. Enlace para recuperación de contraseña con descripción accesible
-              // -----------------------------------------------------------------
               Semantics(
                 label: '¿Olvidaste tu contraseña?',
                 button: true,
@@ -331,9 +340,12 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-              // -----------------------------------------------------------------
-              // 13. Botón principal de login con feedback visual accesible
-              // -----------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 7
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 8 - Botón de login y login con Google
+              // -----------------------------------------------------------------------------
               Semantics(
                 label: 'Botón para iniciar sesión',
                 button: true,
@@ -360,9 +372,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-              // -----------------------------------------------------------------
-              // 14. Botón de login con Google accesible
-              // -----------------------------------------------------------------
               Semantics(
                 label: 'Iniciar sesión con cuenta de Google',
                 button: true,
@@ -373,9 +382,12 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 24),
-              // -----------------------------------------------------------------
-              // 15. Botón para navegar a pantalla de registro
-              // -----------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 8
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 9 - Botón de registro y enlaces legales
+              // -----------------------------------------------------------------------------
               Semantics(
                 label: '¿No tienes cuenta? Regístrate aquí',
                 button: true,
@@ -405,9 +417,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 8),
-              // -----------------------------------------------------------------
-              // 16. Enlace accesible a términos y condiciones
-              // -----------------------------------------------------------------
               Semantics(
                 label: 'Lee nuestros términos y condiciones aquí',
                 link: true,
@@ -425,9 +434,6 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               const SizedBox(height: 4),
-              // -----------------------------------------------------------------
-              // 17. Enlace accesible a política de privacidad
-              // -----------------------------------------------------------------
               Semantics(
                 label: 'Lee nuestra política de privacidad aquí',
                 link: true,
@@ -451,3 +457,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 }
+
+// -----------------------------------------------------------------------------
+// FIN PARTE 9 - Fin del archivo completo
+// -----------------------------------------------------------------------------
