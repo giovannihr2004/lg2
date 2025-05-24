@@ -3,7 +3,7 @@
 // 📍 Ubicación: lib/screens/auth/login_screen.dart
 // 📝 Descripción: Pantalla de login con validaciones, animaciones y enlaces legales
 // 🤩 Mejora: Integración con almacenamiento seguro para guardar correo tras login
-// 📅 Última actualización: 23/05/2025 - 17:50 (Hora de Colombia)
+// 📅 Última actualización: 24/05/2025 - 15:35 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -17,8 +17,9 @@ import 'package:provider/provider.dart';
 import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 import '../../services/google_sign_in_service.dart';
-import '../../services/secure_storage_service.dart'; // ✅ Nueva importación
+import '../../services/secure_storage_service.dart';
 import 'register_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 // -----------------------------------------------------------------------------
 // FIN PARTE 1
@@ -46,8 +47,7 @@ class _LoginScreenState extends State<LoginScreen>
   late AnimationController _sloganController;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final SecureStorageService _secureStorage =
-      SecureStorageService(); // ✅ Nueva instancia
+  final SecureStorageService _secureStorage = SecureStorageService();
 
   @override
   void initState() {
@@ -100,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen>
   // -----------------------------------------------------------------------------
   // FIN PARTE 3
   // -----------------------------------------------------------------------------
+
   // -----------------------------------------------------------------------------
   // INICIO PARTE 4 - Función principal de login con almacenamiento seguro
   // -----------------------------------------------------------------------------
@@ -140,6 +141,14 @@ class _LoginScreenState extends State<LoginScreen>
         if (mounted) setState(() => _isLoading = false);
       }
     } else if (_isPhone(input)) {
+      if (kIsWeb) {
+        _showSnackBar(
+          'El inicio con número de teléfono no está disponible en Web.',
+          isError: true,
+        );
+        setState(() => _isLoading = false);
+        return;
+      }
       try {
         await _auth.verifyPhoneNumber(
           phoneNumber: input.startsWith('+') ? input : '+57$input',
@@ -180,6 +189,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   // -----------------------------------------------------------------------------
   // FIN PARTE 4
+  // -----------------------------------------------------------------------------
   // -----------------------------------------------------------------------------
   // -----------------------------------------------------------------------------
   // INICIO PARTE 5 - Login con Google y método build inicial
