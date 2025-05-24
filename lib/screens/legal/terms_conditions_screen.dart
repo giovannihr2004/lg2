@@ -1,14 +1,14 @@
 // -----------------------------------------------------------------------------
-// 📄 Archivo: terms_screen.dart
-// 📍 Ubicación: lib/screens/legal/terms_screen.dart
+// 📄 Archivo: terms_conditions_screen.dart
+// 📍 Ubicación: lib/screens/legal/terms_conditions_screen.dart
 // 📝 Descripción: Pantalla de términos y condiciones completa con scroll
 // 📅 Última actualización: 14/05/2025 - 14:45 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
 
-class TermsScreen extends StatelessWidget {
-  const TermsScreen({super.key});
+class TermsConditionsScreen extends StatelessWidget {
+  const TermsConditionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
