@@ -3,23 +3,21 @@
 // 📍 Ubicación: lib/screens/auth/register_screen.dart
 // 📝 Descripción: Registro con validaciones, verificación, almacenamiento y displayName
 // ♿ Mejora: Accesibilidad con Semantics implementada en campos clave
-// 📅 Última actualización: 22/05/2025 - 21:00 (Hora de Colombia)
+// 💻 Bloqueo automático del campo de teléfono en Web (kIsWeb)
+// 📅 Última actualización: 24/05/2025 - 17:15 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-// 1. Importaciones necesarias
+// INICIO PARTE 1 - Importaciones necesarias y definición del widget
 // -----------------------------------------------------------------------------
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-// -----------------------------------------------------------------------------
-// 2. Definición del StatefulWidget RegisterScreen
-// -----------------------------------------------------------------------------
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -27,9 +25,6 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-// -----------------------------------------------------------------------------
-// 3. Estado interno del formulario de registro con controladores y lógica
-// -----------------------------------------------------------------------------
 class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -53,9 +48,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String fullPhoneNumber = '';
 
   Timer? _debounceTimer;
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 1
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 2 - Función snackbar y lógica principal de registro
+  // -----------------------------------------------------------------------------
 
   // ---------------------------------------------------------------------------
-  // 4. Mostrar snackbar con mensaje contextual
+  // 2.1 Mostrar snackbar con mensaje contextual
   // ---------------------------------------------------------------------------
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
@@ -68,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // 5. Función principal de registro
+  // 2.2 Función principal de registro
   // ✔️ Verifica campos, crea usuario, guarda displayName, envía verificación
   // ✔️ Guarda información en Firestore (colección: usuarios)
   // ---------------------------------------------------------------------------
@@ -77,7 +78,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // 5.1 Crear usuario en Firebase Auth
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -86,19 +86,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final user = userCredential.user;
       if (user == null) throw Exception("No se pudo crear el usuario");
 
-      // 5.2 Guardar displayName en el perfil del usuario
       await user.updateDisplayName(_nameController.text.trim());
-
-      // 5.3 Enviar correo de verificación
       await user.sendEmailVerification();
 
-      // 5.4 Preparar datos adicionales para Firestore
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
-      final phone = fullPhoneNumber;
+      final phone = kIsWeb ? '' : fullPhoneNumber;
       final uid = user.uid;
 
-      // 5.5 Guardar usuario completo en Firestore
       await FirebaseFirestore.instance.collection('usuarios').doc(uid).set({
         'uid': uid,
         'email': email,
@@ -109,7 +104,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      // 5.6 Mostrar éxito y navegar al dashboard
       if (!mounted) return;
       _showSnackBar(AppLocalizations.of(context)!.registrationSuccess);
       Navigator.pushReplacementNamed(context, '/dashboard');
@@ -144,10 +138,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 2
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 3 - Verificación de correo duplicado con debounce
+  // -----------------------------------------------------------------------------
 
-  // ---------------------------------------------------------------------------
-  // 6. Verificación de correo duplicado con debounce
-  // ---------------------------------------------------------------------------
   void _onEmailChanged(String email) {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {
@@ -181,9 +178,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // 7. Inicio del formulario visual con campos accesibles
-  // ---------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 3
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 4 - Inicio del formulario visual y campo de nombre
+  // -----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -218,10 +218,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // -----------------------------------------------------------------
-              // Campo 2: Correo electrónico con Semantics
-              // -----------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 4
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 5 - Campo de correo electrónico con Semantics
+              // -----------------------------------------------------------------------------
               Semantics(
                 label: 'Correo electrónico',
                 textField: true,
@@ -266,41 +268,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // -----------------------------------------------------------------
-              // Campo 3: Número de teléfono con Semantics
-              // -----------------------------------------------------------------
-              Semantics(
-                label: 'Número de teléfono con código de país',
-                textField: true,
-                child: IntlPhoneField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(
-                    labelText: loc.phoneLabel,
-                    helperText: loc.includeCountryCode,
-                    border: const OutlineInputBorder(),
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 5
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 6 - Campo de teléfono (bloqueado en Web)
+              // -----------------------------------------------------------------------------
+              if (!kIsWeb) ...[
+                Semantics(
+                  label: 'Número de teléfono con código de país',
+                  textField: true,
+                  child: IntlPhoneField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                      labelText: loc.phoneLabel,
+                      helperText: loc.includeCountryCode,
+                      border: const OutlineInputBorder(),
+                    ),
+                    initialCountryCode: 'CO',
+                    onChanged: (phone) {
+                      selectedCountryCode = '+${phone.countryCode}';
+                      selectedFlagEmoji =
+                          phone.countryISOCode == 'CO' ? '🇨🇴' : '🌐';
+                      fullPhoneNumber = phone.completeNumber;
+                      setState(() {});
+                    },
+                    validator: (value) {
+                      if (value == null || value.number.isEmpty) {
+                        return loc.pleaseEnterPhone;
+                      }
+                      return null;
+                    },
                   ),
-                  initialCountryCode: 'CO',
-                  onChanged: (phone) {
-                    selectedCountryCode = '+${phone.countryCode}';
-                    selectedFlagEmoji =
-                        phone.countryISOCode == 'CO' ? '🇨🇴' : '🌐';
-                    fullPhoneNumber = phone.completeNumber;
-                    setState(() {});
-                  },
-                  validator: (value) {
-                    if (value == null || value.number.isEmpty) {
-                      return loc.pleaseEnterPhone;
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const SizedBox(height: 16),
-
-              // -----------------------------------------------------------------
-              // Campo 4: Contraseña con Semantics y botón de visibilidad
-              // -----------------------------------------------------------------
+                const SizedBox(height: 16),
+              ],
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 6
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 7 - Campos de contraseña, checklist visual y confirmación
+              // -----------------------------------------------------------------------------
               Semantics(
                 label:
                     'Contraseña. Mínimo 8 caracteres, mayúscula, minúscula, número y símbolo',
@@ -336,10 +344,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-
-              // -----------------------------------------------------------------
-              // Checklist visual de requisitos de contraseña
-              // -----------------------------------------------------------------
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -376,10 +380,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // -----------------------------------------------------------------
-              // Campo 5: Confirmar contraseña con Semantics
-              // -----------------------------------------------------------------
               Semantics(
                 label: 'Confirmar contraseña. Debe coincidir con la anterior',
                 textField: true,
@@ -411,9 +411,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // -----------------------------------------------------------------
-              // Botón principal de registro con Semantics
-              // -----------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // FIN PARTE 7
+              // -----------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------
+              // INICIO PARTE 8 - Botón principal de registro
+              // -----------------------------------------------------------------------------
               Semantics(
                 label: 'Botón para crear cuenta',
                 button: true,
@@ -438,9 +441,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 8. Ítem visual del checklist de contraseña
-  // ---------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 8
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 9 - Ítem visual del checklist y validación completa del formulario
+  // -----------------------------------------------------------------------------
   Widget _buildCheckItem(bool condition, String text) {
     return Row(
       children: [
@@ -461,9 +467,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 9. Validación completa del formulario (todos los campos clave)
-  // ---------------------------------------------------------------------------
   bool _isFormValid() {
     final password = _passwordController.text;
     final confirm = _confirmPasswordController.text;
@@ -481,7 +484,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final validEmail = RegExp(
       r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
     ).hasMatch(email);
-    final validPhone = phone.isNotEmpty;
+    final validPhone = kIsWeb ? true : phone.isNotEmpty;
     final validName = name.trim().isNotEmpty;
 
     return validName &&
@@ -492,9 +495,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         !_isEmailDuplicate;
   }
 
-  // ---------------------------------------------------------------------------
-  // 10. Liberar recursos al cerrar la pantalla
-  // ---------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // FIN PARTE 9
+  // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // INICIO PARTE 10 - Liberación de recursos al cerrar la pantalla
+  // -----------------------------------------------------------------------------
   @override
   void dispose() {
     _nameController.dispose();
@@ -506,3 +512,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 }
+
+// -----------------------------------------------------------------------------
+// FIN PARTE 10 - Fin del archivo completo
+// -----------------------------------------------------------------------------
