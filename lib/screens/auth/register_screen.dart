@@ -69,9 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // 2.2 Función principal de registro
-  // ✔️ Verifica campos, crea usuario, guarda displayName, envía verificación
-  // ✔️ Guarda información en Firestore (colección: usuarios)
+  // 2.2 Función principal de registro (con reload del usuario tras guardar displayName)
   // ---------------------------------------------------------------------------
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
@@ -87,12 +85,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (user == null) throw Exception("No se pudo crear el usuario");
 
       await user.updateDisplayName(_nameController.text.trim());
-      await user.sendEmailVerification();
+      await user.reload(); // ✅ Importante para actualizar sesión en Web
+      final updatedUser = FirebaseAuth.instance.currentUser;
+
+      await updatedUser?.sendEmailVerification();
 
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final phone = kIsWeb ? '' : fullPhoneNumber;
-      final uid = user.uid;
+      final uid = updatedUser?.uid ?? user.uid;
 
       await FirebaseFirestore.instance.collection('usuarios').doc(uid).set({
         'uid': uid,
@@ -138,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+
   // -----------------------------------------------------------------------------
   // FIN PARTE 2
   // -----------------------------------------------------------------------------
