@@ -71,5 +71,9 @@
   "uppercaseLetter": "• 大文字1文字",
   "lowercaseLetter": "• 小文字1文字",
   "number": "• 数字1文字",
-  "specialCharacter": "• 特殊文字1文字"
+  "specialCharacter": "• 特殊文字1文字",
+
+  "verifyEmailTitle": "メール確認",
+  "verifyEmailInstruction": "確認メールを送信しました。リンクをクリックした後、ボタンを押して続行してください。",
+  "checkVerificationButton": "メールを確認しました"
 }

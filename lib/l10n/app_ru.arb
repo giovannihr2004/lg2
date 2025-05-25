@@ -71,5 +71,9 @@
   "uppercaseLetter": "• Одна заглавная буква",
   "lowercaseLetter": "• Одна строчная буква",
   "number": "• Одна цифра",
-  "specialCharacter": "• Один специальный символ"
+  "specialCharacter": "• Один специальный символ",
+
+  "verifyEmailTitle": "Подтвердите email",
+  "verifyEmailInstruction": "Мы отправили письмо с подтверждением. Нажмите на ссылку, затем нажмите кнопку, чтобы продолжить.",
+  "checkVerificationButton": "Я подтвердил свою почту"
 }

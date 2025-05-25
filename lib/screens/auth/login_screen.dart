@@ -18,7 +18,7 @@ import '../../providers/language_provider.dart';
 import '../../widgets/language_selector.dart';
 import '../../services/google_sign_in_service.dart';
 import '../../services/secure_storage_service.dart';
-import 'register_screen.dart';
+import 'register/register_screen.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 // -----------------------------------------------------------------------------

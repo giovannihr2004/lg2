@@ -71,5 +71,9 @@
   "uppercaseLetter": "• Ein Großbuchstabe",
   "lowercaseLetter": "• Ein Kleinbuchstabe",
   "number": "• Eine Zahl",
-  "specialCharacter": "• Ein Sonderzeichen"
+  "specialCharacter": "• Ein Sonderzeichen",
+
+  "verifyEmailTitle": "E-Mail bestätigen",
+  "verifyEmailInstruction": "Wir haben dir eine Bestätigungs-E-Mail gesendet. Klicke auf den Link und drücke dann den Button, um fortzufahren.",
+  "checkVerificationButton": "Ich habe meine E-Mail bestätigt"
 }

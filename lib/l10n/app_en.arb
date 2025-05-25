@@ -72,5 +72,9 @@
   "uppercaseLetter": "• One uppercase letter",
   "lowercaseLetter": "• One lowercase letter",
   "number": "• One number",
-  "specialCharacter": "• One special character"
+  "specialCharacter": "• One special character",
+
+  "verifyEmailTitle": "Verify email",
+  "verifyEmailInstruction": "We've sent you a verification email. Click the link, then press the button to continue.",
+  "checkVerificationButton": "I have verified my email"
 }

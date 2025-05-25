@@ -51,7 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   label: 'Logotipo de Lector Global',
                   image: true,
                   child: Image.asset(
-                    'assets/images/logo_welcome.png',
+                    'assets/images/logo_welcome.webp',
                     height: 200,
                     fit: BoxFit.contain,
                   ),

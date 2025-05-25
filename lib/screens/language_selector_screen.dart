@@ -45,7 +45,7 @@ class LanguageSelectorScreen extends StatelessWidget {
             children: [
               // 🟣 Nuevo ícono con logo
               Image.asset(
-                'assets/images/logo_titulo.png',
+                'assets/images/logo_titulo.webp',
                 height: 80,
                 fit: BoxFit.contain,
               ),

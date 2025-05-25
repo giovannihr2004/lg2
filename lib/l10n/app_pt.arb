@@ -71,5 +71,9 @@
   "uppercaseLetter": "• Uma letra maiúscula",
   "lowercaseLetter": "• Uma letra minúscula",
   "number": "• Um número",
-  "specialCharacter": "• Um caractere especial"
+  "specialCharacter": "• Um caractere especial",
+
+  "verifyEmailTitle": "Verificar e-mail",
+  "verifyEmailInstruction": "Enviamos um e-mail de verificação. Clique no link e depois pressione o botão para continuar.",
+  "checkVerificationButton": "Já verifiquei meu e-mail"
 }
