@@ -31,6 +31,8 @@
   "loginSubtitle": "アカウントでログインしてください",
   "emailLabel": "メールアドレス",
   "passwordLabel": "パスワード",
+  "emailOrPhoneLabel": "メールアドレスまたは電話番号",
+  "passwordLabelLogin": "パスワード",
   "loginButton": "ログイン",
   "googleSignIn": "Googleでログイン",
   "facebookSignIn": "Facebookでログイン",
@@ -40,16 +42,40 @@
   "forgotPassword": "パスワードをお忘れですか？",
 
   "splash_slogan": "読むことができれば、理解できる。\n理解できれば、人生を変えられる。\n人生を変えれば、世界を変えることができる。",
-  "emailOrPhoneLabel": "メールアドレスまたは電話番号",
-  "passwordLabelLogin": "パスワード",
   "welcomeBackMessage": "おかえりなさい！Lector Globalでの学習を続けるにはログインしてください。",
-
   "loginSlogan": "読むことができれば、理解できる。理解できれば、人生を変えられる。人生を変えれば、世界を変えることができる。",
-  
+
   "resetPasswordSuccess": "パスワードをリセットするリンクをメールで送信しました。",
-  
+  "resetPasswordButton": "パスワードをリセット",
+
   "registerTitle": "アカウント作成",
   "pleaseEnterEmail": "メールアドレスを入力してください。",
   "passwordLabelRegister": "パスワード",
-  "registerButton": "登録"
+  "registerButton": "登録",
+
+  "registrationSuccess": "登録が完了しました。メールを確認してください。",
+  "emailAlreadyInUse": "このメールアドレスはすでに使用されています。",
+  "weakPassword": "パスワードが弱すぎます。",
+  "registrationDisabled": "現在、登録は無効になっています。",
+  "registrationError": "登録中にエラーが発生しました",
+  "passwordTooShort": "8文字以上で入力してください。",
+  "nameLabel": "氏名",
+  "pleaseEnterName": "氏名を入力してください。",
+  "phoneLabel": "電話番号",
+  "pleaseEnterPhone": "電話番号を入力してください。",
+  "includeCountryCode": "国番号を含めてください",
+  "confirmPasswordLabel": "パスワードの確認",
+  "passwordsDoNotMatch": "パスワードが一致しません",
+
+  "min8Characters": "• 最少8文字",
+  "uppercaseLetter": "• 大文字1文字",
+  "lowercaseLetter": "• 小文字1文字",
+  "number": "• 数字1文字",
+  "specialCharacter": "• 特殊文字1文字",
+
+  "verifyEmailTitle": "メール確認",
+  "verifyEmailInstruction": "確認メールを送信しました。リンクをクリックした後、ボタンを押して続行してください。",
+  "checkVerificationButton": "メールを確認しました",
+
+  "appName": "Lector Global"
 }

@@ -1,5 +1,4 @@
 {
-  "@@locale": "de",
   "welcome_title": "Willkommen bei Lector Global",
   "welcome_message": "Die Reise beginnt mit einer Seite",
   "developed_by": "Entwickelt von Jhovani Holguín Rojas",
@@ -31,6 +30,8 @@
   "loginSubtitle": "Melde dich mit deinem Konto an",
   "emailLabel": "E-Mail",
   "passwordLabel": "Passwort",
+  "emailOrPhoneLabel": "E-Mail oder Telefonnummer",
+  "passwordLabelLogin": "Passwort",
   "loginButton": "Einloggen",
   "googleSignIn": "Mit Google einloggen",
   "facebookSignIn": "Mit Facebook einloggen",
@@ -40,17 +41,42 @@
   "forgotPassword": "Passwort vergessen?",
 
   "splash_slogan": "Wenn du lesen kannst, kannst du verstehen.\nUnd wenn du verstehen kannst, kannst du dein Leben verändern.\nUnd wenn wir Leben verändern, verändern wir die Welt.",
-
-  "emailOrPhoneLabel": "E-Mail oder Telefonnummer",
-  "passwordLabelLogin": "Passwort",
   "welcomeBackMessage": "Willkommen zurück! Melde dich an, um mit Lector Global weiterzulernen.",
-
   "loginSlogan": "Wenn du lesen kannst, kannst du verstehen. Und wenn du verstehen kannst, kannst du dein Leben verändern. Und wenn wir Leben verändern, verändern wir die Welt.",
-  
+
   "resetPasswordSuccess": "Wir haben dir einen Link zum Zurücksetzen deines Passworts gesendet.",
-  
+  "resetPasswordButton": "Passwort zurücksetzen",
+
   "registerTitle": "Konto erstellen",
   "pleaseEnterEmail": "Bitte gib deine E-Mail-Adresse ein.",
   "passwordLabelRegister": "Passwort",
-  "registerButton": "Registrieren"
+  "registerButton": "Registrieren",
+
+  "registrationSuccess": "Registrierung erfolgreich. Bitte überprüfe deine E-Mail.",
+  "emailAlreadyInUse": "Diese E-Mail wird bereits verwendet.",
+  "weakPassword": "Das Passwort ist zu schwach.",
+  "registrationDisabled": "Die Registrierung ist derzeit deaktiviert.",
+  "registrationError": "Ein Fehler ist bei der Registrierung aufgetreten",
+  "passwordTooShort": "Mindestens 8 Zeichen erforderlich.",
+
+  "nameLabel": "Vollständiger Name",
+  "pleaseEnterName": "Bitte gib deinen Namen ein.",
+  "phoneLabel": "Telefonnummer",
+  "pleaseEnterPhone": "Bitte gib deine Telefonnummer ein.",
+  "includeCountryCode": "Ländervorwahl einschließen",
+  "confirmPasswordLabel": "Passwort bestätigen",
+  "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+
+  "min8Characters": "• Mindestens 8 Zeichen",
+  "uppercaseLetter": "• Ein Großbuchstabe",
+  "lowercaseLetter": "• Ein Kleinbuchstabe",
+  "number": "• Eine Zahl",
+  "specialCharacter": "• Ein Sonderzeichen",
+
+  "verifyEmailTitle": "E-Mail bestätigen",
+  "verifyEmailInstruction": "Wir haben dir eine Bestätigungs-E-Mail gesendet. Klicke auf den Link und drücke dann den Button, um fortzufahren.",
+  "checkVerificationButton": "Ich habe meine E-Mail bestätigt",
+
+  "appName": "Lector Global",
+  "@@locale": "de"
 }

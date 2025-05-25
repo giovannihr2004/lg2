@@ -2,48 +2,76 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleDisplayName</key>
-	<string>Lg2</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>lg2</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+    <!-- Parte 1: Información general del proyecto -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>  <!-- Región de desarrollo del proyecto -->
+    <key>CFBundleDisplayName</key>
+    <string>Lg2</string>  <!-- Nombre visible de la app -->
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>  <!-- Nombre del archivo ejecutable -->
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>  <!-- Identificador único del paquete -->
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>  <!-- Versión del diccionario de información -->
+    <key>CFBundleName</key>
+    <string>lg2</string>  <!-- Nombre de la app -->
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>  <!-- Tipo de paquete -->
+    <key>CFBundleShortVersionString</key>
+    <string>$(FLUTTER_BUILD_NAME)</string>  <!-- Versión corta de la app -->
+    <key>CFBundleSignature</key>
+    <string>????</string>  <!-- Identificador de firma (generalmente no se usa) -->
+    <key>CFBundleVersion</key>
+    <string>$(FLUTTER_BUILD_NUMBER)</string>  <!-- Número de versión -->
+    
+    <!-- Parte 2: Configuración de la aplicación en iOS -->
+    <key>LSRequiresIPhoneOS</key>
+    <true/>  <!-- Requiere iOS -->
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>  <!-- Nombre de la pantalla de inicio -->
+    <key>UIMainStoryboardFile</key>
+    <string>Main</string>  <!-- Nombre del storyboard principal -->
+    
+    <!-- Parte 3: Configuración de orientación de pantalla -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>  <!-- Soporte para orientación vertical -->
+        <string>UIInterfaceOrientationLandscapeLeft</string>  <!-- Soporte para orientación horizontal izquierda -->
+        <string>UIInterfaceOrientationLandscapeRight</string>  <!-- Soporte para orientación horizontal derecha -->
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>  <!-- Soporte para iPad en orientación vertical -->
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>  <!-- Soporte para iPad en orientación invertida -->
+        <string>UIInterfaceOrientationLandscapeLeft</string>  <!-- Soporte para iPad en orientación horizontal izquierda -->
+        <string>UIInterfaceOrientationLandscapeRight</string>  <!-- Soporte para iPad en orientación horizontal derecha -->
+    </array>
+
+    <!-- Parte 4: Optimización para el rendimiento -->
+    <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>  <!-- Desactiva la duración mínima de los cuadros en el teléfono -->
+    <key>UIApplicationSupportsIndirectInputEvents</key>
+    <true/>  <!-- Habilita la entrada indirecta de eventos -->
+    
+    <!-- Parte 5: Configuración de Firebase y cliente de Google -->
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>  <!-- Desactiva el proxy delegado de Firebase -->
+    <key>GoogleAppID</key>
+    <string>1:562353221228:ios:daa0b34a8f9d654e8fb249</string>  <!-- Tu App ID de Firebase para iOS -->
+    <key>GoogleAPIKey</key>
+    <string>AIzaSyDHyDeeGr59c9Z8KQqlZP_T7jGExaYNsZ0</string>  <!-- Tu API Key de Firebase -->
+    <key>FirebaseDatabaseURL</key>
+    <string>https://lector-global-1c462.firebaseio.com</string>  <!-- URL de tu base de datos en Firebase -->
+    
+    <!-- Parte 6: Configuración de URL para Google -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.562353221228-67ha8ei9djmbr2ehdsf9apmt8966839n</string>  <!-- ID de cliente de Google para la autenticación -->
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

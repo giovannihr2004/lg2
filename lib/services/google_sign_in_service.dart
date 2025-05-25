@@ -1,15 +1,15 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: google_sign_in_service.dart
 // 📍 Ubicación: lib/services/google_sign_in_service.dart
-// 📝 Descripción: Autenticación con Google (Firestore desactivado temporalmente para Windows)
-// 📅 Última actualización: 18/05/2025 - 16:55 (Hora de Colombia)
+// 📝 Descripción: Autenticación con Google (sin Firestore en esta versión web)
+// 📅 Última actualización: 18/05/2025 - 18:12 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart'; ❌ Comentado temporalmente
+// import 'package:cloud_firestore/cloud_firestore.dart'; // ❌ No se usa en esta rama
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInService {
@@ -22,7 +22,7 @@ class GoogleSignInService {
   static Future<void> signInWithGoogleAndNavigate(BuildContext context) async {
     try {
       final auth = FirebaseAuth.instance;
-      // final firestore = FirebaseFirestore.instance;
+      // final firestore = FirebaseFirestore.instance; // ❌ Firestore desactivado
 
       UserCredential credential;
 
@@ -62,28 +62,31 @@ class GoogleSignInService {
 
       print("🟢 UID obtenido: $uid");
 
-      // 🔒 Firestore desactivado temporalmente:
-      // final userDoc = await firestore.collection('usuarios').doc(uid).get();
-      // print("🔎 Documento Firestore existe: ${userDoc.exists}");
+      // 🔽 Se omite Firestore en esta versión web
+      /*
+      final userDoc = await firestore.collection('usuarios').doc(uid).get();
+      print("🔎 Documento Firestore existe: ${userDoc.exists}");
 
       if (!context.mounted) return;
 
-      // if (userDoc.exists && userDoc.data()!.containsKey('email')) {
-      //   print("✅ Usuario reconocido en Firestore. Redirigiendo a /dashboard");
-      //   Navigator.pushReplacementNamed(context, '/dashboard');
-      // } else {
-      //   final email = credential.user?.email;
-      //   if (email != null) {
-      //     await firestore.collection('usuarios').doc(uid).set({'email': email});
-      //     print("📄 Documento creado en Firestore con el email: $email");
-      //   } else {
-      //     print("⚠️ No se pudo obtener el email del usuario.");
-      //   }
-      //   print("🆕 Usuario sin datos en Firestore. Redirigiendo a /register");
-      //   Navigator.pushReplacementNamed(context, '/register');
-      // }
+      if (userDoc.exists && userDoc.data()!.containsKey('email')) {
+        print("✅ Usuario reconocido en Firestore. Redirigiendo a /dashboard");
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        final email = credential.user?.email;
+        if (email != null) {
+          await firestore.collection('usuarios').doc(uid).set({'email': email});
+          print("📄 Documento creado en Firestore con el email: $email");
+        } else {
+          print("⚠️ No se pudo obtener el email del usuario.");
+        }
+        print("🆕 Usuario sin datos en Firestore. Redirigiendo a /register");
+        Navigator.pushReplacementNamed(context, '/register');
+      }
+      */
 
-      // 👉 Redirección temporal para pruebas sin Firestore
+      // 🔁 Redirección genérica en esta versión web (sin Firestore)
+      if (!context.mounted) return;
       Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
       log('❌ Error en signInWithGoogleAndNavigate: ${e.toString()}');

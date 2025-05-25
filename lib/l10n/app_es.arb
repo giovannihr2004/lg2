@@ -1,5 +1,4 @@
 {
-  "@@locale": "es",
   "welcome_title": "Bienvenido a Lector Global",
   "welcome_message": "El viaje comienza con una página",
   "developed_by": "Desarrollado por Jhovani Holguín Rojas",
@@ -44,11 +43,40 @@
   "splash_slogan": "Si puedes leer, puedes comprender.\nY si puedes comprender, puedes cambiar tu vida.\nY si cambiamos vidas, cambiamos el mundo.",
   "welcomeBackMessage": "¡Bienvenido de nuevo! Inicia sesión para seguir aprendiendo con Lector Global.",
   "loginSlogan": "Si puedes leer, puedes comprender. Y si puedes comprender, puedes cambiar tu vida. Y si cambiamos vidas, cambiamos el mundo.",
-  
+
   "resetPasswordSuccess": "Hemos enviado un enlace para restablecer tu contraseña.",
+  "resetPasswordButton": "Recuperar contraseña",
 
   "registerTitle": "Crear cuenta",
   "pleaseEnterEmail": "Por favor ingresa tu correo electrónico.",
   "passwordLabelRegister": "Contraseña",
-  "registerButton": "Registrarse"
+  "registerButton": "Registrarse",
+
+  "registrationSuccess": "Registro exitoso. Verifica tu correo electrónico.",
+  "emailAlreadyInUse": "Este correo ya está registrado.",
+  "weakPassword": "La contraseña es demasiado débil.",
+  "registrationDisabled": "El registro está deshabilitado en este momento.",
+  "registrationError": "Ocurrió un error durante el registro",
+  "passwordTooShort": "Debe tener al menos 8 caracteres.",
+
+  "nameLabel": "Nombre completo",
+  "pleaseEnterName": "Por favor ingresa tu nombre.",
+  "phoneLabel": "Número de teléfono",
+  "pleaseEnterPhone": "Por favor ingresa tu número de teléfono.",
+  "includeCountryCode": "Incluye el código del país",
+  "confirmPasswordLabel": "Confirmar contraseña",
+  "passwordsDoNotMatch": "Las contraseñas no coinciden",
+
+  "min8Characters": "• Mínimo 8 caracteres",
+  "uppercaseLetter": "• Una letra mayúscula",
+  "lowercaseLetter": "• Una letra minúscula",
+  "number": "• Un número",
+  "specialCharacter": "• Un carácter especial",
+
+  "verifyEmailTitle": "Verificar correo",
+  "verifyEmailInstruction": "Hemos enviado un correo de verificación. Haz clic en el enlace y luego presiona el botón para continuar.",
+  "checkVerificationButton": "Ya verifiqué mi correo",
+
+  "appName": "Lector Global",
+  "@@locale": "es"
 }

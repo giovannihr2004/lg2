@@ -1,6 +1,0 @@
-{
-  "ru": [
-    "emailOrPhoneLabel",
-    "passwordLabelLogin"
-  ]
-}

@@ -1,5 +1,4 @@
 {
-  "@@locale": "pt",
   "welcome_title": "Bem-vindo ao Lector Global",
   "welcome_message": "A jornada começa com uma página",
   "developed_by": "Desenvolvido por Jhovani Holguín Rojas",
@@ -31,6 +30,8 @@
   "loginSubtitle": "Acesse com sua conta",
   "emailLabel": "E-mail",
   "passwordLabel": "Senha",
+  "emailOrPhoneLabel": "E-mail ou telefone",
+  "passwordLabelLogin": "Senha",
   "loginButton": "Entrar",
   "googleSignIn": "Entrar com o Google",
   "facebookSignIn": "Entrar com o Facebook",
@@ -40,17 +41,41 @@
   "forgotPassword": "Esqueceu sua senha?",
 
   "splash_slogan": "Se você pode ler, pode compreender.\nE se pode compreender, pode mudar sua vida.\nE se mudamos vidas, mudamos o mundo.",
-
-  "emailOrPhoneLabel": "E-mail ou telefone",
-  "passwordLabelLogin": "Senha",
   "welcomeBackMessage": "Bem-vindo de volta! Faça login para continuar aprendendo com o Lector Global.",
-
   "loginSlogan": "Se você pode ler, pode compreender. E se pode compreender, pode mudar sua vida. E se mudamos vidas, mudamos o mundo.",
-  
+
   "resetPasswordSuccess": "Enviamos um link para redefinir sua senha.",
-  
+  "resetPasswordButton": "Redefinir senha",
+
   "registerTitle": "Criar conta",
   "pleaseEnterEmail": "Por favor, insira seu e-mail.",
   "passwordLabelRegister": "Senha",
-  "registerButton": "Registrar"
+  "registerButton": "Registrar",
+
+  "registrationSuccess": "Registro bem-sucedido. Verifique seu e-mail.",
+  "emailAlreadyInUse": "Este e-mail já está em uso.",
+  "weakPassword": "A senha é muito fraca.",
+  "registrationDisabled": "O registro está desativado no momento.",
+  "registrationError": "Ocorreu um erro durante o registro",
+  "passwordTooShort": "Deve conter pelo menos 8 caracteres.",
+  "nameLabel": "Nome completo",
+  "pleaseEnterName": "Por favor, insira seu nome.",
+  "phoneLabel": "Número de telefone",
+  "pleaseEnterPhone": "Por favor, insira seu número de telefone.",
+  "includeCountryCode": "Incluir código do país",
+  "confirmPasswordLabel": "Confirmar senha",
+  "passwordsDoNotMatch": "As senhas não coincidem",
+
+  "min8Characters": "• Mínimo 8 caracteres",
+  "uppercaseLetter": "• Uma letra maiúscula",
+  "lowercaseLetter": "• Uma letra minúscula",
+  "number": "• Um número",
+  "specialCharacter": "• Um caractere especial",
+
+  "verifyEmailTitle": "Verificar e-mail",
+  "verifyEmailInstruction": "Enviamos um e-mail de verificação. Clique no link e depois pressione o botão para continuar.",
+  "checkVerificationButton": "Já verifiquei meu e-mail",
+
+  "appName": "Lector Global",
+  "@@locale": "pt"
 }

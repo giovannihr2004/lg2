@@ -2,7 +2,7 @@
 // 📄 Archivo: language_selector_screen.dart
 // 📍 Ubicación: lib/screens/language_selector_screen.dart
 // 📝 Descripción: Pantalla inicial para seleccionar el idioma con navegación directa.
-// 📅 Última actualización: 13/05/2025 - 20:05 (Hora de Colombia)
+// 📅 Última actualización: 20/05/2025 - 23:35 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -28,7 +28,6 @@ class LanguageSelectorScreen extends StatelessWidget {
 
   void _onLanguageSelected(BuildContext context, String langCode) {
     context.read<LanguageProvider>().changeLanguage(langCode);
-
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => const SplashLogoScreen()));
@@ -44,8 +43,24 @@ class LanguageSelectorScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.language, size: 64, color: Colors.deepPurple),
-              const SizedBox(height: 16),
+              // 🟣 Nuevo ícono con logo
+              Image.asset(
+                'assets/images/logo_titulo.webp',
+                height: 80,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Lector Global',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.2,
+                  color: Colors.deepPurple,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
               const Text(
                 'Selecciona tu idioma',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -57,25 +72,51 @@ class LanguageSelectorScreen extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children:
                     languageNames.entries.map((entry) {
-                      return ElevatedButton(
-                        onPressed:
-                            () => _onLanguageSelected(context, entry.key),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          entry.value,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
+                      return Focus(
+                        child: Builder(
+                          builder: (context) {
+                            final isFocused = Focus.of(context).hasFocus;
+                            return InkWell(
+                              onTap:
+                                  () => _onLanguageSelected(context, entry.key),
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border:
+                                      isFocused
+                                          ? Border.all(
+                                            color: Colors.amberAccent,
+                                            width: 2,
+                                          )
+                                          : null,
+                                  boxShadow:
+                                      isFocused
+                                          ? [
+                                            BoxShadow(
+                                              color: Colors.amberAccent
+                                                  .withOpacity(0.6),
+                                              blurRadius: 8,
+                                              spreadRadius: 1,
+                                            ),
+                                          ]
+                                          : [],
+                                ),
+                                child: Text(
+                                  entry.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     }).toList(),

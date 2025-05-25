@@ -2,7 +2,8 @@
 // 📄 Archivo: welcome_screen.dart
 // 📍 Ubicación: lib/screens/welcome_screen.dart
 // 📝 Descripción: Pantalla de bienvenida con traducciones y selector de idioma
-// 📅 Última actualización: 13/05/2025 - 18:06 (Hora de Colombia)
+// ♿ Mejora: Accesibilidad con Semantics en logo, textos y botón
+// 📅 Última actualización: 22/05/2025 - 22:10 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -21,14 +22,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-
-    // Seguimiento de claves de traducción
-    debugPrint('✅ welcome_title: ${loc?.welcome_title}');
-    debugPrint('✅ welcome_message: ${loc?.welcome_message}');
-    debugPrint('✅ developed_by: ${loc?.developed_by}');
-    debugPrint('✅ version_info: ${loc?.version_info}');
-    debugPrint('✅ date_info: ${loc?.date_info}');
-    debugPrint('✅ start_button: ${loc?.start_button}');
 
     return Scaffold(
       backgroundColor: Colors.deepPurple[50],
@@ -51,92 +44,126 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 🖼 Logo
-                Image.asset(
-                  'assets/images/logo1.png',
-                  height: 120,
-                  fit: BoxFit.contain,
+                // -----------------------------------------------------------------
+                // 1. Logo de bienvenida con Semantics
+                // -----------------------------------------------------------------
+                Semantics(
+                  label: 'Logotipo de Lector Global',
+                  image: true,
+                  child: Image.asset(
+                    'assets/images/logo_welcome.webp',
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 const SizedBox(height: 30),
 
-                // 📌 Título principal
-                Text(
-                  loc?.welcome_title ?? 'Bienvenido a Lector Global',
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                // -----------------------------------------------------------------
+                // 2. Título principal accesible
+                // -----------------------------------------------------------------
+                Semantics(
+                  label: loc?.welcome_title ?? 'Bienvenido a Lector Global',
+                  child: Text(
+                    loc?.welcome_title ?? 'Bienvenido a Lector Global',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
 
-                // 📌 Eslogan
-                Text(
-                  loc?.welcome_message ?? 'Bienvenido',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.deepPurple,
-                    height: 1.5,
+                // -----------------------------------------------------------------
+                // 3. Eslogan accesible
+                // -----------------------------------------------------------------
+                Semantics(
+                  label: loc?.welcome_message ?? 'Bienvenido',
+                  child: Text(
+                    loc?.welcome_message ?? 'Bienvenido',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.deepPurple,
+                      height: 1.5,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
 
-                // 📌 Información del desarrollador
-                Column(
-                  children: [
-                    Text(
-                      loc?.developed_by ?? 'Desarrollado por Giovanni Holguín',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.black45,
+                // -----------------------------------------------------------------
+                // 4. Información del desarrollador accesible
+                // -----------------------------------------------------------------
+                Semantics(
+                  label:
+                      '${loc?.developed_by ?? 'Desarrollado por Giovanni Holguín'}, '
+                      '${loc?.version_info ?? 'Versión 1.0.0'}, '
+                      '${loc?.date_info ?? '7 de mayo de 2025'}',
+                  child: Column(
+                    children: [
+                      Text(
+                        loc?.developed_by ??
+                            'Desarrollado por Giovanni Holguín',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black45,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      loc?.version_info ?? 'Versión 1.0.0',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.black38,
+                      const SizedBox(height: 4),
+                      Text(
+                        loc?.version_info ?? 'Versión 1.0.0',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black38,
+                        ),
                       ),
-                    ),
-                    Text(
-                      loc?.date_info ?? '7 de mayo de 2025',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.black38,
+                      Text(
+                        loc?.date_info ?? '7 de mayo de 2025',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black38,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 32),
 
-                // 🟣 Botón de inicio
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
+                // -----------------------------------------------------------------
+                // 5. Botón "Iniciar" con Semantics
+                // -----------------------------------------------------------------
+                Semantics(
+                  label: 'Botón para iniciar sesión',
+                  button: true,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        elevation: 3,
                       ),
-                      elevation: 3,
-                    ),
-                    child: Text(
-                      loc?.start_button ?? 'Iniciar',
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
+                      child: Text(
+                        loc?.start_button ?? 'Iniciar',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -1,5 +1,8 @@
 // -----------------------------------------------------------------------------
 // 📄 Archivo: splash_screen.dart (Paso 1: animación suave)
+// 📝 Descripción: Pantalla temporal con texto animado
+// ♿ Mejora: Accesibilidad con Semantics aplicada al contenido visible
+// 📅 Última actualización: 22/05/2025 - 22:30 (Hora de Colombia)
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
@@ -26,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _fadeIn = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-
     _controller.forward();
   }
 
@@ -43,12 +45,16 @@ class _SplashScreenState extends State<SplashScreen>
       body: Center(
         child: FadeTransition(
           opacity: _fadeIn,
-          child: const Text(
-            'Cargando...',
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.deepPurple,
-              fontWeight: FontWeight.w500,
+          // ♿ Descripción audible para usuarios con lector de pantalla
+          child: Semantics(
+            label: 'Cargando aplicación',
+            child: const Text(
+              'Cargando...',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
