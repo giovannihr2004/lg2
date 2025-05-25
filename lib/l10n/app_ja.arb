@@ -75,5 +75,7 @@
 
   "verifyEmailTitle": "メール確認",
   "verifyEmailInstruction": "確認メールを送信しました。リンクをクリックした後、ボタンを押して続行してください。",
-  "checkVerificationButton": "メールを確認しました"
+  "checkVerificationButton": "メールを確認しました",
+
+  "appName": "Lector Global"
 }

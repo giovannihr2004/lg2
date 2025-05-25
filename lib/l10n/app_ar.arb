@@ -75,5 +75,7 @@
 
   "verifyEmailTitle": "تحقق من البريد الإلكتروني",
   "verifyEmailInstruction": "لقد أرسلنا بريدًا إلكترونيًا للتحقق. انقر على الرابط، ثم اضغط على الزر للمتابعة.",
-  "checkVerificationButton": "لقد تحققت من بريدي الإلكتروني"
+  "checkVerificationButton": "لقد تحققت من بريدي الإلكتروني",
+
+  "appName": "Lector Global"
 }

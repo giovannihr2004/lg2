@@ -75,5 +75,7 @@
 
   "verifyEmailTitle": "验证电子邮件",
   "verifyEmailInstruction": "我们已发送验证邮件。点击邮件中的链接后，按下按钮继续。",
-  "checkVerificationButton": "我已验证电子邮件"
+  "checkVerificationButton": "我已验证电子邮件",
+
+  "appName": "Lector Global"
 }

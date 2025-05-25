@@ -75,5 +75,7 @@
 
   "verifyEmailTitle": "Подтвердите email",
   "verifyEmailInstruction": "Мы отправили письмо с подтверждением. Нажмите на ссылку, затем нажмите кнопку, чтобы продолжить.",
-  "checkVerificationButton": "Я подтвердил свою почту"
+  "checkVerificationButton": "Я подтвердил свою почту",
+
+  "appName": "Lector Global"
 }

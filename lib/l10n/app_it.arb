@@ -1,5 +1,4 @@
 {
-  "@@locale": "it",
   "welcome_title": "Benvenuto in Lector Global",
   "welcome_message": "Il viaggio inizia con una pagina",
   "developed_by": "Sviluppato da Jhovani Holguín Rojas",
@@ -75,5 +74,8 @@
 
   "verifyEmailTitle": "Verifica e-mail",
   "verifyEmailInstruction": "Abbiamo inviato un'e-mail di verifica. Clicca sul link, poi premi il pulsante per continuare.",
-  "checkVerificationButton": "Ho verificato la mia e-mail"
+  "checkVerificationButton": "Ho verificato la mia e-mail",
+
+  "appName": "Lector Global",
+  "@@locale": "it"
 }

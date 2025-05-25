@@ -1,5 +1,4 @@
 {
-  "@@locale": "de",
   "welcome_title": "Willkommen bei Lector Global",
   "welcome_message": "Die Reise beginnt mit einer Seite",
   "developed_by": "Entwickelt von Jhovani Holguín Rojas",
@@ -59,6 +58,7 @@
   "registrationDisabled": "Die Registrierung ist derzeit deaktiviert.",
   "registrationError": "Ein Fehler ist bei der Registrierung aufgetreten",
   "passwordTooShort": "Mindestens 8 Zeichen erforderlich.",
+
   "nameLabel": "Vollständiger Name",
   "pleaseEnterName": "Bitte gib deinen Namen ein.",
   "phoneLabel": "Telefonnummer",
@@ -75,5 +75,8 @@
 
   "verifyEmailTitle": "E-Mail bestätigen",
   "verifyEmailInstruction": "Wir haben dir eine Bestätigungs-E-Mail gesendet. Klicke auf den Link und drücke dann den Button, um fortzufahren.",
-  "checkVerificationButton": "Ich habe meine E-Mail bestätigt"
+  "checkVerificationButton": "Ich habe meine E-Mail bestätigt",
+
+  "appName": "Lector Global",
+  "@@locale": "de"
 }
